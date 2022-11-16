@@ -21,4 +21,27 @@ int main()
     // std::cout << v1.size() << std::endl;
     // std::cout << v1.capacity() << std::endl;
     
+    {
+
+        // TESTING COPY CONSTROCTOR
+
+        ft::vector<int> v1;
+
+        std::cout << "------------------------------ TEST COPY CONSTROCTOR ----------------" << std::endl;
+
+        v1.test_stock();
+        for (int i = 0; i < 6; i++)
+            std::cout << v1[i] << std::endl;
+
+        std::cout << "---------------------------------------------------------------------" << std::endl;
+
+        ft::vector<int> v2;
+        v2 = v1;
+        v2 = v1;
+        v2 = v1;
+        v2 = v1;
+        for (int i = 0; i < 6; i++)
+            std::cout << v2[i] << std::endl;
+        while (1);
+    }
 }
