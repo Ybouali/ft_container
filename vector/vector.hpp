@@ -25,11 +25,12 @@ namespace ft
             {
                 if (this->size_v > 0)
                 {
-                    for (size_t i = 0; i < this->size_v; i++)
-                    this->alloc.destroy(this->arr + i);
-                    if (this->capacity_v > 0)
-                        this->alloc.deallocate(this->arr, this->capacity_v);
-                    this->arr = NULL;
+                    this->~vector();
+                    // for (size_t i = 0; i < this->size_v; i++)
+                    // this->alloc.destroy(this->arr + i);
+                    // if (this->capacity_v > 0)
+                    //     this->alloc.deallocate(this->arr, this->capacity_v);
+                    // this->arr = NULL;
                 }
                 this->arr = this->alloc.allocate(other->capacity_v);
                 this->capacity_v = other->capacity_v;

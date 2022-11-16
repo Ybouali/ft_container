@@ -14,6 +14,7 @@ int main()
     //     v.push_back(i);
     // for (int i = 0; i < 3; i++)
     //     std::cout << "V [" << i << "] = " << v[i] << std::endl;
+    // the solution for this problem is iterator traits
     // ft::vector< int > v1 = v;
     // for (int i = 0; i < 3; i++)
     //     std::cout << "V [" << i << "] = " << v1[i] << std::endl;
