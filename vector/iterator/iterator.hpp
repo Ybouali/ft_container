@@ -1,5 +1,4 @@
-namespace ft
-{
+namespace ft{
     template <
         class Category,
         class T,

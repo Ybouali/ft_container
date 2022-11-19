@@ -1,5 +1,3 @@
-#include "./iterator/iterator.hpp"
-
 namespace ft
 {
     template < class T, class Alloc = std::allocator<T> >
@@ -13,7 +11,7 @@ namespace ft
             typedef const T &           const_reference;
             // typedef T*                  pointer;
             // typedef const T*            const_pointer;
-            // typedef iterator
+            // typedef iterator             
             // typedef const_iterator
             // typedef reverse_iterator
             // typedef const_reverse_iterator
@@ -120,6 +118,4 @@ namespace ft
             size_type                   capacity_v;
             allocator_type              alloc;
     };
-
-    
 }

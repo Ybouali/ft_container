@@ -4,12 +4,42 @@
 #include <typeinfo>
 
 
+#include "../iterator/random_access_iterator.hpp"
 #include "../vector.hpp"
 
 #define N 3
 
 int main()
 {
+    {
+        std::allocator<int> alloc;
+        ft::random_access_iterator<int> it, it1;
+
+        it.ptr = alloc.allocate(1);
+        // it1 = it;
+
+        *it.ptr = 2;
+
+        std::cout << it.ptr << std::endl;
+        it++;
+        *it.ptr = 3;
+        std::cout << it.ptr << std::endl;
+        // for (int i = 0; i < 3; i++)
+        // {
+        //     *it.ptr = i;
+        //     it++;
+        // }
+        // for (int i = 0; i < 3; i++)
+        // {
+        //     std::cout << it1.ptr[0] << std::endl;
+        //     it1++;
+        // }
+        // for (int i = 0; i < 3; i++)
+        // {
+        //     std::cout << it1.ptr[0] << std::endl;
+        //     it1--;
+        // }
+    }
     {
         // std::cout << "------------------------------ STD PUSH BACK ----------------" << std::endl;
         // // TESTS FOR MY VECTOR

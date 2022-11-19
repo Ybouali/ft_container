@@ -2,8 +2,6 @@
 
 namespace ft
 {
-    // class iterator_traits : pulic 
-
     template <class Iterator>
     class iterator_traits
     {
@@ -19,7 +17,7 @@ namespace ft
     template <class T>
     class iterator_traits<const T*>
     {
-        
+
     };
 
 }
