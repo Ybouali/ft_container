@@ -12,33 +12,105 @@
 int main()
 {
     {
+        std::cout << "---------------------------- TEST RANDOM ACCESS ITERATOR YOU NEED THE PTR ATT TO BE PUBLIC ---------------------" << std::endl;
         std::allocator<int> alloc;
         ft::random_access_iterator<int> it, it1;
 
-        it.ptr = alloc.allocate(1);
-        // it1 = it;
+        it.ptr = alloc.allocate(3);
+        it1 = it;
+        for (int i = 0; i < 3; i++)
+        {
+            *it.ptr = i;
+            it++;
+        }
 
-        *it.ptr = 2;
+        std::cout << "-------- TEST THE PRE INCREMENT ---------------" << std::endl;
+        for (int i = 0; i < 3; i++)
+        {
+            std::cout << *it1.ptr << std::endl;
+            ++it1;
+        }
+        std::cout << "-------- TEST THE POST DEINCREMENT ---------------" << std::endl;
+        for (int i = 0; i < 3; i++)
+        {
+            it1--;
+            std::cout << *it1.ptr << std::endl;
+        }
+        
+        for (int i = 0; i < 3; i++)
+            it1++;
+        std::cout << "-------- TEST THE PRE DEINCREMENT ---------------" << std::endl;
+        for (int i = 0; i < 3; i++)
+        {
+            --it1;
+            std::cout << *it1.ptr << std::endl;
+        }
 
-        std::cout << it.ptr << std::endl;
+        for (int i = 0; i < 3; i++)
+            it--;
+
+        std::cout << "-------- TEST THE LOGICAL OPERATOR == ---------------" << std::endl;
+        if (it == it1)
+            std::cout << "YES it == it1" << std::endl;
+        else
+            std::cout << "NO it == it1" << std::endl;
         it++;
-        *it.ptr = 3;
-        std::cout << it.ptr << std::endl;
+        std::cout << "it++" << std::endl;
+        if (it == it1)
+            std::cout << "YES it == it1" << std::endl;
+        else
+            std::cout << "NO it == it1" << std::endl;
+        
+        std::cout << "-------- TEST THE LOGICAL OPERATOR != ---------------" << std::endl;
+
+        if (it != it1)
+            std::cout << "YES it != it1" << std::endl;
+        else
+            std::cout << "NO it != it1" << std::endl;
+        it--;
+        std::cout << "it--" << std::endl;
+        if (it != it1)
+            std::cout << "YES it != it1" << std::endl;
+        else
+            std::cout << "NO it != it1" << std::endl;
+        
+        std::cout << "-------- TEST THE LOGICAL OPERATOR < ---------------" << std::endl;
+        if (it < it1)
+            std::cout << "YES it < it1" << std::endl;
+        else
+            std::cout << "NO it < it1" << std::endl;
+
+        std::cout << "-------- TEST THE LOGICAL OPERATOR <= ---------------" << std::endl;
+        if (it <= it1)
+            std::cout << "YES it <= it1" << std::endl;
+        else
+            std::cout << "NO it <= it1" << std::endl;
+
+        std::cout << "-------- TEST THE LOGICAL OPERATOR > ---------------" << std::endl;
+        if (it > it1)
+            std::cout << "YES it > it1" << std::endl;
+        else
+            std::cout << "NO it > it1" << std::endl;
+
+        std::cout << "-------- TEST THE LOGICAL OPERATOR >= ---------------" << std::endl;
+        if (it >= it1)
+            std::cout << "YES it >= it1" << std::endl;
+        else
+            std::cout << "NO it >= it1" << std::endl;
+        *it++;
+        std::cout << "*it++; " << *it.ptr << std::endl;
+        *it--;
+        std::cout << "*it--; " << *it.ptr << std::endl;
+
         // for (int i = 0; i < 3; i++)
-        // {
-        //     *it.ptr = i;
-        //     it++;
-        // }
-        // for (int i = 0; i < 3; i++)
-        // {
-        //     std::cout << it1.ptr[0] << std::endl;
-        //     it1++;
-        // }
-        // for (int i = 0; i < 3; i++)
-        // {
-        //     std::cout << it1.ptr[0] << std::endl;
-        //     it1--;
-        // }
+        //     {
+        //         std::cout << *it.ptr << std::endl;
+        //         it++;
+        //     }
+        it + 1;
+        std::cout << "it + 1 = " << *it.ptr << std::endl;
+        // it - 2;
+        // std::cout << "it - 2 = " << *it.ptr << std::endl;
     }
     {
         // std::cout << "------------------------------ STD PUSH BACK ----------------" << std::endl;
