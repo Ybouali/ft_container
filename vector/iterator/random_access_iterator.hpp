@@ -77,7 +77,7 @@ namespace ft{
             
             difference_type operator-(const random_access_iterator& it) const { return (this->ptr - it.ptr); }
 
-            value_type operator[](const difference_type n) const { return (this->ptr[n]); }
+            reference operator[](const difference_type n) const { return (this->ptr[n]); }
 
             random_access_iterator& operator--(void) { --(this->ptr); return *this; }
             
