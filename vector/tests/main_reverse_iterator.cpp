@@ -4,8 +4,6 @@
 #include "../iterator/reverse_iterator.hpp"
 #include "../iterator/random_access_iterator.hpp"
 
-#define N 3
-
 int main()
 {
     std::cout << "--------- TEST REVERSE ITERATOR ---------------------" << std::endl << std::endl;
@@ -180,7 +178,4 @@ int main()
 
     rit = rit - 1;
     std::cout << "      rit_n - 1 = " << *rit << std::endl;
-
-
-
 }
