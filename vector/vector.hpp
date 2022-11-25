@@ -8,18 +8,18 @@ namespace ft
     class vector {
     
         public:
-            typedef ft::random_access_iterator<T>           iterator;             
-            typedef ft::random_access_iterator<const T>     const_iterator;
-            typedef typename iterator::value_type           value_type;
-            typedef Alloc                                   allocator_type;
-            typedef typename iterator::reference            reference;
-            typedef const reference                         const_reference;
-            typedef typename iterator::pointer              pointer;
-            typedef const pointer                           const_pointer;
-            typedef ft::reverse_iterator<iterator>          reverse_iterator;
-            typedef const reverse_iterator                  const_reverse_iterator;
-            typedef typename iterator::difference_type      difference_type;
-            typedef difference_type                         size_type;
+            typedef ft::random_access_iterator<T>                                   iterator;         
+            typedef ft::random_access_iterator<const T>                             const_iterator;
+            typedef T                                                               value_type;
+            typedef Alloc                                                           allocator_type;
+            typedef T&                                                              reference;
+            typedef const T&                                                        const_reference;
+            typedef T*                                                              pointer;
+            typedef const T*                                                        const_pointer;
+            typedef ft::reverse_iterator<ft::random_access_iterator<T> >            reverse_iterator;
+            typedef ft::reverse_iterator<ft::random_access_iterator<const T> >      const_reverse_iterator;
+            typedef ptrdiff_t                                                       difference_type;
+            typedef difference_type                                                 size_type;
             
             // explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
             
@@ -31,16 +31,6 @@ namespace ft
                 this->arr = NULL;
                 this->size_v = 0;
                 this->capacity_v = 0;
-            }
-            void    test_stock(size_type n)
-            {
-                // FOR TESTING
-                clear();
-                this->arr = this->alloc.allocate(n);
-                this->size_v = n;
-                this->capacity_v = n;
-                for (size_type o = 0; o < this->size_v; o++)
-                    this->arr[o] = o;
             }
             
             vector (const vector& other) { *this = other; }
@@ -61,7 +51,7 @@ namespace ft
                 clear();
             }
 
-            // Capacity resize and reserve.
+            // Capacity DONE
             size_type    size(void) const { return this->size_v;  }
 
             size_type    max_size(void) const { return this->alloc.max_size(); }
@@ -70,17 +60,115 @@ namespace ft
 
             bool         empty(void) const { return this->size_v == 0 ? true : false;  }
             
-            // void         resize(size_type n, value_type val = value_type())
-            // {
-                // Need a clear method
-            // }
+            void         resize(size_type n, value_type val = value_type())
+            {
+                if (this->size_v > n)   
+                {
+                    for (int o = n; o < this->size_v; o++)
+                        this->alloc.destroy(this->arr + o);
+                    this->size_v = n;
+                }
+                if (this->size_v < n)
+                {
+                    if (val)
+                        std::cout << "HELLO" << std::endl;
+                    pointer     tmp;
 
-            // void         reserve(size_type n)
-            // {
-                // Need a clear method
-            // }
+                    tmp = this->alloc.allocate(n);
+                    for (size_type i = 0; i < this->size_v; i++)
+                        tmp[i] = this->arr[i];
+                    if (val)
+                    {
+                        for (size_type i = size_v; i < n; i++)
+                            tmp[i] = val;
+                    }
+                    clear();
+                    this->capacity_v = n;
+                    this->size_v = n;
+                    this->arr = tmp;
+                }
+            }
 
-            // Modifiers assign , push_back, pop_back, insert, erase, swap
+            void         reserve(size_type n)
+            {
+                if (n > this->capacity_v)
+                {
+                    pointer     tmp;
+                    size_type   _old_size = this->size_v;
+                    tmp = this->allo.allocate(n);
+                    for (size_type i = 0; i < this->size_v; i++)
+                        tmp[i] = this->arr[i];
+                    clear();
+                    this->capacity_v = n;
+                    this->size_v = _old_size;
+                    this->arr = tmp;
+                }
+            }
+
+            // Modifiers assign pop_back, insert, erase, swap
+
+            void         assign(size_type n, const value_type& val)
+            {
+                if (this->size_v < n)
+                {
+                    for (size_type i = 0; i < n; i++)
+                        this->arr[i] = val;
+                }
+                else
+                {
+                    clear();
+                    std::cout << " n = " << n << std::endl;
+                    this->size_v = n;
+                    this->capacity_v = n;
+                    this->arr = this->alloc.allocate(this->capacity_v);
+                    for (size_type i = 0; i < n; i++)
+                        this->arr[i] = val;
+                }
+                
+            }
+
+            void         push_back(const value_type& val)
+            {
+                if (this->capacity_v == 0)
+                {
+                    this->capacity_v = 1;
+                    this->size_v = 1;
+                    this->arr = this->alloc.allocate(this->capacity_v);
+                    this->arr[0] = val;
+                }
+                else if (this->capacity_v == 1)
+                {
+                    value_type  tmp;
+                    tmp = at(0);
+                    clear();
+                    this->capacity_v = 2;
+                    this->size_v = 2;
+                    this->arr = this->alloc.allocate(this->capacity_v);
+                    this->arr[0] = tmp;
+                    this->arr[1] = val;
+                }
+                else
+                {
+                    if (this->size_v == this->capacity_v)
+                    {
+                        pointer             ptr;
+                        difference_type     _old_c = this->capacity_v;
+                        size_type           _old_s = this->size_v;
+
+                        ptr = this->alloc.allocate(this->capacity_v * 2);
+                        for (size_type o = 0; o < this->size_v; o++)
+                            ptr[o] = at(o);
+                        clear();
+                        this->capacity_v = _old_c * 2;
+                        this->arr = ptr;
+                        this->arr[_old_s] = val;
+                        this->size_v = ++_old_s;
+                    }
+                    else
+                        this->arr[this->size_v++] = val;
+                }
+            }
+
             void         clear() 
             {
                 if (this->size_v)
@@ -95,7 +183,31 @@ namespace ft
                 }
             }
 
-            // Iterator rbegin, rend
+            // Iterator DONE
+
+            reverse_iterator    rbegin()
+            {
+                reverse_iterator    rit(this->arr + this->size_v);
+                return (rit);
+            }
+
+            const_reverse_iterator    rbegin() const
+            {
+                const_reverse_iterator    rit(this->arr + this->size_v);
+                return (rit);
+            }
+
+            reverse_iterator    rend()
+            {
+                reverse_iterator    rit(this->arr);
+                return (rit);
+            }
+
+            const_reverse_iterator    rend() const
+            {
+                const_reverse_iterator    rit(this->arr);
+                return (rit);
+            }
 
             iterator      begin(void) 
             {
@@ -112,7 +224,6 @@ namespace ft
             iterator      end(void) 
             {
                 iterator it;
-
                 it = this->arr + this->size_v;
                 return it;
             }
@@ -124,19 +235,23 @@ namespace ft
                 return it;
             }
 
-            // Element access [], at
+            // Element access DONE
 
             reference           at(size_type n) { return this->arr[n]; }
 
             const_reference     at(size_type n) const { return this->arr[n]; }
 
-            // reference           front() { return this->arr; }
+            reference           operator[](size_type n) { return this->arr[n]; }
+
+            const_reference     operator[](size_type n) const { return this->arr[n]; }
+
+            reference           front() { return *this->arr; }
             
-            // const_reference     front() const { return this->arr; }
+            const_reference     front() const { return *this->arr; }
             
-            // reference           back() { return this->arr[this->size_v]; }
+            reference           back() { return *(this->arr + this->size_v - 1); }
             
-            // const_reference     back() const { return this->arr[this->size_v]; }
+            const_reference     back() const { return *(this->arr + this->size_v - 1); }
 
         private:
             pointer                     arr;
