@@ -37,8 +37,7 @@ namespace ft
 
             vector& operator= (const vector& other)
             {
-                if (this->size_v)
-                    clear();
+                clear();
                 this->arr = this->alloc.allocate(other.capacity_v);
                 this->capacity_v = other.capacity_v;
                 this->size_v = other.size_v;
@@ -70,8 +69,6 @@ namespace ft
                 }
                 if (this->size_v < n)
                 {
-                    if (val)
-                        std::cout << "HELLO" << std::endl;
                     pointer     tmp;
 
                     tmp = this->alloc.allocate(n);
@@ -105,26 +102,48 @@ namespace ft
                 }
             }
 
-            // Modifiers assign pop_back, insert, erase, swap
+            // Modifiers
 
+            void         swap(vector& x)
+            {
+                pointer     tmp = this->arr;
+                size_type   _capacity_tmp = this->capacity_v;
+                size_type   _size_tmp = this->size_v;
+                this->arr = x.arr;
+                this->capacity_v = x.capacity_v;
+                this->size_v = x.size_v;
+                x.arr = tmp;
+                x.size_v = _size_tmp;
+                x.capacity_v = _capacity_tmp;
+            }
+            // TODO: ERASE :)
+            // iterator erase (iterator position);
+            // iterator erase (iterator first, iterator last);
+            // TODO: INSERT :)
+            // iterator insert (iterator position, const value_type& val);
+            // void insert (iterator position, size_type n, const value_type& val);
+            // void insert (iterator position, InputIterator first, InputIterator last);
+            void         pop_back()
+            {
+                if (this->size_v >= 0)
+                    this->alloc.destroy(this->arr + this->size_v--);
+            }
+
+            // void         assign(InputIterator first, InputIterator last);
             void         assign(size_type n, const value_type& val)
             {
-                if (this->size_v < n)
+                if (this->size_v >= n)
                 {
                     for (size_type i = 0; i < n; i++)
                         this->arr[i] = val;
+                    this->size_v = n;
                 }
                 else
                 {
                     clear();
-                    std::cout << " n = " << n << std::endl;
-                    this->size_v = n;
-                    this->capacity_v = n;
-                    this->arr = this->alloc.allocate(this->capacity_v);
                     for (size_type i = 0; i < n; i++)
-                        this->arr[i] = val;
+                        push_back(val);
                 }
-                
             }
 
             void         push_back(const value_type& val)
@@ -171,9 +190,9 @@ namespace ft
 
             void         clear() 
             {
-                if (this->size_v)
+                if (this->capacity_v)
                 {
-                    for (difference_type i = 0; i < this->size_v; i++)
+                    for (difference_type i = 0; i < this->capacity_v; i++)
                         this->alloc.destroy(this->arr + i);
                     if (this->capacity_v > 0)
                         this->alloc.deallocate(this->arr, this->capacity_v);
@@ -230,8 +249,7 @@ namespace ft
 
             const_iterator end(void) const
             {
-                const_iterator it;
-                it = this->arr + this->size_v;
+                const_iterator it(this->arr + this->size_v);
                 return it;
             }
 

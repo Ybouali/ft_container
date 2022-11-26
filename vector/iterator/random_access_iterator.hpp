@@ -6,54 +6,55 @@
 namespace ft{
 
     template <class T>
-    class random_access_iterator : public iterator<std::random_access_iterator_tag, T>
+    class random_access_iterator
     {
         public :
-            typedef typename iterator<std::random_access_iterator_tag, T>::value_type           value_type;
-            typedef typename iterator<std::random_access_iterator_tag, T>::difference_type      difference_type;
-            typedef typename iterator<std::random_access_iterator_tag, T>::pointer              pointer;
-            typedef typename iterator<std::random_access_iterator_tag, T>::reference            reference;
-            typedef typename iterator<std::random_access_iterator_tag, T>::iterator_category    iterator_category;
-            random_access_iterator(): ptr(NULL) { };
+            typedef typename iterator_traits<T*>::value_type           value_type;
+            typedef typename iterator_traits<T*>::difference_type      difference_type;
+            typedef typename iterator_traits<T*>::pointer              pointer;
+            typedef typename iterator_traits<T*>::reference            reference;
+            typedef typename iterator_traits<T*>::iterator_category    iterator_category;
+            
+            random_access_iterator(): ptr(0) { };
+            
             random_access_iterator(pointer it) { this->ptr = it; };
-            random_access_iterator(const reference it) { *this = it; };
+
+            random_access_iterator(random_access_iterator const &  it) { this->ptr = it.ptr; };
+            
             ~random_access_iterator() { };
 
-            reference operator= (const reference other) { this->ptr = other.ptr; }
+            operator random_access_iterator<const value_type>() const { 
+                return random_access_iterator<const value_type>(ptr);
+            }
+            // reference operator= (const reference other) const { this->ptr = other.ptr; }
 
-            bool operator== (const random_access_iterator& other) const
+            pointer     base() const 
             {
-                if (this->ptr == other.ptr)
-                    return true;
-                return false;
+                return (this->ptr);
             }
-            bool operator!= (const random_access_iterator& other) const
+            friend bool operator== (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
             {
-                return !(*this == other);
+                return (other.ptr == other1.ptr);
             }
-            bool operator< (const random_access_iterator& other) const
+            friend bool operator!= (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
             {
-                if (this->ptr < other.ptr)
-                    return true;
-                return false;
+                return (other.ptr != other1.ptr);
             }
-            bool operator> (const random_access_iterator& other) const
+            friend bool operator< (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
             {
-                if (this->ptr > other.ptr)
-                    return true;
-                return false;
+                return (other.ptr < other1.ptr);
             }
-            bool operator>= (const random_access_iterator& other) const
+            friend bool operator> (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
             {
-                if (*this == other || *this > other)
-                    return true;
-                return false;
+                return (other.ptr > other1.ptr);
             }
-            bool operator<= (const random_access_iterator& other) const
+            friend bool operator>= (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
             {
-                if (*this == other || *this < other)
-                    return true;
-                return false;
+                return (other.ptr >= other1.ptr);
+            }
+            friend bool operator<= (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
+            {
+                return (other.ptr <= other1.ptr);
             }
             
             reference operator*() const { return *(this->ptr); }
