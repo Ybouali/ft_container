@@ -1,4 +1,5 @@
 #include <iostream>
+#include <signal.h>
 #include "./iterator/random_access_iterator.hpp"
 #include "./iterator/reverse_iterator.hpp"
 
@@ -120,9 +121,17 @@ namespace ft
             // iterator erase (iterator position);
             // iterator erase (iterator first, iterator last);
             // TODO: INSERT :)
-            // iterator insert (iterator position, const value_type& val);
             // void insert (iterator position, size_type n, const value_type& val);
             // void insert (iterator position, InputIterator first, InputIterator last);
+            iterator insert (iterator position, const value_type& val)
+            {
+                (void)val;
+                iterator _tmp = begin() + (position - begin());
+                pointer _p = _tmp.base();
+
+                *_p = val;
+                return (iterator(_p));
+            }
             void         pop_back()
             {
                 if (this->size_v >= 0)
