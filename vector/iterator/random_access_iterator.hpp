@@ -17,33 +17,40 @@ namespace ft{
             
             random_access_iterator(): ptr(0) { };
             
-            random_access_iterator(pointer it) { this->ptr = it; };
+            random_access_iterator(pointer it) { 
+                this->ptr = it;
+            };
 
-            random_access_iterator(random_access_iterator const &  it) { this->ptr = it.ptr; };
+            random_access_iterator(random_access_iterator const &  it) { 
+                this->ptr = it.ptr; 
+            };
             
             ~random_access_iterator() { };
 
-            operator random_access_iterator<const value_type>() const { 
+            operator random_access_iterator<const value_type>() const {
                 return random_access_iterator<const value_type>(ptr);
             }
-            // reference operator= (const reference other) const { this->ptr = other.ptr; }
 
             pointer     base() const 
             {
                 return (this->ptr);
             }
+            
             friend bool operator== (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
             {
                 return (other.ptr == other1.ptr);
             }
+
             friend bool operator!= (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
             {
                 return (other.ptr != other1.ptr);
             }
+
             friend bool operator< (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
             {
                 return (other.ptr < other1.ptr);
             }
+            
             friend bool operator> (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
             {
                 return (other.ptr > other1.ptr);
