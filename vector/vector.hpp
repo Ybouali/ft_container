@@ -125,12 +125,42 @@ namespace ft
             // void insert (iterator position, InputIterator first, InputIterator last);
             iterator insert (iterator position, const value_type& val)
             {
+                pointer _p = position.base();
+                size_type _tmp = 0;
                 (void)val;
-                iterator _tmp = begin() + (position - begin());
-                pointer _p = _tmp.base();
-
-                *_p = val;
-                return (iterator(_p));
+                (void)_p;
+                if (this->size_v <= this->capacity_v)
+                {
+                    size_type _capa = this->size_v == this->capacity_v ? this->capacity_v * 2 : this->capacity_v;
+                    if (_capa == 0)
+                        _capa = 1;
+                    pointer _ptr = this->alloc.allocate(_capa);
+                    (void)_ptr;
+                    size_type i = 0;
+                    size_type j = 0;
+                    if (this->size_v)
+                    {
+                        while (i < this->size_v)
+                        {
+                            if (_p == this->arr + i)
+                            {
+                                _tmp = j;
+                                _ptr[j++] = val;
+                            }
+                            _ptr[j++] = this->arr[i++];
+                        }
+                    }
+                    else
+                    {
+                        _ptr[0] = val;
+                        i = 1;
+                    }
+                    clear();
+                    this->size_v = j;
+                    this->capacity_v = _capa;
+                    this->arr = _ptr;
+                }
+                return (iterator(this->arr + _tmp));
             }
             void         pop_back()
             {
@@ -203,7 +233,7 @@ namespace ft
                 {
                     for (difference_type i = 0; i < this->capacity_v; i++)
                         this->alloc.destroy(this->arr + i);
-                    if (this->capacity_v > 0)
+                    if (this->arr)
                         this->alloc.deallocate(this->arr, this->capacity_v);
                     this->size_v = 0;
                     this->capacity_v = 0;
