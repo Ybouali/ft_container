@@ -24,14 +24,14 @@ int main()
 
     std::vector<int>::iterator it = v.insert(v.begin(), 9);
     ft::vector<int>::iterator itft = vft.insert(vft.begin(), 9);
-    // it = v.insert(v.begin(), 9);
-    // itft = vft.insert(vft.begin(), 9);
-    // it = v.insert(v.begin(), 9);
-    // itft = vft.insert(vft.begin(), 9);
-    // it = v.insert(v.begin(), 9);
-    // itft = vft.insert(vft.begin(), 9);
-    // it = v.insert(v.begin(), 9);
-    // itft = vft.insert(vft.begin(), 9);
+    it = v.insert(v.begin(), 9);
+    itft = vft.insert(vft.begin(), 9);
+    it = v.insert(v.begin(), 9);
+    itft = vft.insert(vft.begin(), 9);
+    it = v.insert(v.begin(), 9);
+    itft = vft.insert(vft.begin(), 9);
+    it = v.insert(v.begin(), 9);
+    itft = vft.insert(vft.begin(), 9);
 
     std::cout << " STD    *it = " << *it << std::endl;
     std::cout << "  FT    *it = " << *itft << std::endl;
