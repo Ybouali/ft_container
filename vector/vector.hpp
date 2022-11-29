@@ -155,6 +155,38 @@ namespace ft
                 }
                 return (iterator(this->arr + _tmp));
             }
+            // iterator insert (iterator position, , size_type n, const value_type& val)
+            // {
+            //     pointer _p = position.base();
+            //     size_type _tmp = 0;
+            //     if (this->size_v <= this->capacity_v)
+            //     {
+            //         size_type _capa = this->size_v == this->capacity_v ? this->capacity_v * 2 : this->capacity_v;
+            //         if (_capa == 0)
+            //             _capa = 1;
+            //         pointer _ptr = this->alloc.allocate(_capa);
+            //         size_type j = 0;
+            //         if (this->size_v)
+            //         {
+            //             for (size_type i = 0; i < this->size_v; i++)
+            //             {
+            //                 if (_p == this->arr + i)
+            //                 {
+            //                     _tmp = j;
+            //                     _ptr[j++] = val;
+            //                 }
+            //                 _ptr[j++] = this->arr[i];
+            //             }
+            //         }
+            //         else
+            //             _ptr[0] = val;
+            //         clear();
+            //         this->size_v = j ? j : 1;
+            //         this->capacity_v = _capa;
+            //         this->arr = _ptr;
+            //     }
+            //     return (iterator(this->arr + _tmp));
+            // }
             void         pop_back()
             {
                 if (this->size_v >= 0)
