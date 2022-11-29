@@ -127,6 +127,8 @@ namespace ft
             {
                 pointer _p = position.base();
                 size_type _tmp = 0;
+                // if (position > end())
+                //     raise(SIGSEGV);
                 if (this->size_v <= this->capacity_v)
                 {
                     size_type _capa = this->size_v == this->capacity_v ? this->capacity_v * 2 : this->capacity_v;
@@ -146,12 +148,19 @@ namespace ft
                             _ptr[j++] = this->arr[i];
                         }
                     }
-                    else
+                    else 
                         _ptr[0] = val;
+                    if (position == end())
+                        _ptr[this->size_v] = val;
                     clear();
                     this->size_v = j ? j : 1;
                     this->capacity_v = _capa;
                     this->arr = _ptr;
+                }
+                else
+                {
+                    *_p = val;
+                    return (iterator(_p));
                 }
                 return (iterator(this->arr + _tmp));
             }
