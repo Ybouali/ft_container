@@ -4,34 +4,22 @@
 
 int main()
 {
-    std::vector<int>    v;
-    ft::vector<int>    vft;
+    // int t[] = {1, 2, 3, 4, 5, 6, 7};
 
-    for (int i = 0; i < 4; i++)
+    std::vector<double>    vs;
+    ft::vector<double>    vf;
+
+    for (int i = 0; i < 26; i++)
     {
-        // v.push_back(i);
-        // vft.push_back(i);
+        vs.push_back(45.0123);
+        vf.push_back(45.0123);
     }
-
-    for (int i = 0; i < (int)vft.size(); i++)
-    {
-        std::cout << " STD    v[" << i << "] = " << v[i] << " C = " << v.capacity() << " S = " << v.size() << std::endl;
-        std::cout << "  FT    v[" << i << "] = " << vft[i] << " C = " << vft.capacity() << " S = " << vft.size() << std::endl << std::endl;
-    }
-        
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-
-    std::vector<int>::iterator it = v.insert(v.begin(), 900);
-    ft::vector<int>::iterator itft = vft.insert(vft.begin(), 900);
-
-    std::cout << " STD    *it = " << *it << std::endl;
-    std::cout << "  FT    *it = " << *itft << std::endl;
     
-    for (int i = 0; i < (int)vft.size(); i++)
+    for (int i = 0; i < (int)vf.size(); i++)
     {
-        std::cout << " STD    v[" << i << "] = " << v[i] << " C = " << v.capacity() << " S = " << v.size() << std::endl;
-        std::cout << "  FT    v[" << i << "] = " << vft[i] << " C = " << vft.capacity() << " S = " << vft.size() << std::endl << std::endl;
+        
+        std::cout << "  STD   vs[" << i << "] = " << vs[i] << " C = " << vs.capacity() << " S = " << vs.size() << std::endl;
+        std::cout << "  FT    vf[" << i << "] = " << vf[i] << " C = " << vf.capacity() << " S = " << vf.size() << std::endl << std::endl;
     }
-    // while (1);
     
 }

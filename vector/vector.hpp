@@ -22,17 +22,31 @@ namespace ft
             typedef ptrdiff_t                                                       difference_type;
             typedef difference_type                                                 size_type;
             
-            // explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
-            
-            // template <class InputIterator> vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
-            
-            explicit vector (const Alloc& alloc = Alloc())
+            explicit vector (const Alloc& _alloc = Alloc()): arr(0),  size_v(0), capacity_v(0), alloc(_alloc) { }
+
+            explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& _alloc = allocator_type())
+                : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
             {
-                (void)alloc;
-                this->arr = NULL;
-                this->size_v = 0;
-                this->capacity_v = 0;
+                if (n > 0)
+                {
+                    arr = alloc.allocate(n);
+                    for (size_type i = 0; i < n; i++)
+                        alloc.construct(arr + i, val);
+                    size_v = n;
+                    capacity_v = n;
+                }
             }
+            
+            // template <class InputIterator>
+            // vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+            // {
+            //     while (first != last)
+            //     {
+            //         push_back(*first);
+            //         first++;
+            //     }
+            // }
+            
             
             vector (const vector& other) { *this = other; }
 
@@ -74,12 +88,9 @@ namespace ft
 
                     tmp = this->alloc.allocate(n);
                     for (size_type i = 0; i < this->size_v; i++)
-                        tmp[i] = this->arr[i];
-                    if (val)
-                    {
-                        for (size_type i = size_v; i < n; i++)
-                            tmp[i] = val;
-                    }
+                        alloc.construct(tmp + i, *(arr + i));
+                    for (size_type i = size_v; i < n; i++)
+                        alloc.construct(tmp + i, val);
                     clear();
                     this->capacity_v = n;
                     this->size_v = n;
@@ -93,9 +104,9 @@ namespace ft
                 {
                     pointer     tmp;
                     size_type   _old_size = this->size_v;
-                    tmp = this->allo.allocate(n);
+                    tmp = this->alloc.allocate(n);
                     for (size_type i = 0; i < this->size_v; i++)
-                        tmp[i] = this->arr[i];
+                        alloc.construct(tmp + i, *(arr + i));
                     clear();
                     this->capacity_v = n;
                     this->size_v = _old_size;
@@ -123,72 +134,36 @@ namespace ft
             // TODO: INSERT :)
             // void insert (iterator position, size_type n, const value_type& val);
             // void insert (iterator position, InputIterator first, InputIterator last);
+
             iterator insert (iterator position, const value_type& val)
             {
-                pointer _p = position.base();
-                size_type _tmp = 0;
-                if (this->size_v <= this->capacity_v)
+                difference_type len = (position - begin());
+                size_type _new_s = this->size_v + 1;
+                if (len > this->capacity_v)
+                    std::cout << "SIGFAULT SIGNAL WELL BE SENDED" << std::endl;
+                if (this->size_v <= this->capacity_v && position <= end())
                 {
                     size_type _capa = this->size_v == this->capacity_v ? this->capacity_v * 2 : this->capacity_v;
                     if (_capa == 0)
                         _capa = 1;
                     pointer _ptr = this->alloc.allocate(_capa);
-                    size_type j = 0;
-                    if (this->size_v)
-                    {
-                        for (size_type i = 0; i < this->size_v; i++)
-                        {
-                            if (_p == this->arr + i)
-                            {
-                                _tmp = j;
-                                _ptr[j++] = val;
-                            }
-                            _ptr[j++] = this->arr[i];
-                        }
-                    }
-                    else 
-                        _ptr[0] = val;
-                    if (_p == end())
-                        _ptr[this->size_v] = val;
+                    
+                    for (size_type i = 0; i < len; i++)
+                        _ptr[i] = *(this->arr + i);
+
+                    _ptr[len] = val;
+                    
+                    for (size_type i = (len + 1); i < _new_s; i++)
+                        _ptr[i] = *(this->arr + i - 1);
+                    
                     clear();
-                    this->size_v = j ? j : 1;
+                    this->size_v = _new_s;
                     this->capacity_v = _capa;
                     this->arr = _ptr;
                 }
-                return (iterator(this->arr + _tmp));
+                return (this->arr + len);
             }
-            // iterator insert (iterator position, , size_type n, const value_type& val)
-            // {
-            //     pointer _p = position.base();
-            //     size_type _tmp = 0;
-            //     if (this->size_v <= this->capacity_v)
-            //     {
-            //         size_type _capa = this->size_v == this->capacity_v ? this->capacity_v * 2 : this->capacity_v;
-            //         if (_capa == 0)
-            //             _capa = 1;
-            //         pointer _ptr = this->alloc.allocate(_capa);
-            //         size_type j = 0;
-            //         if (this->size_v)
-            //         {
-            //             for (size_type i = 0; i < this->size_v; i++)
-            //             {
-            //                 if (_p == this->arr + i)
-            //                 {
-            //                     _tmp = j;
-            //                     _ptr[j++] = val;
-            //                 }
-            //                 _ptr[j++] = this->arr[i];
-            //             }
-            //         }
-            //         else
-            //             _ptr[0] = val;
-            //         clear();
-            //         this->size_v = j ? j : 1;
-            //         this->capacity_v = _capa;
-            //         this->arr = _ptr;
-            //     }
-            //     return (iterator(this->arr + _tmp));
-            // }
+            
             void         pop_back()
             {
                 if (this->size_v >= 0)
@@ -219,18 +194,7 @@ namespace ft
                     this->capacity_v = 1;
                     this->size_v = 1;
                     this->arr = this->alloc.allocate(this->capacity_v);
-                    this->arr[0] = val;
-                }
-                else if (this->capacity_v == 1)
-                {
-                    value_type  tmp;
-                    tmp = at(0);
-                    clear();
-                    this->capacity_v = 2;
-                    this->size_v = 2;
-                    this->arr = this->alloc.allocate(this->capacity_v);
-                    this->arr[0] = tmp;
-                    this->arr[1] = val;
+                    alloc.construct(this->arr, val);
                 }
                 else
                 {
@@ -242,15 +206,15 @@ namespace ft
 
                         ptr = this->alloc.allocate(this->capacity_v * 2);
                         for (size_type o = 0; o < this->size_v; o++)
-                            ptr[o] = at(o);
+                            alloc.construct(ptr + o, val);
+                        alloc.construct(ptr + _old_s, val);
                         clear();
                         this->capacity_v = _old_c * 2;
                         this->arr = ptr;
-                        this->arr[_old_s] = val;
                         this->size_v = ++_old_s;
                     }
                     else
-                        this->arr[this->size_v++] = val;
+                        alloc.construct(this->arr + this->size_v++, val);
                 }
             }
 
@@ -258,7 +222,7 @@ namespace ft
             {
                 if (this->capacity_v)
                 {
-                    for (difference_type i = 0; i < this->capacity_v; i++)
+                    for (difference_type i = 0; i < this->size_v; i++)
                         this->alloc.destroy(this->arr + i);
                     if (this->arr)
                         this->alloc.deallocate(this->arr, this->capacity_v);

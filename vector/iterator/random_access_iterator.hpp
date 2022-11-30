@@ -22,7 +22,7 @@ namespace ft{
             };
 
             random_access_iterator(random_access_iterator const &  it) { 
-                this->ptr = it.ptr; 
+                this->ptr = it.ptr;
             };
             
             ~random_access_iterator() { };
@@ -68,6 +68,7 @@ namespace ft{
             
             random_access_iterator& operator++(void) { ++(this->ptr); return *this; }
             
+            // it shoud be return the class type not a reference on the class
             random_access_iterator& operator++(int) { (this->ptr)++; return *this; }
 
             random_access_iterator operator+(difference_type const & n) const { return (this->ptr + n); }
