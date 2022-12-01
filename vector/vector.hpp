@@ -13,14 +13,14 @@ namespace ft
             typedef ft::random_access_iterator<const T>                             const_iterator;
             typedef T                                                               value_type;
             typedef Alloc                                                           allocator_type;
-            typedef T&                                                              reference;
-            typedef const T&                                                        const_reference;
-            typedef T*                                                              pointer;
-            typedef const T*                                                        const_pointer;
+            typedef typename allocator_type::reference                              reference;
+            typedef typename allocator_type::const_reference                        const_reference;
+            typedef typename allocator_type::pointer                                pointer;
+            typedef typename allocator_type::const_pointer                          const_pointer;
             typedef ft::reverse_iterator<ft::random_access_iterator<T> >            reverse_iterator;
             typedef ft::reverse_iterator<ft::random_access_iterator<const T> >      const_reverse_iterator;
             typedef ptrdiff_t                                                       difference_type;
-            typedef difference_type                                                 size_type;
+            typedef size_t                                                     size_type;
             
             explicit vector (const Alloc& _alloc = Alloc()): arr(0),  size_v(0), capacity_v(0), alloc(_alloc) { }
 
@@ -37,15 +37,21 @@ namespace ft
                 }
             }
             
-            // template <class InputIterator>
-            // vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
-            // {
-            //     while (first != last)
-            //     {
-            //         push_back(*first);
-            //         first++;
-            //     }
-            // }
+            template <class InputIterator>
+            vector (InputIterator first, InputIterator last, const allocator_type& _alloc = allocator_type())
+            : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
+            {
+                size_v = last - first;
+                capacity_v = last - first;
+                arr = alloc.allocate(capacity_v);
+                size_type i = 0;
+                while (first != last)
+                {
+                    alloc.construct(arr + i, *first);
+                    i++;
+                    first++;
+                }
+            }
             
             
             vector (const vector& other) { *this = other; }
@@ -65,10 +71,10 @@ namespace ft
                 clear();
             }
 
-            // Capacity DONE
+            // * Capacity DONE
             size_type    size(void) const { return this->size_v;  }
 
-            size_type    max_size(void) const { return this->alloc.max_size(); }
+            size_type    max_size(void) const { return alloc.max_size(); }
  
             size_type    capacity(void) const { return this->capacity_v; }
 
@@ -128,10 +134,10 @@ namespace ft
                 x.size_v = _size_tmp;
                 x.capacity_v = _capacity_tmp;
             }
-            // TODO: ERASE :)
-            // iterator erase (iterator position);
-            // iterator erase (iterator first, iterator last);
-            // TODO: INSERT :)
+            // ! ERASE :)
+            // ? iterator erase (iterator position);
+            // ? iterator erase (iterator first, iterator last);
+            // ! INSERT :)
             // void insert (iterator position, size_type n, const value_type& val);
             // void insert (iterator position, InputIterator first, InputIterator last);
 
@@ -222,7 +228,7 @@ namespace ft
             {
                 if (this->capacity_v)
                 {
-                    for (difference_type i = 0; i < this->size_v; i++)
+                    for (size_type i = 0; i < this->size_v; i++)
                         this->alloc.destroy(this->arr + i);
                     if (this->arr)
                         this->alloc.deallocate(this->arr, this->capacity_v);
