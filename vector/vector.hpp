@@ -47,7 +47,7 @@ namespace ft
                 size_type i = 0;
                 while (first != last)
                 {
-                    alloc.construct(arr + i, *first);
+                    alloc.construct(arr + i, *(first));
                     i++;
                     first++;
                 }
