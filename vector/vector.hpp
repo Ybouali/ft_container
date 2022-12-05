@@ -1,5 +1,6 @@
 #include <iostream>
-#include <signal.h>
+#include "../utils/utils.hpp"
+#include <cstddef>
 #include "./iterator/random_access_iterator.hpp"
 #include "./iterator/reverse_iterator.hpp"
 
@@ -20,12 +21,11 @@ namespace ft
             typedef ft::reverse_iterator<ft::random_access_iterator<T> >            reverse_iterator;
             typedef ft::reverse_iterator<ft::random_access_iterator<const T> >      const_reverse_iterator;
             typedef ptrdiff_t                                                       difference_type;
-            typedef size_t                                                     size_type;
+            typedef size_t                                                          size_type;
             
             explicit vector (const Alloc& _alloc = Alloc()): arr(0),  size_v(0), capacity_v(0), alloc(_alloc) { }
 
-            explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& _alloc = allocator_type())
-                : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
+            explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& _alloc = allocator_type()) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
             {
                 if (n > 0)
                 {
@@ -38,19 +38,14 @@ namespace ft
             }
             
             template <class InputIterator>
-            vector (InputIterator first, InputIterator last, const allocator_type& _alloc = allocator_type())
-            : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
+            vector (InputIterator first, InputIterator last, const allocator_type& _alloc = allocator_type()) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
             {
                 size_v = last - first;
                 capacity_v = last - first;
                 arr = alloc.allocate(capacity_v);
                 size_type i = 0;
                 while (first != last)
-                {
-                    alloc.construct(arr + i, *(first));
-                    i++;
-                    first++;
-                }
+                    alloc.construct(arr + i++, *(first)), first++;
             }
             
             
@@ -74,7 +69,7 @@ namespace ft
             // * Capacity DONE
             size_type    size(void) const { return this->size_v;  }
 
-            size_type    max_size(void) const { return alloc.max_size(); }
+            size_type    max_size(void) const { return alloc.max_size() > PTRDIFF_MAX ? PTRDIFF_MAX : alloc.max_size(); }
  
             size_type    capacity(void) const { return this->capacity_v; }
 
@@ -143,7 +138,7 @@ namespace ft
 
             iterator insert (iterator position, const value_type& val)
             {
-                difference_type len = (position - begin());
+                size_type len = (position - begin());
                 size_type _new_s = this->size_v + 1;
                 if (len > this->capacity_v)
                     std::cout << "SIGFAULT SIGNAL WELL BE SENDED" << std::endl;
@@ -153,7 +148,7 @@ namespace ft
                     if (_capa == 0)
                         _capa = 1;
                     pointer _ptr = this->alloc.allocate(_capa);
-                    
+                    // ! ERROR
                     for (size_type i = 0; i < len; i++)
                         _ptr[i] = *(this->arr + i);
 
@@ -212,7 +207,7 @@ namespace ft
 
                         ptr = this->alloc.allocate(this->capacity_v * 2);
                         for (size_type o = 0; o < this->size_v; o++)
-                            alloc.construct(ptr + o, val);
+                            alloc.construct(ptr + o, arr[o]);
                         alloc.construct(ptr + _old_s, val);
                         clear();
                         this->capacity_v = _old_c * 2;
@@ -278,8 +273,8 @@ namespace ft
 
             iterator      end(void) 
             {
-                iterator it;
-                it = this->arr + this->size_v;
+                iterator it(this->arr + this->size_v);
+                // it = ;
                 return it;
             }
 
