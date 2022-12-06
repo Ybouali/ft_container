@@ -38,14 +38,26 @@ namespace ft
             }
             
             template <class InputIterator>
-            vector (InputIterator first, InputIterator last, const allocator_type& _alloc = allocator_type()) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
+            vector (InputIterator first, InputIterator last, const allocator_type& _alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
             {
-                size_v = last - first;
-                capacity_v = last - first;
-                arr = alloc.allocate(capacity_v);
-                size_type i = 0;
+                
                 while (first != last)
-                    alloc.construct(arr + i++, *(first)), first++;
+                    push_back(*first), first++;
+
+                if (size_v == 0)
+                    return ;
+                size_type _size = this->size_v;
+                
+                pointer _ptr = alloc.allocate(_size);
+                
+                for (size_type i = 0; i < _size; i++)
+                    alloc.construct(_ptr + i, *(arr + i));
+                
+                clear();
+                
+                size_v = _size;
+                capacity_v = _size;
+                arr = _ptr;
             }
             
             
