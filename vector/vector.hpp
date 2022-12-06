@@ -43,18 +43,13 @@ namespace ft
                 
                 while (first != last)
                     push_back(*first), first++;
-
                 if (size_v == 0)
                     return ;
                 size_type _size = this->size_v;
-                
                 pointer _ptr = alloc.allocate(_size);
-                
                 for (size_type i = 0; i < _size; i++)
                     alloc.construct(_ptr + i, *(arr + i));
-                
                 clear();
-                
                 size_v = _size;
                 capacity_v = _size;
                 arr = _ptr;
@@ -144,30 +139,60 @@ namespace ft
             // ! ERASE :)
             // ? iterator erase (iterator position);
             // ? iterator erase (iterator first, iterator last);
-            // ! INSERT :)
-            // void insert (iterator position, size_type n, const value_type& val);
-            // void insert (iterator position, InputIterator first, InputIterator last);
+            
+            template <class InputIterator>
+            void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
+            {
+                (void)position;
+                (void)first;
+                (void)last;
+            }
+
+
+            void insert (iterator position, size_type n, const value_type& val)
+            {
+                size_type pos = position - begin();
+                size_type _new_s = size_v + n;
+                if (this->size_v <= this->capacity_v && position <= end())
+                {
+                    size_type _capa = _new_s > this->capacity_v ? (capacity_v + n) : capacity_v;
+                    if (!_capa)
+                        _capa = 1;
+                    _capa = _capa == 7 ? 8 : _capa;
+                    pointer _ptr = alloc.allocate(_capa);
+                    for (size_type i = 0; i < pos; i++)
+                        alloc.construct(_ptr + i, *(arr + i));
+
+                    for (size_type i = pos; i < (pos + n); i++)
+                        alloc.construct(_ptr + i, val);
+
+                    for (size_type i = (pos + n); i < _new_s; i++)
+                        alloc.construct(_ptr + i, *(arr + i - n));
+                    clear();
+                    size_v = _new_s;
+                    capacity_v = _capa;
+                    arr = _ptr;
+                }
+            }
 
             iterator insert (iterator position, const value_type& val)
             {
                 size_type len = (position - begin());
                 size_type _new_s = this->size_v + 1;
-                if (len > this->capacity_v)
-                    std::cout << "SIGFAULT SIGNAL WELL BE SENDED" << std::endl;
                 if (this->size_v <= this->capacity_v && position <= end())
                 {
                     size_type _capa = this->size_v == this->capacity_v ? this->capacity_v * 2 : this->capacity_v;
                     if (_capa == 0)
                         _capa = 1;
                     pointer _ptr = this->alloc.allocate(_capa);
-                    // ! ERROR
-                    for (size_type i = 0; i < len; i++)
-                        _ptr[i] = *(this->arr + i);
 
-                    _ptr[len] = val;
+                    for (size_type i = 0; i < len; i++)
+                        alloc.construct(_ptr + i, *(this->arr + i));
+
+                    alloc.construct(_ptr + len, val);
                     
                     for (size_type i = (len + 1); i < _new_s; i++)
-                        _ptr[i] = *(this->arr + i - 1);
+                        alloc.construct(_ptr + i, *(this->arr + i - 1));
                     
                     clear();
                     this->size_v = _new_s;
@@ -176,7 +201,7 @@ namespace ft
                 }
                 return (this->arr + len);
             }
-            
+
             void         pop_back()
             {
                 if (this->size_v >= 0)
