@@ -23,7 +23,7 @@ namespace ft
             typedef ptrdiff_t                                                       difference_type;
             typedef size_t                                                          size_type;
             
-            explicit vector (const Alloc& _alloc = Alloc()): arr(0),  size_v(0), capacity_v(0), alloc(_alloc) { }
+            explicit vector (const Alloc& _alloc = Alloc()): arr(NULL),  size_v(0), capacity_v(0), alloc(_alloc) { }
 
             explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& _alloc = allocator_type()) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
             {
@@ -55,8 +55,7 @@ namespace ft
                 arr = _ptr;
             }
             
-            
-            vector (const vector& other) { *this = other; }
+            vector (const vector& other): arr(NULL),  size_v(0), capacity_v(0), alloc(other.alloc) { *this = other; }
 
             vector& operator= (const vector& other)
             {
@@ -64,8 +63,8 @@ namespace ft
                 this->arr = this->alloc.allocate(other.capacity_v);
                 this->capacity_v = other.capacity_v;
                 this->size_v = other.size_v;
-                for (size_t i = 0; i < other.size_v; i++)
-                    this->arr[i] = other.arr[i];
+                for (size_type i = 0; i < other.size_v; i++)
+                    alloc.construct(arr + i, *(other.arr + i));
                 return *this;
             }
             
@@ -86,7 +85,7 @@ namespace ft
             {
                 if (this->size_v > n)   
                 {
-                    for (int o = n; o < this->size_v; o++)
+                    for (size_type o = n; o < this->size_v; o++)
                         this->alloc.destroy(this->arr + o);
                     this->size_v = n;
                 }
@@ -136,16 +135,52 @@ namespace ft
                 x.size_v = _size_tmp;
                 x.capacity_v = _capacity_tmp;
             }
-            // ! ERASE :)
-            // ? iterator erase (iterator position);
-            // ? iterator erase (iterator first, iterator last);
+            
+            iterator erase (iterator position)
+            {
+                (void)position;
+            }
+
+            iterator erase (iterator first, iterator last)
+            {
+                (void)first;
+                (void)last;
+            }
             
             template <class InputIterator>
             void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
             {
-                (void)position;
-                (void)first;
-                (void)last;
+                size_type pos = position - begin();
+                if (this->size_v <= this->capacity_v && position <= end())
+                {
+                    vector<T> tmp;
+                    
+                    while (first != last)
+                        tmp.push_back(*first), first++;
+                    
+                    size_type _new_s = size_v + tmp.size();
+                    
+                    size_type _capa = _new_s > capacity_v ? (capacity_v + tmp.size()) : capacity_v;
+                    
+                    if (!_capa)
+                        _capa = 1;
+
+                    pointer _ptr = alloc.allocate(_capa);
+
+                    for (size_type i = 0; i < pos; i++)
+                        alloc.construct(_ptr + i, *(arr + i));
+
+                    for (size_type i = pos; i < (pos + tmp.size()); i++)
+                        alloc.construct(_ptr + i, tmp.at(i - pos));
+
+                    for (size_type i = (pos + tmp.size()); i < _new_s; i++)
+                        alloc.construct(_ptr + i, *(arr + i - tmp.size()));
+                    tmp.clear();
+                    clear();
+                    capacity_v = _capa;
+                    size_v = _new_s;
+                    arr = _ptr;
+                }
             }
 
 
@@ -205,16 +240,30 @@ namespace ft
             void         pop_back()
             {
                 if (this->size_v >= 0)
-                    this->alloc.destroy(this->arr + this->size_v--);
+                    alloc.destroy(arr + size_v--);
             }
 
-            // void         assign(InputIterator first, InputIterator last);
+            template <class InputIterator>
+            void         assign(InputIterator first, InputIterator last)
+            {
+                vector tmp;
+
+                while (first != last)
+                    tmp.push_back(*first);
+                clear();
+                arr = alloc.allocate(tmp.size_v);
+                for (size_type i = 0; i < tmp.size(); i++)
+                    alloc.construct(arr + i, tmp.at(i));
+                capacity_v = tmp.capacity();
+                size_v = tmp.size();
+                tmp.clear();
+            }
             void         assign(size_type n, const value_type& val)
             {
                 if (this->size_v >= n)
                 {
                     for (size_type i = 0; i < n; i++)
-                        this->arr[i] = val;
+                        alloc.construct(arr + i, val);
                     this->size_v = n;
                 }
                 else
@@ -258,7 +307,7 @@ namespace ft
 
             void         clear() 
             {
-                if (this->capacity_v)
+                if (capacity_v > 0)
                 {
                     for (size_type i = 0; i < this->size_v; i++)
                         this->alloc.destroy(this->arr + i);
@@ -323,9 +372,17 @@ namespace ft
 
             // Element access DONE
 
-            reference           at(size_type n) { return this->arr[n]; }
+            reference           at(size_type n) {
+                if (n < 0 || n >= size_v)
+                    throw (std::out_of_range("OUT OF RANGE"));
+                return *(arr + n);
+            }
 
-            const_reference     at(size_type n) const { return this->arr[n]; }
+            const_reference     at(size_type n) const {
+                if (n < 0 || n >= size_v)
+                    throw (std::out_of_range("OUT OF RANGE"));
+                return *(arr + n);
+            }
 
             reference           operator[](size_type n) { return this->arr[n]; }
 
@@ -339,6 +396,8 @@ namespace ft
             
             const_reference     back() const { return *(this->arr + this->size_v - 1); }
 
+            // GET ALLOCATOR
+            allocator_type get_allocator() const { return alloc; }
         private:
             pointer                     arr;
             size_type                   size_v;
