@@ -70,6 +70,10 @@ namespace ft
             
             ~vector (void) {
                 clear();
+                if (this->arr)
+                    this->alloc.deallocate(arr, capacity_v);
+                this->capacity_v = 0;
+                this->arr = NULL;
             }
 
             // * Capacity DONE
@@ -240,38 +244,46 @@ namespace ft
             void         pop_back()
             {
                 if (this->size_v >= 0)
-                    alloc.destroy(arr + size_v--);
+                    alloc.destroy(arr + --size_v);
             }
 
             template <class InputIterator>
-            void         assign(InputIterator first, InputIterator last)
+            void         assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
             {
                 vector tmp;
 
-                while (first != last)
-                    tmp.push_back(*first);
                 clear();
-                arr = alloc.allocate(tmp.size_v);
-                for (size_type i = 0; i < tmp.size(); i++)
-                    alloc.construct(arr + i, tmp.at(i));
-                capacity_v = tmp.capacity();
-                size_v = tmp.size();
-                tmp.clear();
+                while (first != last)
+                    tmp.push_back(*first), first++;
+                if (tmp.size())
+                {
+                    if (tmp.size() > capacity_v)
+                    {
+                        if (arr)
+                            alloc.deallocate(arr, capacity_v);
+                        arr = alloc.allocate(tmp.size());
+                    }
+                    for (size_type i = 0; i < tmp.size(); i++)
+                        alloc.construct(arr + i, tmp[i]);
+                    capacity_v = tmp.size() > capacity_v ? tmp.size() : capacity_v;
+                    size_v = tmp.size();
+                    // tmp.~vector();
+                }
             }
+
             void         assign(size_type n, const value_type& val)
             {
-                if (this->size_v >= n)
+                clear();
+                if (n > capacity_v)
                 {
-                    for (size_type i = 0; i < n; i++)
+                    if (capacity_v)
+                        alloc.deallocate(arr, capacity_v);
+                    arr = alloc.allocate(n);
+                }
+                for (size_type i = 0; i < n; i++)
                         alloc.construct(arr + i, val);
-                    this->size_v = n;
-                }
-                else
-                {
-                    clear();
-                    for (size_type i = 0; i < n; i++)
-                        push_back(val);
-                }
+                size_v = n ? n : size_v;
+                capacity_v = n > capacity_v ? n : capacity_v;
             }
 
             void         push_back(const value_type& val)
@@ -296,6 +308,8 @@ namespace ft
                             alloc.construct(ptr + o, arr[o]);
                         alloc.construct(ptr + _old_s, val);
                         clear();
+                        if (arr)
+                            alloc.deallocate(arr, capacity_v);
                         this->capacity_v = _old_c * 2;
                         this->arr = ptr;
                         this->size_v = ++_old_s;
@@ -307,15 +321,11 @@ namespace ft
 
             void         clear() 
             {
-                if (capacity_v > 0)
+                if (size_v)
                 {
                     for (size_type i = 0; i < this->size_v; i++)
-                        this->alloc.destroy(this->arr + i);
-                    if (this->arr)
-                        this->alloc.deallocate(this->arr, this->capacity_v);
+                        this->alloc.destroy(arr + i);
                     this->size_v = 0;
-                    this->capacity_v = 0;
-                    this->arr = NULL;
                 }
             }
 
