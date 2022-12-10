@@ -27,7 +27,7 @@ namespace ft
 
             explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& _alloc = allocator_type()) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
             {
-                if (n > 0)
+                if (n)
                 {
                     arr = alloc.allocate(n);
                     for (size_type i = 0; i < n; i++)
@@ -50,16 +50,25 @@ namespace ft
                 for (size_type i = 0; i < _size; i++)
                     alloc.construct(_ptr + i, *(arr + i));
                 clear();
+                if (arr)
+                    alloc.deallocate(arr, capacity_v);
                 size_v = _size;
                 capacity_v = _size;
                 arr = _ptr;
             }
             
-            vector (const vector& other): arr(NULL),  size_v(0), capacity_v(0), alloc(other.alloc) { *this = other; }
+            vector (const vector& other): arr(NULL),  size_v(other.size()), capacity_v(other.capacity()), alloc(other.alloc)
+            { 
+                arr = alloc.allocate(capacity_v);
+                for (size_type i = 0; i < size_v; i++)
+                    alloc.construct(arr + i, other[i]);
+            }
 
             vector& operator= (const vector& other)
             {
                 clear();
+                if (arr)
+                    alloc.deallocate(arr, capacity_v);
                 this->arr = this->alloc.allocate(other.capacity_v);
                 this->capacity_v = other.capacity_v;
                 this->size_v = other.size_v;
@@ -70,7 +79,7 @@ namespace ft
             
             ~vector (void) {
                 clear();
-                if (this->arr)
+                if (arr)
                     this->alloc.deallocate(arr, capacity_v);
                 this->capacity_v = 0;
                 this->arr = NULL;
@@ -103,6 +112,8 @@ namespace ft
                     for (size_type i = size_v; i < n; i++)
                         alloc.construct(tmp + i, val);
                     clear();
+                    if (arr)
+                        alloc.deallocate(arr, capacity_v);
                     this->capacity_v = n;
                     this->size_v = n;
                     this->arr = tmp;
@@ -119,6 +130,10 @@ namespace ft
                     for (size_type i = 0; i < this->size_v; i++)
                         alloc.construct(tmp + i, *(arr + i));
                     clear();
+
+                    if (arr)
+                        alloc.deallocate(arr, capacity_v);
+                    
                     this->capacity_v = n;
                     this->size_v = _old_size;
                     this->arr = tmp;
@@ -140,15 +155,27 @@ namespace ft
                 x.capacity_v = _capacity_tmp;
             }
             
-            iterator erase (iterator position)
-            {
-                (void)position;
-            }
+            iterator erase (iterator position) { return (nullptr);}
 
             iterator erase (iterator first, iterator last)
             {
-                (void)first;
-                (void)last;
+                size_type _pos_f = first - begin();
+                size_type _pos_e = last - begin();
+                size_type dist = last - first;
+                size_type _s_old = size_v;
+                size_type _c_old = capacity_v;
+                pointer _p = alloc.allocate(capacity_v);
+                for (size_type i = 0; i < _pos_f; i++)
+                    alloc.construct(_p + i, *(arr + i));
+                for (size_type i = _pos_e; i < size_v; i++)
+                    alloc.construct(_p + (i - dist), *(arr + i));
+                clear();
+                if (arr)
+                    alloc.deallocate(arr, capacity_v);
+                size_v = _s_old - dist;
+                capacity_v = _c_old;
+                arr = _p;
+                return arr + _pos_f;
             }
             
             template <class InputIterator>
@@ -179,8 +206,12 @@ namespace ft
 
                     for (size_type i = (pos + tmp.size()); i < _new_s; i++)
                         alloc.construct(_ptr + i, *(arr + i - tmp.size()));
-                    tmp.clear();
+                    
                     clear();
+
+                    if (arr)
+                        alloc.deallocate(arr, capacity_v);
+                    
                     capacity_v = _capa;
                     size_v = _new_s;
                     arr = _ptr;
@@ -208,6 +239,8 @@ namespace ft
                     for (size_type i = (pos + n); i < _new_s; i++)
                         alloc.construct(_ptr + i, *(arr + i - n));
                     clear();
+                    if (arr)
+                        alloc.deallocate(arr, capacity_v);
                     size_v = _new_s;
                     capacity_v = _capa;
                     arr = _ptr;
@@ -234,6 +267,8 @@ namespace ft
                         alloc.construct(_ptr + i, *(this->arr + i - 1));
                     
                     clear();
+                    if (arr)
+                        alloc.deallocate(arr, capacity_v);
                     this->size_v = _new_s;
                     this->capacity_v = _capa;
                     this->arr = _ptr;
@@ -250,14 +285,14 @@ namespace ft
             template <class InputIterator>
             void         assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
             {
-                vector tmp;
+                vector<T> tmp;
 
                 clear();
                 while (first != last)
                     tmp.push_back(*first), first++;
                 if (tmp.size())
                 {
-                    if (tmp.size() > capacity_v)
+                    if (tmp.size() >= capacity_v)
                     {
                         if (arr)
                             alloc.deallocate(arr, capacity_v);
@@ -267,7 +302,6 @@ namespace ft
                         alloc.construct(arr + i, tmp[i]);
                     capacity_v = tmp.size() > capacity_v ? tmp.size() : capacity_v;
                     size_v = tmp.size();
-                    // tmp.~vector();
                 }
             }
 
