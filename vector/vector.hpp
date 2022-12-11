@@ -155,7 +155,16 @@ namespace ft
                 x.capacity_v = _capacity_tmp;
             }
             
-            iterator erase (iterator position) { return (nullptr);}
+            iterator erase (iterator position)
+            {
+                size_type   pos = position - begin();
+
+                for (size_type i = pos; i < size_v - 1; i++)
+                    alloc.construct(arr + i, *(arr + i + 1));
+                size_v--;
+                alloc.destroy(arr + size_v);
+                return arr + pos;
+            }
 
             iterator erase (iterator first, iterator last)
             {
