@@ -451,10 +451,61 @@ namespace ft
 
             // GET ALLOCATOR
             allocator_type get_allocator() const { return alloc; }
+            
         private:
             pointer                     arr;
             size_type                   size_v;
             size_type                   capacity_v;
             allocator_type              alloc;
     };
+
+    template <class T, class Alloc>
+    bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        for (typename ft::vector<T>::size_type i = 0; i < lhs.size(); i++)
+            if (lhs[i] != rhs[i]) return false;
+        return true;
+    }
+    
+    template <class T, class Alloc>
+    bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return !(lhs == rhs); }
+            
+    template <class T, class Alloc>
+    bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        if (!lhs.size()) return true;
+        
+        typename ft::vector<T>::size_type size_c = lhs.size();
+
+        for (typename ft::vector<T>::size_type i = 0; i < size_c; i++)
+            if (lhs[i] > rhs[i]) return true;
+        return false;
+    }
+
+    template <class T, class Alloc>
+    bool operator< (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        if (!lhs.size()) return true;
+
+        typename ft::vector<T>::size_type size_c = lhs.size() < rhs.size() ? lhs.size() : rhs.size();
+        
+        for (typename ft::vector<T>::size_type i = 0; i < size_c; i++)
+            if (lhs[i] < rhs[i]) return true;
+        return false;
+    }
+    template <class T, class Alloc>
+    bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return lhs == rhs || lhs < rhs; }
+    
+    template <class T, class Alloc>
+    bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return lhs == rhs || lhs > rhs; }
+
+    template <class T, class Alloc>
+    void swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
+    {
+        ft::vector<T, Alloc> temp;
+
+        temp = x;
+        x = y;
+        y = temp;
+    }
 }
