@@ -35,6 +35,10 @@ namespace ft{
             {
                 return (this->ptr);
             }
+
+            reference operator*() const { return *(this->ptr); }
+
+            pointer operator->() const { return base(); }
             
             friend bool operator== (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
             {
@@ -64,12 +68,24 @@ namespace ft{
                 return (other.ptr <= other1.ptr);
             }
             
-            reference operator*() const { return *(this->ptr); }
+            random_access_iterator& operator++(void) {
+                ++(this->ptr);
+                return *this;
+            }
             
-            random_access_iterator& operator++(void) { ++(this->ptr); return *this; }
+            random_access_iterator operator++(int) {
+                random_access_iterator tmp = *this;    
+                ++(*this);
+                return tmp;
+            }
+
+            random_access_iterator& operator--(void) { --(this->ptr); return *this; }
             
-            // it shoud be return the class type not a reference on the class
-            random_access_iterator& operator++(int) { (this->ptr)++; return *this; }
+            random_access_iterator operator--(int) {
+                random_access_iterator tmp = *this;
+                --(*this);
+                return tmp;
+            }
 
             random_access_iterator operator+(difference_type const & n) const { return (this->ptr + n); }
 
@@ -77,6 +93,7 @@ namespace ft{
                 this->ptr = this->ptr + n;
                 return *(this); 
             }
+
             random_access_iterator& operator-=(difference_type n) { 
                 this->ptr = this->ptr - n;
                 return *(this); 
@@ -87,10 +104,6 @@ namespace ft{
             difference_type operator-(const random_access_iterator& it) const { return (this->ptr - it.ptr); }
 
             reference operator[](const difference_type n) const { return (this->ptr[n]); }
-
-            random_access_iterator& operator--(void) { --(this->ptr); return *this; }
-            
-            random_access_iterator& operator--(int) { (this->ptr)--; return *this; }
 
             friend random_access_iterator operator+(ptrdiff_t n, const random_access_iterator<T>& it) { return it + n; }
         private :

@@ -462,6 +462,8 @@ namespace ft
     template <class T, class Alloc>
     bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
     {
+        if (lhs.size() != rhs.size()) return false;
+
         for (typename ft::vector<T>::size_type i = 0; i < lhs.size(); i++)
             if (lhs[i] != rhs[i]) return false;
         return true;
@@ -471,28 +473,17 @@ namespace ft
     bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return !(lhs == rhs); }
             
     template <class T, class Alloc>
-    bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    bool operator< (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
     {
-        if (!lhs.size()) return true;
-        
-        typename ft::vector<T>::size_type size_c = lhs.size();
-
-        for (typename ft::vector<T>::size_type i = 0; i < size_c; i++)
-            if (lhs[i] > rhs[i]) return true;
-        return false;
+        return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
     }
 
     template <class T, class Alloc>
-    bool operator< (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
     {
-        if (!lhs.size()) return true;
-
-        typename ft::vector<T>::size_type size_c = lhs.size() < rhs.size() ? lhs.size() : rhs.size();
-        
-        for (typename ft::vector<T>::size_type i = 0; i < size_c; i++)
-            if (lhs[i] < rhs[i]) return true;
-        return false;
+        return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
     }
+    
     template <class T, class Alloc>
     bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return lhs == rhs || lhs < rhs; }
     
