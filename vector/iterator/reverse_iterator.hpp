@@ -4,32 +4,31 @@
 
 namespace ft {
     template <class Iterator>
-    class reverse_iterator : public iterator<
-            typename iterator_traits<Iterator>::difference_type,
-            typename iterator_traits<Iterator>::reference,
-            typename iterator_traits<Iterator>::pointer,
+    class reverse_iterator : public
+            iterator<typename iterator_traits<Iterator>::iterator_category,
             typename iterator_traits<Iterator>::value_type,
-            typename iterator_traits<Iterator>::iterator_category
-            >
+            typename iterator_traits<Iterator>::difference_type,
+            typename iterator_traits<Iterator>::pointer,
+            typename iterator_traits<Iterator>::reference>
     {
         protected :
             Iterator    curr;
         public :
-            typedef Iterator iterator_type;
-            typedef typename iterator_traits<Iterator>::difference_type difference_type;
-            typedef typename iterator_traits<Iterator>::reference reference;
-            typedef typename iterator_traits<Iterator>::pointer pointer;
+            typedef Iterator                                        iterator_type;
+            typedef typename iterator_type::value_type              value_type;
+            typedef typename iterator_type::difference_type         difference_type;
+            typedef typename iterator_type::pointer                 pointer;
+            typedef typename iterator_type::reference               reference;
+            typedef typename iterator_type::iterator_category       iterator_category;
 
-            reverse_iterator() { }
+            reverse_iterator(): curr(NULL) { }
 
-            explicit reverse_iterator(Iterator x) {
-                this->curr = x;
-            }
+            explicit reverse_iterator(Iterator x) { curr = x; }
 
             template <class U>
             reverse_iterator(const reverse_iterator<U> & u) { this->curr =  u.base(); }
 
-            Iterator base() const { return this->curr; }
+            Iterator base() const { return curr; }
 
             reference operator*() const {
                 Iterator tmp = this->curr;
@@ -42,7 +41,6 @@ namespace ft {
                 --this->curr;    
                 return *this;
             }
-            
 
             reverse_iterator operator++(int) {
                 reverse_iterator tmp = *this;
@@ -63,7 +61,8 @@ namespace ft {
 
             reverse_iterator operator+(difference_type n) const
             {
-                return (reverse_iterator(this->curr - n));
+                // std::cout << " " << n << std::endl;
+                return (reverse_iterator(curr - n));
             }
 
             reverse_iterator operator+=(difference_type n)
@@ -74,7 +73,7 @@ namespace ft {
 
             reverse_iterator operator-(difference_type n) const
             {
-                return (reverse_iterator(this->curr + n));
+                return (reverse_iterator(curr + n));
             }
 
             reverse_iterator operator-=(difference_type n)
@@ -106,10 +105,17 @@ namespace ft {
             template <class U, class Y>
             friend bool operator>=(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2);
             
-            friend difference_type operator-(const reverse_iterator<Iterator>& o1, const reverse_iterator<Iterator>& o2) { return (o1.curr - o2.curr); }
-            
-            friend reverse_iterator<Iterator> operator+(reverse_iterator::difference_type n, const reverse_iterator<Iterator>& o2) { return (o2.curr - n); }
+            operator reverse_iterator<const iterator_type>() const {
+                return reverse_iterator<const iterator_type>(this->curr);
+            }
+
     };
+
+    template <class Iterator>        
+    reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& o2) { return (reverse_iterator<Iterator>(o2.base() - n)); }
+
+    template <class Iterator>
+    typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& o1, const reverse_iterator<Iterator>& o2) { return (o2.base() - o1.base()); }
 
     template <class U, class Y>
     bool operator==(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2)  {return (o1.base() == o2.base()); }
