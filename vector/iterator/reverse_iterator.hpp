@@ -117,22 +117,23 @@ namespace ft {
     template <class Iterator>
     typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& o1, const reverse_iterator<Iterator>& o2) { return (o2.base() - o1.base()); }
 
+    
     template <class U, class Y>
     bool operator==(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2)  {return (o1.base() == o2.base()); }
 
     template <class U, class Y>
-    bool operator>(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2)  {return (o1.base() > o2.base()); }
+    bool operator!=(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2) { return !(o1.base() == o2.base()); }
+
 
     template <class U, class Y>
-    bool operator!=(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2) { return (o1.base() != o2.base()); }
+    bool operator<(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2) { return (o1.base() > o2.base()); }
 
     template <class U, class Y>
-    bool operator<(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2) { return (o1.base() < o2.base()); }
+    bool operator<=(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2) { return (o1.base() >= o2.base()); }
 
     template <class U, class Y>
-    bool operator<=(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2) { return (o1.base() <= o2.base()); }
+    bool operator>(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2)  { return (o1.base() < o2.base()); }
 
     template <class U, class Y>
     bool operator>=(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2) { return (o1.base() <= o2.base()); }
-
 }

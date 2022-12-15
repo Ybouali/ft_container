@@ -386,13 +386,13 @@ namespace ft
 
             reverse_iterator    rend()
             {
-                reverse_iterator    rit(this->arr);
+                reverse_iterator    rit(arr);
                 return (rit);
             }
 
             const_reverse_iterator    rend() const
             {
-                const_reverse_iterator    rit(this->arr);
+                const_reverse_iterator    rit(arr);
                 return (rit);
             }
 

@@ -4,11 +4,20 @@
 
 int main()
 {
-    ft::vector<long> v1(19, 100);
-    std::vector<long> v2(19, 100);
+    std::vector<int> v(3, 4);
+    std::vector<int>::iterator it;
+    std::vector<int>::iterator it1;
+    it = v.begin();
+    it1 = v.begin() + 1;
 
-    std::cout << " *v1.rbegin() - 10 :: " << *(v1.rbegin() + 10) << std::endl;
-    std::cout << " *v2.rbegin() - 10 :: " << *(v2.rbegin() + 10) << std::endl;
+    ft::vector<int> vf(3, 4);
+    ft::vector<int>::iterator my_it;
+    ft::vector<int>::iterator my_it1;
+    my_it = vf.begin();
+    my_it1 = vf.begin() + 1;
+    
+    if ((it < it1) == (my_it < my_it1))
+        std::cout << "FT /// YES it > it1 " << std::endl;
     
 
 }
