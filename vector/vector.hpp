@@ -98,24 +98,14 @@ namespace ft
                 {
                     for (size_type o = n; o < this->size_v; o++)
                         this->alloc.destroy(this->arr + o);
-                    this->size_v = n;
                 }
                 if (this->size_v < n)
                 {
-                    pointer     tmp;
-
-                    tmp = this->alloc.allocate(n);
-                    for (size_type i = 0; i < this->size_v; i++)
-                        alloc.construct(tmp + i, *(arr + i));
+                    reserve(n);
                     for (size_type i = size_v; i < n; i++)
-                        alloc.construct(tmp + i, val);
-                    clear();
-                    if (arr)
-                        alloc.deallocate(arr, capacity_v);
-                    this->capacity_v = n;
-                    this->size_v = n;
-                    this->arr = tmp;
+                        alloc.construct(arr + i, val);
                 }
+                size_v = n;
             }
 
             void         reserve(size_type n)
@@ -128,7 +118,6 @@ namespace ft
                     for (size_type i = 0; i < this->size_v; i++)
                         alloc.construct(tmp + i, *(arr + i));
                     clear();
-
                     if (arr)
                         alloc.deallocate(arr, capacity_v);
                     
@@ -260,27 +249,39 @@ namespace ft
                 size_type _new_s = this->size_v + 1;
                 if (this->size_v <= this->capacity_v && position <= end())
                 {
-                    size_type _capa = this->size_v == this->capacity_v ? this->capacity_v * 2 : this->capacity_v;
-                    if (_capa == 0)
-                        _capa = 1;
-                    pointer _ptr = this->alloc.allocate(_capa);
+                    if (size_v == capacity_v)
+                    {
+                        // ! FOR THE TESTER OF TERMINATOR
+                        size_type _capa = this->size_v == this->capacity_v ? this->capacity_v * 2 : this->capacity_v;
+                        if (_capa == 0)
+                            _capa = 1;
+                        pointer _ptr = this->alloc.allocate(_capa);
 
-                    for (size_type i = 0; i < len; i++)
-                        alloc.construct(_ptr + i, *(this->arr + i));
+                        for (size_type i = 0; i < len; i++)
+                            alloc.construct(_ptr + i, *(this->arr + i));
 
-                    alloc.construct(_ptr + len, val);
-                    
-                    for (size_type i = (len + 1); i < _new_s; i++)
-                        alloc.construct(_ptr + i, *(this->arr + i - 1));
-                    
-                    clear();
-                    if (arr)
-                        alloc.deallocate(arr, capacity_v);
-                    this->size_v = _new_s;
-                    this->capacity_v = _capa;
-                    this->arr = _ptr;
+                        alloc.construct(_ptr + len, val);
+                            
+                        for (size_type i = (len + 1); i < _new_s; i++)
+                            alloc.construct(_ptr + i, *(this->arr + i - 1));
+                            
+                        clear();
+                        if (arr)
+                            alloc.deallocate(arr, capacity_v);
+                        size_v = _new_s;
+                        capacity_v = _capa;
+                        arr = _ptr;
+                    }
+                    else 
+                    {
+                        // ! FOR THE TESTER OF MAMOUSSA
+                        for (size_type i = size_v; i > len; i--)
+                            alloc.construct(arr + i, *(arr + i - 1));
+                        alloc.construct(arr + len, val);
+                        size_v++;
+                    }
                 }
-                return (this->arr + len);
+                return (arr + len);
             }
 
             void         pop_back()
@@ -489,12 +490,5 @@ namespace ft
     bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return lhs == rhs || lhs > rhs; }
 
     template <class T, class Alloc>
-    void swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
-    {
-        ft::vector<T, Alloc> temp;
-
-        temp = x;
-        x = y;
-        y = temp;
-    }
+    void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) { x.swap(y); }
 }

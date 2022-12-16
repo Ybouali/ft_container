@@ -1,59 +1,87 @@
-#include "../vector.hpp"
 #include <vector>
+#include <iostream>
+#include <iterator>
+#include <ctime>
+#include <iomanip>
+#include <unistd.h>
+#include <signal.h>
+#include <sys/time.h>
 
-#define S 6
+#include "../vector.hpp"
 
 int main()
 {
-    // ft::vector<int> vf;
-    // int p[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64};
-    std::vector<int> vs_1;
-    std::vector<int> vs_2(5, 32);
-    ft::vector<int> vf_1;
-    ft::vector<int> vf_2(5, 32);
-
-    if (vs_1 == vs_2)
-        std::cout << "      YES vs_1 == vs_2" << std::endl;
+    std::vector<std::string> v;
+    ft::vector<std::string> ft_v;
     
-    if (vf_1 == vf_2)
-        std::cout << "      YES vf_1 == vf_2" << std::endl;
+    std::vector<std::string>::iterator it;
+    ft::vector<std::string>::iterator ft_it;
+
+    // std::cout << " STD SIZE :: " << v.size() << " STD CAPA :: " << v.capacity() << std::endl;
+    // std::cout << "  FT SIZE :: " << ft_v.size() << "  FT CAPA :: " << ft_v.capacity() << std::endl << std::endl;
+    it = v.insert(v.end(), "hello");
+    ft_it = ft_v.insert(ft_v.end(), "hello");
+
+    std::cout << "RETURN VAL IT STD :: " << *it << " STD SIZE :: " << v.size() << " STD CAPA :: " << v.capacity() << std::endl;
+    std::cout << "RETURN VAL IT STD :: " << *ft_it << "  FT SIZE :: " << ft_v.size() << "  FT CAPA :: " << ft_v.capacity() << std::endl << std::endl;
 
 
-    // for(int i=0; i < 10; i++)
-    // {
-    //     vs.push_back(i);
-    //     vf.push_back(i);
-    // } 
+    for (size_t i = 0; i < v.size(); i++)
+    {
+        std::cout << "   V[" << i << "] :: " << v[i] << std::endl; 
+        std::cout << "FT_V[" << i << "] :: " << ft_v[i] << std::endl << std::endl; 
+    }
 
-    // for (int i=0; i < (int)vs.size(); i++)
-    // {
-    //     std::cout << "      VF[" << i << "] = " << vf[i] << " SIZE :: " << vf.size() << " CAPA :: " << vf.capacity() << std::endl;
-    //     std::cout << "      VS[" << i << "] = " << vs[i] << " SIZE :: " << vs.size() << " CAPA :: " << vs.capacity() << std::endl << std::endl;
-    // }
+    it = v.insert(v.begin(), "yassine01");
+    ft_it = ft_v.insert(ft_v.begin(), "yassine01");
 
-    // std::cout << "------------------------------------------------------------------------------------" << std::endl;
-    // std::vector<int>::iterator its = vs.erase(vs.begin() + 1);
-    // ft::vector<int>::iterator itf = vf.erase(vf.begin() + 1);
-    // for (int i=1; i < 4; i++)
-    // {
-    //     its = vs.erase(vs.begin() + i);
-    //     itf = vf.erase(vf.begin() + i);
-    // }
+    std::cout << "RETURN VAL IT STD :: " << *it << " STD SIZE :: " << v.size() << " STD CAPA :: " << v.capacity() << std::endl;
+    std::cout << "RETURN VAL IT STD :: " << *ft_it << "  FT SIZE :: " << ft_v.size() << "  FT CAPA :: " << ft_v.capacity() << std::endl << std::endl;
 
-    // std::cout << " STD *it :: " << *its << " SIZE :: " << vs.size() << " CAPA :: " << vs.capacity() << std::endl;
-    // std::cout << "  FT *it :: " << *itf << " SIZE :: " << vf.size() << " CAPA :: " << vf.capacity() << std::endl << std::endl;
 
-    // for (int i = 0; i < (int)vs.size(); i++)
-    // {
-    //     std::cout << "      VS[" << i << "] = " << vs[i] << " SIZE :: " << vs.size() << " CAPA :: " << vs.capacity() << std::endl;
-    //     std::cout << "      VF[" << i << "] = " << vf[i] << " SIZE :: " << vf.size() << " CAPA :: " << vf.capacity() << std::endl << std::endl;
-    // }
-    // std::cout << "------------------------------------------------------------------------------------" << std::endl;
-    // std::cout << "------------------------------------------------------------------------------------" << std::endl;
-    // for (int i=0; i < 10; i++)
-    // {
-    //     std::cout << "      VF[" << i << "] = " << vf[i] << " SIZE :: " << vf.size() << " CAPA :: " << vf.capacity() << std::endl;
-    //     std::cout << "      VS[" << i << "] = " << vs[i] << " SIZE :: " << vs.size() << " CAPA :: " << vs.capacity() << std::endl << std::endl;
-    // }
-    // while (1);
+    for (size_t i = 0; i < v.size(); i++)
+    {
+        std::cout << "   V[" << i << "] :: " << v[i] << std::endl; 
+        std::cout << "FT_V[" << i << "] :: " << ft_v[i] << std::endl << std::endl; 
+    }
+
+    it = v.insert(v.begin() + 1, "yassine02");
+    ft_it = ft_v.insert(ft_v.begin() + 1, "yassine02");
+
+    std::cout << "RETURN VAL IT STD :: " << *it << " STD SIZE :: " << v.size() << " STD CAPA :: " << v.capacity() << std::endl;
+    std::cout << "RETURN VAL IT STD :: " << *ft_it << "  FT SIZE :: " << ft_v.size() << "  FT CAPA :: " << ft_v.capacity() << std::endl << std::endl;
+
+
+    for (size_t i = 0; i < v.size(); i++)
+    {
+        std::cout << "   V[" << i << "] :: " << v[i] << std::endl; 
+        std::cout << "FT_V[" << i << "] :: " << ft_v[i] << std::endl << std::endl; 
+    }
+    it = v.insert(v.begin() + 2, "yassine03");
+    ft_it = ft_v.insert(ft_v.begin() + 2, "yassine03");
+
+    std::cout << "RETURN VAL IT STD :: " << *it << " STD SIZE :: " << v.size() << " STD CAPA :: " << v.capacity() << std::endl;
+    std::cout << "RETURN VAL IT STD :: " << *ft_it << "  FT SIZE :: " << ft_v.size() << "  FT CAPA :: " << ft_v.capacity() << std::endl << std::endl;
+
+
+    for (size_t i = 0; i < v.size(); i++)
+    {
+        std::cout << "   V[" << i << "] :: " << v[i] << std::endl; 
+        std::cout << "FT_V[" << i << "] :: " << ft_v[i] << std::endl << std::endl; 
+    }
+
+    it = v.insert(v.begin() + 2, "OOOOOOOOOOOOOOO");
+    ft_it = ft_v.insert(ft_v.begin() + 2, "OOOOOOOOOOOOOOO");
+
+    std::cout << "RETURN VAL IT STD :: " << *it << " STD SIZE :: " << v.size() << " STD CAPA :: " << v.capacity() << std::endl;
+    std::cout << "RETURN VAL IT STD :: " << *ft_it << "  FT SIZE :: " << ft_v.size() << "  FT CAPA :: " << ft_v.capacity() << std::endl << std::endl;
+
+
+    for (size_t i = 0; i < v.size(); i++)
+    {
+        std::cout << "   V[" << i << "] :: " << v[i] << std::endl; 
+        std::cout << "FT_V[" << i << "] :: " << ft_v[i] << std::endl << std::endl; 
+    }
 }
+
+// #include <>
