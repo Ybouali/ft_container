@@ -41,7 +41,7 @@ namespace ft
                 
                 while (first != last)
                     push_back(*first), first++;
-                if (size_v == 0)
+                if (this->size_v == 0)
                     return ;
                 size_type _size = this->size_v;
                 pointer _ptr = alloc.allocate(_size);
@@ -80,6 +80,7 @@ namespace ft
                 if (arr)
                     this->alloc.deallocate(arr, capacity_v);
                 this->capacity_v = 0;
+                size_v = 0;
                 this->arr = NULL;
             }
 
@@ -221,11 +222,11 @@ namespace ft
                 size_type _new_s = size_v + n;
                 if (this->size_v <= this->capacity_v && position <= end())
                 {
-                    size_type _capa = _new_s > this->capacity_v ? (capacity_v + n) : capacity_v;
+                    size_type _capa = _new_s <= (capacity_v * 2) ? (capacity_v * 2) : _new_s;
                     if (!_capa)
                         _capa = 1;
-                    _capa = _capa == 7 ? 8 : _capa;
                     pointer _ptr = alloc.allocate(_capa);
+
                     for (size_type i = 0; i < pos; i++)
                         alloc.construct(_ptr + i, *(arr + i));
 
@@ -234,6 +235,7 @@ namespace ft
 
                     for (size_type i = (pos + n); i < _new_s; i++)
                         alloc.construct(_ptr + i, *(arr + i - n));
+                            
                     clear();
                     if (arr)
                         alloc.deallocate(arr, capacity_v);
@@ -251,7 +253,6 @@ namespace ft
                 {
                     if (size_v == capacity_v)
                     {
-                        // ! FOR THE TESTER OF TERMINATOR
                         size_type _capa = this->size_v == this->capacity_v ? this->capacity_v * 2 : this->capacity_v;
                         if (_capa == 0)
                             _capa = 1;
@@ -274,7 +275,6 @@ namespace ft
                     }
                     else 
                     {
-                        // ! FOR THE TESTER OF MAMOUSSA
                         for (size_type i = size_v; i > len; i--)
                             alloc.construct(arr + i, *(arr + i - 1));
                         alloc.construct(arr + len, val);
