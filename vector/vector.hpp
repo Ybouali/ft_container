@@ -146,9 +146,12 @@ namespace ft
             iterator erase (iterator position)
             {
                 size_type   pos = position - begin();
-
+                
                 for (size_type i = pos; i < size_v - 1; i++)
+                {
                     alloc.construct(arr + i, *(arr + i + 1));
+                    alloc.destroy(&arr[i + 1]);
+                }
                 size_v--;
                 alloc.destroy(arr + size_v);
                 return arr + pos;
@@ -159,11 +162,15 @@ namespace ft
                 size_type _pos_f = first - begin();
                 size_type _pos_e = last - begin();
                 size_type dist = last - first;
+                
                 size_type _s_old = size_v;
                 size_type _c_old = capacity_v;
+                
                 pointer _p = alloc.allocate(capacity_v);
+                
                 for (size_type i = 0; i < _pos_f; i++)
                     alloc.construct(_p + i, *(arr + i));
+                
                 for (size_type i = _pos_e; i < size_v; i++)
                     alloc.construct(_p + (i - dist), *(arr + i));
                 clear();
@@ -174,114 +181,73 @@ namespace ft
                 arr = _p;
                 return arr + _pos_f;
             }
-            
+
             template <class InputIterator>
             void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
             {
-                size_type pos = position - begin();
-                if (this->size_v <= this->capacity_v && position <= end())
+                difference_type pos = size_v ? position - begin() : 0;
+
+                vector<T> tmp(first, last);
+                
+                difference_type len = tmp.size();
+            
+                if (size_v + len > capacity_v)
+                    (size_v + len) <= (capacity_v * 2) ? reserve(capacity_v * 2) : reserve(size_v + len);
+                
+                if (len)
                 {
-                    vector<T> tmp;
-                    
-                    while (first != last)
-                        tmp.push_back(*first), first++;
-                    
-                    size_type _new_s = size_v + tmp.size();
-                    
-                    size_type _capa = _new_s > capacity_v ? (capacity_v + tmp.size()) : capacity_v;
-                    
-                    if (!_capa)
-                        _capa = 1;
-
-                    pointer _ptr = alloc.allocate(_capa);
-
-                    for (size_type i = 0; i < pos; i++)
-                        alloc.construct(_ptr + i, *(arr + i));
-
-                    for (size_type i = pos; i < (pos + tmp.size()); i++)
-                        alloc.construct(_ptr + i, tmp.at(i - pos));
-
-                    for (size_type i = (pos + tmp.size()); i < _new_s; i++)
-                        alloc.construct(_ptr + i, *(arr + i - tmp.size()));
-                    
-                    clear();
-
-                    if (arr)
-                        alloc.deallocate(arr, capacity_v);
-                    
-                    capacity_v = _capa;
-                    size_v = _new_s;
-                    arr = _ptr;
+                    for (difference_type i = size_v - 1; i >= pos; i--)
+                    {
+                        alloc.construct(arr + (i + len), arr[i]);
+                        alloc.destroy(&arr[i]);
+                    }
+                    size_v += len;
+                    difference_type index = 0;
+                    for(difference_type i = pos; len-- > 0 ; i++)
+                        alloc.construct(arr + i, tmp.at(index++));
                 }
             }
 
-
             void insert (iterator position, size_type n, const value_type& val)
             {
-                size_type pos = position - begin();
-                size_type _new_s = size_v + n;
-                if (this->size_v <= this->capacity_v && position <= end())
+                difference_type pos = size_v ? position - begin() : 0;
+
+                if (size_v + n > capacity_v)
+                    (size_v + n) <= (capacity_v * 2) ? reserve(capacity_v * 2) : reserve(size_v + n);
+                
+                if (n)
                 {
-                    size_type _capa = _new_s <= (capacity_v * 2) ? (capacity_v * 2) : _new_s;
-                    if (!_capa)
-                        _capa = 1;
-                    pointer _ptr = alloc.allocate(_capa);
-
-                    for (size_type i = 0; i < pos; i++)
-                        alloc.construct(_ptr + i, *(arr + i));
-
-                    for (size_type i = pos; i < (pos + n); i++)
-                        alloc.construct(_ptr + i, val);
-
-                    for (size_type i = (pos + n); i < _new_s; i++)
-                        alloc.construct(_ptr + i, *(arr + i - n));
-                            
-                    clear();
-                    if (arr)
-                        alloc.deallocate(arr, capacity_v);
-                    size_v = _new_s;
-                    capacity_v = _capa;
-                    arr = _ptr;
+                    for (difference_type i = size_v - 1; i >= pos; i--)
+                    {
+                        alloc.construct(arr + (i + n), arr[i]);
+                        alloc.destroy(&arr[i]);
+                    }
+                    size_v += n;
+                    for (difference_type i = pos; n-- > 0; i++)
+                        alloc.construct(arr + i, val);
                 }
             }
 
             iterator insert (iterator position, const value_type& val)
             {
-                size_type len = (position - begin());
-                size_type _new_s = this->size_v + 1;
-                if (this->size_v <= this->capacity_v && position <= end())
+                difference_type pos  = position -  begin();
+                
+                if(capacity_v == size_v)
                 {
-                    if (size_v == capacity_v)
-                    {
-                        size_type _capa = this->size_v == this->capacity_v ? this->capacity_v * 2 : this->capacity_v;
-                        if (_capa == 0)
-                            _capa = 1;
-                        pointer _ptr = this->alloc.allocate(_capa);
-
-                        for (size_type i = 0; i < len; i++)
-                            alloc.construct(_ptr + i, *(this->arr + i));
-
-                        alloc.construct(_ptr + len, val);
-                            
-                        for (size_type i = (len + 1); i < _new_s; i++)
-                            alloc.construct(_ptr + i, *(this->arr + i - 1));
-                            
-                        clear();
-                        if (arr)
-                            alloc.deallocate(arr, capacity_v);
-                        size_v = _new_s;
-                        capacity_v = _capa;
-                        arr = _ptr;
-                    }
+                    if(!capacity_v)
+                        reserve(1);
                     else 
-                    {
-                        for (size_type i = size_v; i > len; i--)
-                            alloc.construct(arr + i, *(arr + i - 1));
-                        alloc.construct(arr + len, val);
-                        size_v++;
-                    }
+                        reserve(capacity_v * 2);
                 }
-                return (arr + len);
+
+                for(difference_type i = size_v; i > pos; i--)
+                {
+                    alloc.construct(arr + i, *(arr + (i - 1)));
+                    alloc.destroy(arr + (i - 1));
+                }
+                alloc.construct(arr + pos, val);
+                size_v++;
+                return(arr + pos);
             }
 
             void         pop_back()
