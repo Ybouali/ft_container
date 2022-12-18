@@ -115,7 +115,8 @@ namespace ft{
                 return (tmp);
             }
             
-            difference_type operator-(const random_access_iterator& it) const { return (this->ptr - it.ptr); }
+            template < class iter >
+            difference_type operator-(const random_access_iterator < iter > & it) const { return (this->ptr - it.base()); }
 
             reference operator[](const difference_type n) const { return *(ptr + n); }
 

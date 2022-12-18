@@ -61,7 +61,6 @@ namespace ft {
 
             reverse_iterator operator+(difference_type n) const
             {
-                // std::cout << " " << n << std::endl;
                 return (reverse_iterator(curr - n));
             }
 
@@ -114,8 +113,8 @@ namespace ft {
     template <class Iterator>        
     reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& o2) { return (reverse_iterator<Iterator>(o2.base() - n)); }
 
-    template <class Iterator>
-    typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& o1, const reverse_iterator<Iterator>& o2) { return (o2.base() - o1.base()); }
+    template <class Iterator1, class Iterator2>
+    ptrdiff_t operator-(const reverse_iterator<Iterator1>& o1, const reverse_iterator<Iterator2>& o2) { return (o2.base() - o1.base()); }
 
     
     template <class U, class Y>
