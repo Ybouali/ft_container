@@ -1,6 +1,6 @@
 #include "../utils/utils.hpp"
-#include "./iterator/random_access_iterator.hpp"
-#include "./iterator/reverse_iterator.hpp"
+#include "../iterator/random_access_iterator.hpp"
+#include "../iterator/reverse_iterator.hpp"
 
 namespace ft
 {
