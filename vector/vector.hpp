@@ -1,6 +1,6 @@
 #include "../utils/utils.hpp"
-#include "../iterator/random_access_iterator.hpp"
-#include "../iterator/reverse_iterator.hpp"
+#include "../iterators/random_access_iterator.hpp"
+#include "../iterators/reverse_iterator.hpp"
 
 namespace ft
 {
@@ -57,9 +57,12 @@ namespace ft
             
             vector (const vector& other): arr(NULL),  size_v(other.size()), capacity_v(other.capacity()), alloc(other.alloc)
             { 
-                arr = alloc.allocate(capacity_v);
-                for (size_type i = 0; i < size_v; i++)
-                    alloc.construct(arr + i, other[i]);
+                if (capacity_v)
+                {
+                    arr = alloc.allocate(capacity_v);
+                    for (size_type i = 0; i < size_v; i++)
+                        alloc.construct(arr + i, other[i]);
+                }
             }
 
             vector& operator= (const vector& other)
@@ -254,7 +257,7 @@ namespace ft
             void         pop_back()
             {
                 if (this->size_v >= 0)
-                    alloc.destroy(arr + --size_v);
+                    alloc.destroy(arr + --size_v);       
             }
 
             template <class InputIterator>
@@ -411,9 +414,9 @@ namespace ft
             
             const_reference     front() const { return *this->arr; }
             
-            reference           back() { return *(this->arr + this->size_v - 1); }
+            reference           back() { return at(size_v - 1); }
             
-            const_reference     back() const { return *(this->arr + this->size_v - 1); }
+            const_reference     back() const { return at(size_v - 1); }
 
             // GET ALLOCATOR
             allocator_type get_allocator() const { return alloc; }
