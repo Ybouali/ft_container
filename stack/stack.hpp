@@ -30,6 +30,7 @@ namespace ft
 
             void swap (stack& x) { _c.swap(x); }
 
+
         protected :
             Container  _c;
     };
