@@ -30,6 +30,24 @@ namespace ft
 
             void swap (stack& x) { _c.swap(x); }
 
+            template <class T1, class Container1>
+            friend bool operator== (const stack<T1, Container1>& lhs, const stack<T1, Container1>& rhs) { return lhs._c == rhs._c; }
+
+            template <class T1, class Container1>
+            friend bool operator!= (const stack<T1, Container1>& lhs, const stack<T1, Container1>& rhs) { return lhs._c != rhs._c; }
+
+            template <class T1, class Container1>
+            friend bool operator> (const stack<T1, Container1>& lhs, const stack<T1, Container1>& rhs) { return lhs._c > rhs._c; }
+
+            template <class T1, class Container1>
+            friend bool operator>= (const stack<T1, Container1>& lhs, const stack<T1, Container1>& rhs) { return lhs._c >= rhs._c; }
+
+            template <class T1, class Container1>
+            friend bool operator< (const stack<T1, Container1>& lhs, const stack<T1, Container1>& rhs) { return lhs._c < rhs._c; }
+
+            template <class T1, class Container1>
+            friend bool operator<= (const stack<T1, Container1>& lhs, const stack<T1, Container1>& rhs) { return lhs._c <= rhs._c; }
+
 
         protected :
             Container  _c;
