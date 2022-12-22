@@ -69,7 +69,7 @@ namespace ft
             {
                 clear();
                 if (arr)
-                    alloc.deallocate(xarr, capacity_v);
+                    alloc.deallocate(arr, capacity_v);
                 alloc =  other.alloc;
                 this->arr = this->alloc.allocate(other.capacity_v);
                 this->capacity_v = other.capacity_v;

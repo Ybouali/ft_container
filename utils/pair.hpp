@@ -4,8 +4,8 @@ namespace ft
     class pair
     {
         public :
-            typedef typename first_type T1;
-            typedef typename second_type T2;
+            typedef T1 first_type;
+            typedef T2 second_type;
             
             first_type      first;
             second_type     second;

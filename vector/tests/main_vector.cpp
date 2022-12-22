@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/time.h>
+#include <map>
 
 #include "../vector.hpp"
 
@@ -57,33 +58,7 @@
 
 int		main(void)
 {
-	const int size = 5;
-	ft::vector<TESTED_TYPE> vct(size);
-	ft::vector<TESTED_TYPE>::reverse_iterator it = vct.rbegin();
-	ft::vector<TESTED_TYPE>::const_reverse_iterator ite = vct.rbegin();
-
-	for (int i = 0; i < size; ++i)
-		it[i] = (size - i) * 5;
-
-	it = it + 5;
-	it = 1 + it;
-	it = it - 4;
-	std::cout << *(it += 2) << std::endl;
-	std::cout << *(it -= 1) << std::endl;
-
-	*(it -= 2) = 42;
-	*(it += 2) = 21;
-
-    ft::vector< int >::const_iterator b = vct.begin();
-
-    std::cout << vct.begin() - b << std::endl;
-	std::cout << "(const_ite - it): " << (ite - it) << std::endl;
-
-    // ft::vector< TESTED_TYPE >::const_iterator b1 = vct.begin();
-    //     ft::vector< TESTED_TYPE >::iterator b2 = vct.begin();
-
-    // std::cout << b1 - b2 << std::endl;
-	// printSize(vct, true);
+	
 	return (0);
 }
 
