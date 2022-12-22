@@ -14,9 +14,10 @@ namespace ft
             
             pair(const first_type& f_p, const second_type& s_p): first(f_p), second(s_p) {}
 
-            pair(const pair& other): first(other.first), second(other.second) {}        
+            template <class T8, class T9>
+            pair(const pair<T8, T9>& other): first(other.first), second(other.second) {}
     };
 
-    template <class T1, class T2>
-    pair<T1, T2> make_pair(T1 X, T2 Y ) { return pair<T1, T2>(X, Y); }
+    template <class T3, class T4>
+    ft::pair<T3, T4> make_pair(T3 X, T4 Y ) { return pair<T3, T4>(X, Y); }
 }

@@ -15,13 +15,21 @@ namespace ft
         ft::pair<Key, T>    data;
     };
 
-    template <class Key, class T, class Alloc = std::allocator<ft::Node<Key, T> > >
+    template <
+        class Key,
+        class T,
+        class Alloc = std::allocator<ft::Node<Key, T> >,
+        class _comp = std::less<Key>
+    >
     class Tree
     {
-        public :
+        private :
             Node<Key, T>    *root;
             Alloc           alloc;
+            _comp           Comp;
         public :
+            typedef ft::pair<const Key, T>   value_type;
+
             Tree (): root (nullptr) {}
             
             Tree (const Tree &other): root(other.root) {}
@@ -29,43 +37,44 @@ namespace ft
                 show_tree(root);
             }
 
-            Node<Key, T> *init_node(bool color, const Key &_key, const T &value, Node<Key, T> *_parent)
+            Node<Key, T> *init_node(bool color, const value_type& _val, Node<Key, T> *_parent)
             {
                 Node<Key, T>    *new_node = alloc.allocate(1);
                 new_node->color = color;
                 new_node->left = nullptr;
                 new_node->right = nullptr;
                 new_node->parent = _parent;
-                new_node->data = ft::pair<Key, T>(_key, value);
+                new_node->data = _val;
                 return new_node;
             }
 
-            void    insert_on_node(Node<Key, T> *node, const Key &_key, const T &_value)
+            void    insert_on_node(Node<Key, T> *node, const value_type& _val)
             {
-                if (node->data.first < _key)
+                // u need to compare with the third parameter
+                if (Comp(node->data.first, _val.first))
                 {
                     if (node->right)
-                        insert_on_node(node->right, _key, _value);
+                        insert_on_node(node->right, _val);
                     else
-                        node->right = init_node(false, _key, _value, node);
+                        node->right = init_node(false, _val, node);
                 }
-                else if (node->data.first > _key)
+                else if (!Comp(node->data.first, _val.first))
                 {
                     if (node->left)
-                        insert_on_node(node->left, _key, _value);
+                        insert_on_node(node->left, _val);
                     else
-                        node->left = init_node(false, _key, _value, node);
+                        node->left = init_node(false, _val, node);
                 }
             }
 
-            void insert_red_black(const Key &_key, const T &_value)
+            void insert_red_black(const value_type& _val)
             {
                 // ? Need to check if the key is already exist 
 
                 if (!root)
-                    root = init_node(false, _key, _value, nullptr);
+                    root = init_node(false, _val, nullptr);
                 else
-                    insert_on_node(root, _key, _value);
+                    insert_on_node(root, _val);
             }
 
             void    show_tree_2D(Node<Key, T> *node, int space)
@@ -109,7 +118,7 @@ namespace ft
             typedef ft::pair<const key_type, mapped_type>                                           value_type;
             typedef Compare                                                                         key_compare;
             // ! value_compare 
-            typedef typename Alloc::template rebind<ft::Node<Key, T> >::other                               allocator_type;
+            typedef typename Alloc::template rebind<ft::Node<Key, T> >::other                       allocator_type;
             // typedef std::allocator<ft::Node<Key, T> >                                               allocator_type_n;                      
             typedef ptrdiff_t                                                                       difference_type;
             typedef size_t                                                                          size_type;
@@ -142,18 +151,21 @@ namespace ft
             }
 
             // bool empty () const { return true; }
-            void    insert(const Key& _key, const T& _value)
+            // ! See the cplusplus before implementation of any method 
+            void    insert(const value_type& val)
             {
-                tree.insert_red_black(_key, _value);
+                // std::cout << val.first << std::endl;
+                tree.insert_red_black(val);
+                // tree.root->data.first = 100;
             }
             
         
-        public :
-            key_type                                _key_map;
-            mapped_type                             _mapped;
-            key_compare                             _comp_key;
-            allocator_type                          _alloc;
-            ft::Tree<Key, T, allocator_type>        tree;
+        private :
+            key_type                                        _key_map;
+            mapped_type                                     _mapped;
+            key_compare                                     _comp_key;
+            allocator_type                                  _alloc;
+            ft::Tree<Key, T, allocator_type, key_compare>   tree;
 
     };
 }
