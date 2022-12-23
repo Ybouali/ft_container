@@ -47,6 +47,42 @@ namespace ft
                 new_node->data = _val;
                 return new_node;
             }
+            
+            void    left_rotate(Node<Key, T> *node)
+            {
+                Node<Key, T>    *node_2 = node->parent;
+                Node<Key, T>    *node_3 = node->parent->parent;
+
+                if (node_3 && node_3->parent)
+                    node_2->parent = node_3->parent;
+                else
+                    root = node_2, node_2->parent = nullptr;
+                
+                if (node_2 && node_3)
+                {
+                    if (!node_2->left)
+                        node_3->right = nullptr;
+                    node_2->left = node_3;
+                }
+            }
+
+            void    right_rotate(Node<Key, T> *node)
+            {
+                Node<Key, T>    *node_2 = node->parent;
+                Node<Key, T>    *node_3 = node->parent->parent;
+
+                if (node_3 && node_3->parent)
+                    node_2->parent = node_3->parent;
+                else
+                    root = node_2, node_2->parent = nullptr;
+                
+                if (node_2 && node_3)
+                {
+                    if (!node_2->right)
+                        node_3->left = nullptr;
+                    node_2->right = node_3;
+                }
+            }
 
             void    insert_on_node(Node<Key, T> *node, const value_type& _val)
             {
@@ -56,15 +92,26 @@ namespace ft
                     if (node->right)
                         insert_on_node(node->right, _val);
                     else
+                    {
                         node->right = init_node(false, _val, node);
+                        // ! FOR testing the rotations operation on bst
+                        if (_val.first == 20)
+                            left_rotate(node->right);
+                    }
                 }
-                else if (!Comp(node->data.first, _val.first))
+                else if (Comp(_val.first, node->data.first))
                 {
                     if (node->left)
                         insert_on_node(node->left, _val);
                     else
+                    {
                         node->left = init_node(false, _val, node);
+                        // ! FOR testing the rotations operation on bst
+                        if (_val.first == 2)
+                            right_rotate(node->left);
+                    }
                 }
+
             }
 
             void insert_red_black(const value_type& _val)

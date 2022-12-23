@@ -6,7 +6,8 @@
 int     main()
 {
     
-    ft::map<int, std::string, std::greater<int> >   map;
+    // , std::greater<int>
+    ft::map<int, std::string >   map;
 
     map.insert(ft::make_pair(10, "TEST :)"));
     map.insert(ft::make_pair(18, "TEST :)"));
