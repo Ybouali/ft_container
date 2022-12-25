@@ -43,7 +43,7 @@ namespace ft
                 new_node->color = color;
                 new_node->left = nullptr;
                 new_node->right = nullptr;
-                new_node->parent = _parent;
+                new_node->parent = _parent ? _parent : nullptr;
                 new_node->data = _val;
                 return new_node;
             }
@@ -53,17 +53,16 @@ namespace ft
                 Node<Key, T>    *node_2 = node->parent;
                 Node<Key, T>    *node_3 = node->parent->parent;
 
-                if (node_3 && node_3->parent)
-                    node_2->parent = node_3->parent;
-                else
-                    root = node_2, node_2->parent = nullptr;
+                node_2->parent = node_3->parent;
+                if (node_3->parent)
+                    node_3->parent->right = node_2;
+                node_3->parent = node_2;
                 
-                if (node_2 && node_3)
-                {
-                    if (!node_2->left)
-                        node_3->right = nullptr;
-                    node_2->left = node_3;
-                }
+                if (!node_2->parent)
+                    root = node_2;
+                
+                node_3->right = node_2->left;
+                node_2->left = node_3;
             }
 
             void    right_rotate(Node<Key, T> *node)
@@ -71,22 +70,52 @@ namespace ft
                 Node<Key, T>    *node_2 = node->parent;
                 Node<Key, T>    *node_3 = node->parent->parent;
 
-                if (node_3 && node_3->parent)
-                    node_2->parent = node_3->parent;
-                else
-                    root = node_2, node_2->parent = nullptr;
-                
-                if (node_2 && node_3)
-                {
-                    if (!node_2->right)
-                        node_3->left = nullptr;
-                    node_2->right = node_3;
+                node_2->parent = node_3->parent;
+
+                if (node_3->parent)
+                {   
+                    if (node_3->parent->left == node_3)
+                    node_3->parent->left = node_2;
+                    else if (node_3->parent->right == node_3)
+                        node_3->parent->right = node_2;
                 }
+                else
+                    root = node_2;
+                
+                node_3->parent = node_2;
+                node_3->right = nullptr;
+                node_2->left = node_3;
+                
+            }
+
+            void    right_left_rotate(Node<Key, T> *node)
+            {
+                Node<Key, T>    *node_2 = node->parent;
+
+                node_2->parent->right = node;
+                node->parent = node_2->parent;
+                node_2->parent = node;
+                node_2->left = nullptr;
+                node->right = node_2;
+                // ! to check. later :)
+                // left_rotate(node);
+            }
+
+            void    left_right_rotate(Node<Key, T> *node)
+            {
+                Node<Key, T>    *node_2 = node->parent;
+
+                node_2->parent->left = node;
+                node->parent = node_2->parent;
+                node_2->parent = node;
+                node_2->right = nullptr;
+                node->left = node_2;
+                // ! to check. later :)
+                // right_rotate(node->left);
             }
 
             void    insert_on_node(Node<Key, T> *node, const value_type& _val)
             {
-                // u need to compare with the third parameter
                 if (Comp(node->data.first, _val.first))
                 {
                     if (node->right)
@@ -94,9 +123,8 @@ namespace ft
                     else
                     {
                         node->right = init_node(false, _val, node);
-                        // ! FOR testing the rotations operation on bst
-                        if (_val.first == 20)
-                            left_rotate(node->right);
+                        
+                        // recolor_red_black(node->right);
                     }
                 }
                 else if (Comp(_val.first, node->data.first))
@@ -106,27 +134,63 @@ namespace ft
                     else
                     {
                         node->left = init_node(false, _val, node);
-                        // ! FOR testing the rotations operation on bst
-                        if (_val.first == 2)
-                            right_rotate(node->left);
+                        if (node->left->data.first == 15)
+                        {
+                            show_tree(root);
+                            left_right_rotate(node->left);
+                            // std::cout << "  :: " << tmp->left->data.first << std::endl;
+                            // right_rotate(node->right->left);
+                        }
+                        // recolor_red_black(node->left);
                     }
                 }
+            }
 
+            // ! recolor_red_black Not done yet 
+            void    recolor_red_black(Node<Key, T> *_node)
+            {
+                if (!_node || !_node->parent || _node->parent->color)
+                    return ;
+                if (!_node->parent->color)
+                {
+                    if (!_node->parent->parent->right || _node->parent->parent->right->color)
+                    {
+                        left_right_rotate(_node);
+                        right_rotate(_node->left);
+                    }
+                    else if (!_node->parent->parent->left || _node->parent->parent->left->color)
+                    {
+
+                    }
+                    else if (_node->parent->parent->left != _node->parent)
+                    {
+                        _node->parent->color = true;
+                        _node->parent->parent->left->color = true;
+                        // if (!_node->parent->parent->parent)
+                    }
+                    else if (_node->parent->parent->right != _node->parent)
+                    {
+                        _node->parent->color = true;
+                        _node->parent->parent->right->color = true;
+                        // if (!_node->parent->parent->parent)
+                    }
+
+                }
             }
 
             void insert_red_black(const value_type& _val)
             {
-                // ? Need to check if the key is already exist 
-
                 if (!root)
-                    root = init_node(false, _val, nullptr);
+                    root = init_node(true, _val, nullptr);
                 else
                     insert_on_node(root, _val);
             }
 
             void    show_tree_2D(Node<Key, T> *node, int space)
             {
-                if (!node) return;
+                if (!node)
+                    return ;
+                
 
                 space += COUNT;
 
@@ -137,8 +201,9 @@ namespace ft
                 for (int i = COUNT; i < space; i++)
                     std::cout << " ";
 
-                std::cout << node->data.first << std::endl;
-
+                std::cout << "| " << node->data.first;
+                node->color ? std::cout << " BLACK |" << std::endl : std::cout << " RED |" << std::endl;
+                
                 show_tree_2D(node->left, space);
             }
 
