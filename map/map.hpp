@@ -34,6 +34,7 @@ namespace ft
             
             Tree (const Tree &other): root(other.root) {}
             ~Tree () {
+                std::cout << "-------------------------------------------" << std::endl;
                 show_tree(root);
             }
 
@@ -52,9 +53,11 @@ namespace ft
             {
                 Node<Key, T>    *node_2 = node->parent;
                 Node<Key, T>    *node_3 = node->parent->parent;
-
+                
                 node_2->parent = node_3->parent;
-                if (node_3->parent)
+                if (node_3->parent && node_3->parent->left == node_3)
+                    node_3->parent->left = node_2;
+                else if (node_3->parent && node_3->parent->right == node_3)
                     node_3->parent->right = node_2;
                 node_3->parent = node_2;
                 
@@ -70,38 +73,23 @@ namespace ft
                 Node<Key, T>    *node_2 = node->parent;
                 Node<Key, T>    *node_3 = node->parent->parent;
 
-                node_2->parent = node_3->parent;
 
-                if (node_3->parent)
-                {   
-                    if (node_3->parent->left == node_3)
+                node_2->parent = node_3->parent;
+                
+                if (node_3->parent && node_3->parent->left == node_3)
                     node_3->parent->left = node_2;
-                    else if (node_3->parent->right == node_3)
-                        node_3->parent->right = node_2;
-                }
-                else
+                else if (node_3->parent && node_3->parent->right == node_3)
+                    node_3->parent->right = node_2;
+                node_3->parent = node_2;
+                
+                if (!node_2->parent)
                     root = node_2;
                 
-                node_3->parent = node_2;
-                node_3->right = nullptr;
-                node_2->left = node_3;
-                
+                node_3->left = node_2->right;
+                node_2->right = node_3;
             }
 
-            void    right_left_rotate(Node<Key, T> *node)
-            {
-                Node<Key, T>    *node_2 = node->parent;
-
-                node_2->parent->right = node;
-                node->parent = node_2->parent;
-                node_2->parent = node;
-                node_2->left = nullptr;
-                node->right = node_2;
-                // ! to check. later :)
-                // left_rotate(node);
-            }
-
-            void    left_right_rotate(Node<Key, T> *node)
+            void    right_to_left_rotate(Node<Key, T> *node)
             {
                 Node<Key, T>    *node_2 = node->parent;
 
@@ -110,8 +98,17 @@ namespace ft
                 node_2->parent = node;
                 node_2->right = nullptr;
                 node->left = node_2;
-                // ! to check. later :)
-                // right_rotate(node->left);
+            }
+
+            void    left_to_right_rotate(Node<Key, T> *node)
+            {
+                Node<Key, T>    *node_2 = node->parent;
+
+                node_2->parent->right = node;
+                node->parent = node_2->parent;
+                node_2->parent = node;
+                node_2->left = nullptr;
+                node->right = node_2;
             }
 
             void    insert_on_node(Node<Key, T> *node, const value_type& _val)
@@ -122,9 +119,18 @@ namespace ft
                         insert_on_node(node->right, _val);
                     else
                     {
-                        node->right = init_node(false, _val, node);
-                        
-                        // recolor_red_black(node->right);
+                        Node<Key, T>    *tmp = init_node(false, _val, node);
+                        node->right = tmp;
+                        // if (node->right->data.first == 16)
+                        // {
+                        //     Node<Key, T> *tmp = node->right;
+                        //     show_tree(root);
+                        //     right_to_left_rotate(tmp);
+                        //     show_tree(root);
+
+                        //     right_rotate(tmp->left);
+                        // }
+                        recolor_red_black(tmp);
                     }
                 }
                 else if (Comp(_val.first, node->data.first))
@@ -133,15 +139,17 @@ namespace ft
                         insert_on_node(node->left, _val);
                     else
                     {
-                        node->left = init_node(false, _val, node);
-                        if (node->left->data.first == 15)
-                        {
-                            show_tree(root);
-                            left_right_rotate(node->left);
-                            // std::cout << "  :: " << tmp->left->data.first << std::endl;
-                            // right_rotate(node->right->left);
-                        }
-                        // recolor_red_black(node->left);
+                        Node<Key, T>    *tmp = init_node(false, _val, node);
+                        node->left = tmp;
+                        // if (node->left->data.first == 17)
+                        // {
+                        //     Node<Key, T>    *tmp = node->left;
+                        //     show_tree(root);
+                        //     left_to_right_rotate(tmp);
+                        //     show_tree(root);
+                        //     left_rotate(tmp->right);
+                        // }
+                        recolor_red_black(tmp);
                     }
                 }
             }
@@ -149,14 +157,17 @@ namespace ft
             // ! recolor_red_black Not done yet 
             void    recolor_red_black(Node<Key, T> *_node)
             {
+                
+                Node<Key, T>    *tmp = _node;
                 if (!_node || !_node->parent || _node->parent->color)
                     return ;
                 if (!_node->parent->color)
                 {
+                    show_tree(root);
                     if (!_node->parent->parent->right || _node->parent->parent->right->color)
                     {
-                        left_right_rotate(_node);
-                        right_rotate(_node->left);
+                        right_to_left_rotate(tmp);
+                        right_rotate(tmp->left);
                     }
                     else if (!_node->parent->parent->left || _node->parent->parent->left->color)
                     {
