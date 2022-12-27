@@ -159,31 +159,73 @@ namespace ft
             {
                 
                 Node<Key, T>    *tmp = _node;
+
                 if (!_node || !_node->parent || _node->parent->color)
                     return ;
+                // if (_node->data.first == 25 && _node->right && _node->right->right)
+                // {
+                //     std::cout << "yes" << std::endl;
+                //     return ;
+                // }
                 if (!_node->parent->color)
                 {
-                    show_tree(root);
                     if (!_node->parent->parent->right || _node->parent->parent->right->color)
                     {
-                        right_to_left_rotate(tmp);
-                        right_rotate(tmp->left);
+                        if (_node->parent->right == _node)
+                        {
+                            right_to_left_rotate(tmp);
+                            right_rotate(tmp->left);
+                            tmp->color = true;
+                            tmp->left->color = false;
+                            tmp->right->color = false;
+                        }
+                        else
+                        {
+                            right_rotate(tmp);
+                            tmp->parent->color = true;
+                            tmp->parent->right->color = false;
+                        }
+                        
                     }
                     else if (!_node->parent->parent->left || _node->parent->parent->left->color)
                     {
-
+                        if (_node->parent->left == _node)
+                        {
+                            left_to_right_rotate(tmp);
+                            left_rotate(tmp->right);
+                            tmp->color = true;
+                            tmp->left->color = false;
+                            tmp->right->color = false;
+                        }
+                        else
+                        {
+                            left_rotate(tmp);
+                            tmp->parent->color = true;
+                            tmp->parent->left->color = false;
+                        }
+                        
                     }
                     else if (_node->parent->parent->left != _node->parent)
                     {
                         _node->parent->color = true;
                         _node->parent->parent->left->color = true;
-                        // if (!_node->parent->parent->parent)
+                        if (_node->parent->parent->parent)
+                        {
+                            _node->parent->parent->color = false;
+                            recolor_red_black(tmp->parent->parent);
+                        }
                     }
                     else if (_node->parent->parent->right != _node->parent)
                     {
+                       
                         _node->parent->color = true;
                         _node->parent->parent->right->color = true;
-                        // if (!_node->parent->parent->parent)
+                        if (_node->parent->parent->parent)
+                        {
+                            _node->parent->parent->color = false;
+                            
+                            recolor_red_black(tmp->parent->parent);
+                        }
                     }
 
                 }

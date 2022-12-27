@@ -9,11 +9,12 @@ int     main()
     // std::greater<int>
     ft::map<int, std::string >   map;
 
-    map.insert(ft::make_pair(10, "TEST :)"));
-    map.insert(ft::make_pair(18, "TEST :)"));
-    map.insert(ft::make_pair(7, "TEST :)"));
-    map.insert(ft::make_pair(15, "TEST :)"));
-    map.insert(ft::make_pair(16, "TEST :)"));
+    for (int i = -10; i < 10; i++)
+        map.insert(ft::make_pair(i, "TEST :)"));
+    // map.insert(ft::make_pair(18, "TEST :)"));
+    // map.insert(ft::make_pair(7, "TEST :)"));
+    // map.insert(ft::make_pair(15, "TEST :)"));
+    // map.insert(ft::make_pair(16, "TEST :)"));
     // map.insert(ft::make_pair(30, "TEST :)"));
     // map.insert(ft::make_pair(25, "TEST :)"));
     // map.insert(ft::make_pair(40, "TEST :)"));
