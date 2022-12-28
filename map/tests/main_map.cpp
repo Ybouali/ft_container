@@ -1,16 +1,21 @@
 #include "../map.hpp"
 #include <map>
 
-
-
 int     main()
 {
     
     // std::greater<int>
     ft::map<int, std::string >   map;
 
-    for (int i = -10; i < 10; i++)
+    for (int i = -10; i <= 10; i++)
         map.insert(ft::make_pair(i, "TEST :)"));
+
+
+    // ft::Node<int, std::string>    result;
+
+    map.find(100);
+
+    // std::cout << "------------------------> " << result.data->first << std::endl;
     // map.insert(ft::make_pair(18, "TEST :)"));
     // map.insert(ft::make_pair(7, "TEST :)"));
     // map.insert(ft::make_pair(15, "TEST :)"));

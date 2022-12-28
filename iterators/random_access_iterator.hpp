@@ -36,9 +36,13 @@ namespace ft{
                 return (this->ptr);
             }
 
-            reference operator*() const { return *(this->ptr); }
+            reference operator*() { return *(this->ptr); }
 
-            pointer operator->() const { return base(); }
+            // const_reference operator*() const { return *(this->ptr); }
+
+            pointer operator->() { return base(); }
+
+            // const_pointer operator->() const { return base(); }
             
             friend bool operator== (const random_access_iterator<T>& other, const random_access_iterator<T>& other1)
             {
