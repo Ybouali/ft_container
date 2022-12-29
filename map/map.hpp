@@ -18,8 +18,7 @@ namespace ft
             typedef Compare                                                                         key_compare;
             // ! value_compare 
             typedef Alloc                                                                           allocator_type_pair;
-            typedef typename Alloc::template rebind<ft::Node<Key, T> >::other                       allocator_type;
-            // typedef std::allocator<ft::Node<Key, T> >                                               allocator_type_n;                      
+            typedef typename Alloc::template rebind<ft::Node<Key, T> >::other                       allocator_type;                      
             typedef ptrdiff_t                                                                       difference_type;
             typedef size_t                                                                          size_type;
             typedef typename allocator_type::reference                                              reference;
@@ -49,24 +48,21 @@ namespace ft
             {
                 
             }
-
-            // ! HERE
+            
             void find(const Key& _val)
             {
-                ft::Node<Key, T>    *result = tree.search_red_black(tree.root, _val);
+                ft::Node<Key, T>    *result = tree.search_red_black(tree.get_root(), _val);
                 
                 if (!result)
                     return ;
                 std::cout << "      ------> " << result->data->first << std::endl;
             }
 
-            // bool empty () const { return true; }
+            void    erase(const Key& _val) { tree.delete_one_red_black(tree.get_root(), _val); }
              
             void    insert(const value_type& val)
             {
-                // std::cout << val.first << std::endl;
                 tree.insert_red_black(val);
-                // tree.root->data.first = 100;
             }
             
         

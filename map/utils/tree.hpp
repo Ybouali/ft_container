@@ -36,12 +36,12 @@ namespace ft
     >
     class Tree
     {
-        public :
-            Node<Key, T>    *root;
-            Alloc           alloc;
-            _comp           Comp;
-            Allocator_pair  alloc_pair;
-            ptrdiff_t       _size;
+        private :
+            ft::Node<Key, T>    *root;
+            Alloc               alloc;
+            _comp               Comp;
+            Allocator_pair      alloc_pair;
+            ptrdiff_t           _size;
         public :
             typedef ft::pair<const Key, T>   value_type;
 
@@ -53,6 +53,7 @@ namespace ft
                 std::cout << "-------------------------------------------" << std::endl;
                 show_tree(root);
                 std::cout << "-------------------------------------------" << std::endl;
+                destroy_tree(root);
             }
 
             ft::Node<Key, T> * search_red_black(Node<Key, T> *node, const Key& _val)
@@ -78,14 +79,89 @@ namespace ft
                 return new_node;
             }
 
+            void    destroy_tree(ft::Node<Key, T>   *node)
+            {
+                if (!node)
+                    return ;
+                destroy_tree(node->left);
+                destroy_tree(node->right);
+                destroy_node(node);
+            }
+
+            void    delete_one_red_black(ft::Node<Key, T> *_node, const Key& _val)
+            {
+                ft::Node<Key, T>    *node = search_red_black(_node, _val);
+                if (!node)
+                    return ;
+                show_tree(root);
+                std::cout << "      : Key : " << node->data->first << std::endl;
+                
+                if (!node->color)
+                {
+                    // ! FOR A RED NODE HAS NO CHIALDS
+                    if (!node->left && !node->right)
+                    {
+                        if (node->parent)
+                        {
+                            if (node->parent->left == node)
+                                node->parent->left = nullptr;
+                            else
+                                node->parent->right = nullptr;
+                        }
+                        else
+                            root = nullptr;
+                        destroy_node(node);
+                    }
+                    else if (node->left && !node->right)
+                    {
+                        if (node->parent)
+                        {
+                            if (node->parent->left == node)
+                                node->parent->left = node->left;
+                            else
+                                node->parent->right = node->left;
+                            node->left->parent = node->parent;
+                        }
+                        else
+                            root = node->left;
+                        destroy_node(node);
+                    }
+                    else if (!node->left && node->right)
+                    {
+                        if (node->parent)
+                        {
+                            if (node->parent->left == node)
+                                node->parent->left = node->right;
+                            else
+                                node->parent->right = node->right;
+                            node->right->parent = node->parent;
+                        }
+                        else
+                            root = node->right;
+                        destroy_node(node);
+                    }
+                    // else if (node->right && node->left)
+                    // {
+                    //     // ! need to get inorder predecessor OR inorder successor
+                    //     ft::Node<Key, T>    *tmp;
+                    //     tmp = node->right->right;
+                    //     // alloc_pair.destroy(node->data);
+                    //     // alloc_pair.construct
+                    // }
+                }
+            }
+
+            ft::Node<Key, T>    * get_root(void) const { return root; }
+
+
             void    destroy_node(ft::Node<Key, T> *node)
             {
                 if (!node)
                     return ;
                 alloc_pair.destroy(node->data);
-                alloc_pair.dealocate(node->data, 1);
+                alloc_pair.deallocate(node->data, 1);
                 alloc.destroy(node);
-                alloc.dealocate(node, 1);
+                alloc.deallocate(node, 1);
             }
 
 
