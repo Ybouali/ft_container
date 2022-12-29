@@ -88,67 +88,83 @@ namespace ft
                 destroy_node(node);
             }
 
+            ft::Node<Key, T>    *in_order_successor(ft::Node<Key, T> *_node)
+            {
+                if (!_node)
+                    return nullptr;
+                if (!_node->right)
+                    return get_min_subtree(_node->right);
+                ft::Node<Key, T>    *node = _node;
+                ft::Node<Key, T>    *parent = _node->parent;
+
+                while (parent && node = parent->right) {
+                    node = parent;
+                    parent = parent->parent;
+                }
+
+                return parent;
+            }
+
+            ft::Node<Key, T>    *in_order_predecessor(ft::Node<Key, T> *_node)
+            {
+                if (!_node)
+                    return nullptr;
+                if (!_node->left)
+                    return get_max_subtree(_node->left);
+                ft::Node<Key, T>    *node = _node;
+                ft::Node<Key, T>    *parent = _node->parent;
+
+                while (parent && node = parent->left) {
+                    node = parent;
+                    parent = parent->parent;
+                }
+                return parent;
+            }
+
+            ft::Node<Key, T>    *get_min_subtree(ft::Node<Key, T> *_node)
+            {
+                if (!_node)
+                    return nullptr;
+                while (_node->left)
+                    _node = _node->left;
+                return _node;
+            }
+
+            ft::Node<Key, T>    *min(void)
+            {
+                ft::Node<Key, T>    *_node = root;
+
+                if (!_node)
+                    return nullptr;
+                while (_node->left)
+                    _node = _node->left;
+                return _node;
+            }
+
+            ft::Node<Key, T>    *get_max_subtree(ft::Node<Key, T> *_node)
+            {
+                if (!_node)
+                    return nullptr;
+                while (_node->right)
+                    _node = _node->right;
+                return _node;
+            }
+
+            ft::Node<Key, T>    *max(void)
+            {
+                ft::Node<Key, T>    *_node = root;
+
+                if (!_node)
+                    return nullptr;
+                while (_node->right)
+                    _node = _node->right;
+                return _node;
+            }
+
             void    delete_one_red_black(ft::Node<Key, T> *_node, const Key& _val)
             {
                 ft::Node<Key, T>    *node = search_red_black(_node, _val);
-                if (!node)
-                    return ;
-                show_tree(root);
-                std::cout << "      : Key : " << node->data->first << std::endl;
                 
-                if (!node->color)
-                {
-                    // ! FOR A RED NODE HAS NO CHIALDS
-                    if (!node->left && !node->right)
-                    {
-                        if (node->parent)
-                        {
-                            if (node->parent->left == node)
-                                node->parent->left = nullptr;
-                            else
-                                node->parent->right = nullptr;
-                        }
-                        else
-                            root = nullptr;
-                        destroy_node(node);
-                    }
-                    else if (node->left && !node->right)
-                    {
-                        if (node->parent)
-                        {
-                            if (node->parent->left == node)
-                                node->parent->left = node->left;
-                            else
-                                node->parent->right = node->left;
-                            node->left->parent = node->parent;
-                        }
-                        else
-                            root = node->left;
-                        destroy_node(node);
-                    }
-                    else if (!node->left && node->right)
-                    {
-                        if (node->parent)
-                        {
-                            if (node->parent->left == node)
-                                node->parent->left = node->right;
-                            else
-                                node->parent->right = node->right;
-                            node->right->parent = node->parent;
-                        }
-                        else
-                            root = node->right;
-                        destroy_node(node);
-                    }
-                    // else if (node->right && node->left)
-                    // {
-                    //     // ! need to get inorder predecessor OR inorder successor
-                    //     ft::Node<Key, T>    *tmp;
-                    //     tmp = node->right->right;
-                    //     // alloc_pair.destroy(node->data);
-                    //     // alloc_pair.construct
-                    // }
-                }
             }
 
             ft::Node<Key, T>    * get_root(void) const { return root; }
