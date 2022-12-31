@@ -25,7 +25,9 @@ int     main()
     // map.insert(ft::make_pair(60, "TEST :)"));
     // ft::Node<int, std::string>    result;
 
-    // map.erase(31);
+    map.erase(130);
+    map.erase(125);
+    map.erase(100);
 
     // system("leaks a.out");
 

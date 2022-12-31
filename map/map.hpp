@@ -51,14 +51,14 @@ namespace ft
             
             void find(const Key& _val)
             {
-                ft::Node<Key, T>    *result = tree.search_red_black(tree.get_root(), _val);
+                ft::Node<Key, T>    *result = tree.search_red_black(_val);
                 
                 if (!result)
                     return ;
                 std::cout << "      ------> " << result->data->first << std::endl;
             }
 
-            void    erase(const Key& _val) { tree.delete_one_red_black(tree.get_root(), _val); }
+            void    erase(const Key& _val) { tree.erase_red_black(_val); }
              
             void    insert(const value_type& val)
             {

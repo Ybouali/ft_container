@@ -92,12 +92,12 @@ namespace ft
             {
                 if (!_node)
                     return nullptr;
-                if (!_node->right)
+                if (_node->right)
                     return get_min_subtree(_node->right);
                 ft::Node<Key, T>    *node = _node;
                 ft::Node<Key, T>    *parent = _node->parent;
 
-                while (parent && node = parent->right) {
+                while (parent && node == parent->right) {
                     node = parent;
                     parent = parent->parent;
                 }
@@ -109,12 +109,12 @@ namespace ft
             {
                 if (!_node)
                     return nullptr;
-                if (!_node->left)
+                if (_node->left)
                     return get_max_subtree(_node->left);
                 ft::Node<Key, T>    *node = _node;
                 ft::Node<Key, T>    *parent = _node->parent;
 
-                while (parent && node = parent->left) {
+                while (parent && node == parent->left) {
                     node = parent;
                     parent = parent->parent;
                 }
@@ -161,10 +161,56 @@ namespace ft
                 return _node;
             }
 
-            void    delete_one_red_black(ft::Node<Key, T> *_node, const Key& _val)
+            
+
+            void    delete_one_red_black(ft::Node<Key, T> *node)
             {
-                ft::Node<Key, T>    *node = search_red_black(_node, _val);
+                if (!node)
+                    return ;
+                if (!node->left && !node->right)
+                {
+                    recolor_red_black_for_delete(node);
+                    
+                    Node<Key, T>    *_parent = node->parent;
+                    if (!_parent)
+                        root = nullptr;
+                    if (_parent->left == node)
+                        _parent->left = nullptr;
+                    else
+                        _parent->right = nullptr;
+                    destroy_node(node);
+                    _size--;
+                }
+                else if (node->left)
+                {
+                    ft::Node<Key, T>    *predecessor = in_order_predecessor(node);
+                    alloc_pair.destroy(node->data);
+                    // ! if (!predecessor)
+                    // !     return ;
+                    alloc_pair.construct(node->data, *(predecessor->data));
+                    delete_one_red_black(predecessor);
+                }
+                else
+                {
+                    ft::Node<Key, T>    *successor = in_order_successor(node);
+                    // ! if (!successor)
+                    //  !   return ;
+                    alloc_pair.destroy(node->data);
+                    alloc_pair.construct(node->data, *(successor->data));
+                    delete_one_red_black(successor);
+                }
+            }
+
+            bool    erase_red_black(const Key& _val)
+            {
+                ft::Node<Key, T>    *node = search_red_black(get_root(), _val);
                 
+                if (node)
+                {
+                    delete_one_red_black(node);
+                    return true;
+                }
+                return false;
             }
 
             ft::Node<Key, T>    * get_root(void) const { return root; }
@@ -179,8 +225,6 @@ namespace ft
                 alloc.destroy(node);
                 alloc.deallocate(node, 1);
             }
-
-
             
             void    left_rotate(Node<Key, T> *node)
             {
