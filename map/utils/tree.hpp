@@ -161,7 +161,81 @@ namespace ft
                 return _node;
             }
 
-            
+            void    recolor_red_black_for_delete(ft::Node<Key, T> *_node)
+            {
+                // ! CASE 1 : IT IS JUST A RED NODE SO JUST DELETE THE NODE
+                if (!_node->color)   
+                    return ;
+                // ! CASE 2 : REMOVING A DOUBLE BLACK FROM THE ROOT && RETURN
+                if (_node == root)
+                {
+                    _node->color = true;
+                    return ;
+                }
+                ft::Node<Key, T>    *uncle = (_node == _node->parent->right) ? _node->parent->left : _node->parent->right;
+                if (uncle && uncle->color)
+                {
+                    if ((!uncle->right || uncle->right->color) && (!uncle->left || uncle->left->color))
+                    {
+                        // ! CASE 3 : UNCLE CHILDRENS IS BLACK
+                        uncle->color = false;
+                        if (!_node->parent->color)
+                        {
+                            _node->parent->color = true;
+                            return ;
+                        }
+                        else 
+                            recolor_red_black_for_delete(_node->parent);
+                    }
+                    if (_node == _node->parent->left)
+                    {
+                        if ((!uncle->right || uncle->right->color) && uncle->left && !uncle->left->color)
+                        {
+                            std::swap(uncle->color, uncle->left->color);
+                            // std::cout << "  hello 1 " << std::
+                            // right_rotate(uncle);
+                            right_rotate(uncle->left);
+                            uncle = _node->parent->right;
+                            
+                        }
+                        if (uncle->right && !uncle->right->color)
+                        {
+                            std::swap(_node->parent->color, uncle->color);
+                            uncle->right->color = true;
+                            // left_rotate(_node->parent);
+                            left_rotate(_node);
+                        }
+                    }
+                    else 
+                    {
+                        if ((!uncle->left || uncle->left->color) && uncle->right && !uncle->right->color)
+                        {
+                            std::swap(uncle->color, uncle->right->color);
+                            left_rotate(uncle->right);
+                            // left_rotate(uncle);
+                            uncle = _node->parent->left;
+                        }
+                        if (uncle->left && !uncle->left->color)
+                        {
+                            std::swap(_node->parent->color, uncle->color);
+                            uncle->left->color = true;
+                            right_rotate(_node);
+                            // right_rotate(_node->parent);
+                        }
+                    }
+                }
+                else if (uncle && !uncle->color)
+                {
+                    std::swap(uncle->color, _node->parent->color);
+                        // left_rotate(_node->parent);
+                    if (_node == _node->parent->left)
+                        left_rotate(_node);
+                    else 
+                        right_rotate(_node);
+                        // right_rotate(_node->parent);
+                    recolor_red_black_for_delete(_node);
+                }
+            }
 
             void    delete_one_red_black(ft::Node<Key, T> *node)
             {
@@ -170,14 +244,16 @@ namespace ft
                 if (!node->left && !node->right)
                 {
                     recolor_red_black_for_delete(node);
-                    
-                    Node<Key, T>    *_parent = node->parent;
-                    if (!_parent)
+
+                    if (!node->parent)
                         root = nullptr;
-                    if (_parent->left == node)
-                        _parent->left = nullptr;
                     else
-                        _parent->right = nullptr;
+                    {
+                        if (node->parent->left == node)
+                            node->parent->left = nullptr;
+                        else
+                            node->parent->right = nullptr;
+                    }
                     destroy_node(node);
                     _size--;
                 }
@@ -185,22 +261,19 @@ namespace ft
                 {
                     ft::Node<Key, T>    *predecessor = in_order_predecessor(node);
                     alloc_pair.destroy(node->data);
-                    // ! if (!predecessor)
-                    // !     return ;
                     alloc_pair.construct(node->data, *(predecessor->data));
                     delete_one_red_black(predecessor);
                 }
                 else
                 {
                     ft::Node<Key, T>    *successor = in_order_successor(node);
-                    // ! if (!successor)
-                    //  !   return ;
                     alloc_pair.destroy(node->data);
                     alloc_pair.construct(node->data, *(successor->data));
                     delete_one_red_black(successor);
                 }
             }
 
+            // ! ERASE A NODE START
             bool    erase_red_black(const Key& _val)
             {
                 ft::Node<Key, T>    *node = search_red_black(get_root(), _val);
@@ -215,7 +288,7 @@ namespace ft
 
             ft::Node<Key, T>    * get_root(void) const { return root; }
 
-
+            // ! DESTROY NODE :: 
             void    destroy_node(ft::Node<Key, T> *node)
             {
                 if (!node)
@@ -228,18 +301,25 @@ namespace ft
             
             void    left_rotate(Node<Key, T> *node)
             {
-                Node<Key, T>    *node_2 = node->parent;
-                Node<Key, T>    *node_3 = node->parent->parent;
+                if (!node)  
+                    return ;
+                Node<Key, T>    *node_2 = (node && node->parent) ? node->parent : nullptr;
+                Node<Key, T>    *node_3 = (node->parent && node->parent->parent) ? node->parent->parent : nullptr;
                 
+                if (!node_2 || !node_3)
+                    return ;
+
                 node_2->parent = node_3->parent;
-                if (node_3->parent && node_3->parent->left == node_3)
-                    node_3->parent->left = node_2;
-                else if (node_3->parent && node_3->parent->right == node_3)
-                    node_3->parent->right = node_2;
-                node_3->parent = node_2;
-                
                 if (!node_2->parent)
                     root = node_2;
+                {
+                    if (node_3->parent && node_3->parent->left == node_3)
+                        node_3->parent->left = node_2;
+                    else if (node_3->parent && node_3->parent->right == node_3)
+                        node_3->parent->right = node_2;
+                }
+                node_3->parent = node_2;
+                
                 
                 node_3->right = node_2->left;
                 node_2->left = node_3;
@@ -247,20 +327,27 @@ namespace ft
 
             void    right_rotate(Node<Key, T> *node)
             {
-                Node<Key, T>    *node_2 = node->parent;
-                Node<Key, T>    *node_3 = node->parent->parent;
+                if (!node)
+                    return ;
+                Node<Key, T>    *node_2 = node->parent ? node->parent : nullptr;
+                Node<Key, T>    *node_3 = (node->parent && node->parent->parent) ? node->parent->parent : nullptr; 
 
-
+                if (!node_2 || !node_3)
+                    return ;
                 node_2->parent = node_3->parent;
-                
-                if (node_3->parent && node_3->parent->left == node_3)
-                    node_3->parent->left = node_2;
-                else if (node_3->parent && node_3->parent->right == node_3)
-                    node_3->parent->right = node_2;
-                node_3->parent = node_2;
                 
                 if (!node_2->parent)
                     root = node_2;
+                else
+                {
+                    if (node_3->parent && node_3->parent->left == node_3)
+                        node_3->parent->left = node_2;
+                    else if (node_3->parent && node_3->parent->right == node_3)
+                        node_3->parent->right = node_2;
+                    node_3->parent = node_2;
+                }
+                
+                
                 
                 node_3->left = node_2->right;
                 node_2->right = node_3;
@@ -286,34 +373,6 @@ namespace ft
                 node_2->parent = node;
                 node_2->left = nullptr;
                 node->right = node_2;
-            }
-
-            void    insert_on_node(Node<Key, T> *node, const value_type& _val)
-            {
-                if (Comp(node->data->first, _val.first))
-                {
-                    if (node->right)
-                        insert_on_node(node->right, _val);
-                    else
-                    {
-                        Node<Key, T>    *tmp = init_node(false, _val, node);
-                        node->right = tmp;
-                        recolor_red_black(tmp);
-                        _size++;
-                    }
-                }
-                else if (Comp(_val.first, node->data->first))
-                {
-                    if (node->left)
-                        insert_on_node(node->left, _val);
-                    else
-                    {
-                        Node<Key, T>    *tmp = init_node(false, _val, node);
-                        node->left = tmp;
-                        recolor_red_black(tmp);
-                        _size++;
-                    }
-                }
             }
             
             void    recolor_red_black(Node<Key, T> *_node)
@@ -385,6 +444,34 @@ namespace ft
                         }
                     }
 
+                }
+            }
+
+            void    insert_on_node(Node<Key, T> *node, const value_type& _val)
+            {
+                if (Comp(node->data->first, _val.first))
+                {
+                    if (node->right)
+                        insert_on_node(node->right, _val);
+                    else
+                    {
+                        Node<Key, T>    *tmp = init_node(false, _val, node);
+                        node->right = tmp;
+                        recolor_red_black(tmp);
+                        _size++;
+                    }
+                }
+                else if (Comp(_val.first, node->data->first))
+                {
+                    if (node->left)
+                        insert_on_node(node->left, _val);
+                    else
+                    {
+                        Node<Key, T>    *tmp = init_node(false, _val, node);
+                        node->left = tmp;
+                        recolor_red_black(tmp);
+                        _size++;
+                    }
                 }
             }
 

@@ -11,23 +11,17 @@ int     main()
     //     map.insert(ft::make_pair(i, "TEST :)"));
 
 
-    map.insert(ft::make_pair(100, "TEST :)"));
-    map.insert(ft::make_pair(99, "TEST :)"));
-    map.insert(ft::make_pair(200, "TEST :)"));
-    map.insert(ft::make_pair(150, "TEST :)"));
-    map.insert(ft::make_pair(300, "TEST :)"));
-    map.insert(ft::make_pair(125, "TEST :)"));
-    map.insert(ft::make_pair(130, "TEST :)"));
-    map.insert(ft::make_pair(225, "TEST :)"));
-    map.insert(ft::make_pair(43, "TEST :)"));
-    map.insert(ft::make_pair(49, "TEST :)"));
-    // map.insert(ft::make_pair(31, "TEST :)"));
-    // map.insert(ft::make_pair(60, "TEST :)"));
-    // ft::Node<int, std::string>    result;
+    map.insert(ft::make_pair(10, "TEST :)"));
+    map.insert(ft::make_pair(5, "TEST :)"));
+    map.insert(ft::make_pair(30, "TEST :)"));
+    map.insert(ft::make_pair(-5, "TEST :)"));
+    map.insert(ft::make_pair(7, "TEST :)"));
+    map.insert(ft::make_pair(20, "TEST :)"));
+    map.insert(ft::make_pair(38, "TEST :)"));
+    map.insert(ft::make_pair(35, "TEST :)"));
 
-    map.erase(130);
-    map.erase(125);
-    map.erase(100);
+    // map.erase(38);
+    map.erase(30);
 
     // system("leaks a.out");
 
