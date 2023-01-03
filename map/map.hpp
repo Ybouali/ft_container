@@ -1,4 +1,4 @@
-#include "./utils/tree.hpp"
+#include "./utils/red_black_tree.hpp"
 
 namespace ft
 {
@@ -18,7 +18,7 @@ namespace ft
             typedef Compare                                                                         key_compare;
             // ! value_compare 
             typedef Alloc                                                                           allocator_type_pair;
-            typedef typename Alloc::template rebind<ft::Node<Key, T> >::other                       allocator_type;                      
+            typedef typename Alloc::template rebind<ft::Node_red_black<Key, T> >::other                       allocator_type;                      
             typedef ptrdiff_t                                                                       difference_type;
             typedef size_t                                                                          size_type;
             typedef typename allocator_type::reference                                              reference;
@@ -51,7 +51,7 @@ namespace ft
             
             void find(const Key& _val)
             {
-                ft::Node<Key, T>    *result = tree.search_red_black(_val);
+                ft::Node_red_black<Key, T>    *result = tree.search_red_black(_val);
                 
                 if (!result)
                     return ;
@@ -72,7 +72,7 @@ namespace ft
             key_compare                                                             _comp_key;
             allocator_type                                                          _alloc;
             allocator_type_pair                                                     _alloc_pair;
-            ft::Tree<Key, T, allocator_type, key_compare, allocator_type_pair>      tree;
+            ft::red_black_tree<Key, T, allocator_type, key_compare, allocator_type_pair>      tree;
 
     };
 }

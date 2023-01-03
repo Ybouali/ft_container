@@ -9,54 +9,54 @@ namespace ft
 
     // ! false == RED && true == black
     template <class Key, class T > 
-    class Node {
+    class Node_red_black {
         public :
-            bool                color;
-            Node                *left;
-            Node                *right;
-            Node                      *parent;
+            bool                          color;
+            Node_red_black                *left;
+            Node_red_black                *right;
+            Node_red_black                *parent;
             ft::pair<const Key, T>    *data;
             
-            Node(): color(false), left(nullptr), right(nullptr), parent(nullptr), data() {}
+            Node_red_black(): color(false), left(nullptr), right(nullptr), parent(nullptr), data() {}
 
-            Node(const Node& other): color(other.color), left(other.left), right(other.right), parent(other.parent), data(other.data) {}
+            Node_red_black(const Node_red_black& other): color(other.color), left(other.left), right(other.right), parent(other.parent), data(other.data) {}
 
-            Node(bool _color, Node *_left, Node *_right, Node *_parent, ft::pair<const Key, T>  *_data)
+            Node_red_black(bool _color, Node_red_black *_left, Node_red_black *_right, Node_red_black *_parent, ft::pair<const Key, T>  *_data)
             : color(_color), left(_left), right(_right), parent(_parent), data(_data) {}
 
-            ~Node() {}
+            ~Node_red_black() {}
     };
 
     template <
         class Key,
         class T,
-        class Alloc = std::allocator<ft::Node<Key, T> >,
+        class Alloc = std::allocator<ft::Node_red_black<Key, T> >,
         class _comp = std::less<Key>,
         class Allocator_pair = std::allocator<ft::pair<const Key, T> >
     >
-    class Tree
+    class red_black_tree
     {
         private :
-            ft::Node<Key, T>    *root;
-            Alloc               alloc;
-            _comp               Comp;
-            Allocator_pair      alloc_pair;
-            ptrdiff_t           _size;
+            ft::Node_red_black<Key, T>      *root;
+            Alloc                           alloc;
+            _comp                           Comp;
+            Allocator_pair                  alloc_pair;
+            ptrdiff_t                       _size;
         public :
             typedef ft::pair<const Key, T>   value_type;
 
-            Tree (): root (nullptr), _size(0) {}
+            red_black_tree (): root (nullptr), _size(0) {}
             
-            Tree (const Tree &other): root(other.root), alloc(other.alloc), Comp(other.Comp), alloc_pair(other.alloc_pair), _size(other._size) {}
+            red_black_tree (const red_black_tree &other): root(other.root), alloc(other.alloc), Comp(other.Comp), alloc_pair(other.alloc_pair), _size(other._size) {}
 
-            ~Tree () {
+            ~red_black_tree () {
                 std::cout << "-------------------------------------------" << std::endl;
                 show_tree(root);
                 std::cout << "-------------------------------------------" << std::endl;
                 destroy_tree(root);
             }
 
-            ft::Node<Key, T> * search_red_black(Node<Key, T> *node, const Key& _val)
+            ft::Node_red_black<Key, T> * search_red_black(Node_red_black<Key, T> *node, const Key& _val)
             {
                 if (!node)
                     return nullptr;
@@ -70,16 +70,16 @@ namespace ft
                 return nullptr;
             }
 
-            Node<Key, T> *init_node(bool color, const value_type& _val, Node<Key, T> *_parent)
+            Node_red_black<Key, T> *init_node(bool color, const value_type& _val, Node_red_black<Key, T> *_parent)
             {
-                Node<Key, T>    *new_node = alloc.allocate(1);
+                Node_red_black<Key, T>    *new_node = alloc.allocate(1);
                 new_node->data = alloc_pair.allocate(1);
                 alloc_pair.construct(new_node->data, _val);
-                alloc.construct(new_node, Node<Key, T>(color, nullptr, nullptr, _parent, new_node->data));
+                alloc.construct(new_node, Node_red_black<Key, T>(color, nullptr, nullptr, _parent, new_node->data));
                 return new_node;
             }
 
-            void    destroy_tree(ft::Node<Key, T>   *node)
+            void    destroy_tree(ft::Node_red_black<Key, T>   *node)
             {
                 if (!node)
                     return ;
@@ -88,14 +88,14 @@ namespace ft
                 destroy_node(node);
             }
 
-            ft::Node<Key, T>    *in_order_successor(ft::Node<Key, T> *_node)
+            ft::Node_red_black<Key, T>    *in_order_successor(ft::Node_red_black<Key, T> *_node)
             {
                 if (!_node)
                     return nullptr;
                 if (_node->right)
                     return get_min_subtree(_node->right);
-                ft::Node<Key, T>    *node = _node;
-                ft::Node<Key, T>    *parent = _node->parent;
+                ft::Node_red_black<Key, T>    *node = _node;
+                ft::Node_red_black<Key, T>    *parent = _node->parent;
 
                 while (parent && node == parent->right) {
                     node = parent;
@@ -105,14 +105,14 @@ namespace ft
                 return parent;
             }
 
-            ft::Node<Key, T>    *in_order_predecessor(ft::Node<Key, T> *_node)
+            ft::Node_red_black<Key, T>    *in_order_predecessor(ft::Node_red_black<Key, T> *_node)
             {
                 if (!_node)
                     return nullptr;
                 if (_node->left)
                     return get_max_subtree(_node->left);
-                ft::Node<Key, T>    *node = _node;
-                ft::Node<Key, T>    *parent = _node->parent;
+                ft::Node_red_black<Key, T>    *node = _node;
+                ft::Node_red_black<Key, T>    *parent = _node->parent;
 
                 while (parent && node == parent->left) {
                     node = parent;
@@ -121,7 +121,7 @@ namespace ft
                 return parent;
             }
 
-            ft::Node<Key, T>    *get_min_subtree(ft::Node<Key, T> *_node)
+            ft::Node_red_black<Key, T>    *get_min_subtree(ft::Node_red_black<Key, T> *_node)
             {
                 if (!_node)
                     return nullptr;
@@ -130,9 +130,9 @@ namespace ft
                 return _node;
             }
 
-            ft::Node<Key, T>    *min(void)
+            ft::Node_red_black<Key, T>    *min(void)
             {
-                ft::Node<Key, T>    *_node = root;
+                ft::Node_red_black<Key, T>    *_node = root;
 
                 if (!_node)
                     return nullptr;
@@ -141,7 +141,7 @@ namespace ft
                 return _node;
             }
 
-            ft::Node<Key, T>    *get_max_subtree(ft::Node<Key, T> *_node)
+            ft::Node_red_black<Key, T>    *get_max_subtree(ft::Node_red_black<Key, T> *_node)
             {
                 if (!_node)
                     return nullptr;
@@ -150,9 +150,9 @@ namespace ft
                 return _node;
             }
 
-            ft::Node<Key, T>    *max(void)
+            ft::Node_red_black<Key, T>    *max(void)
             {
-                ft::Node<Key, T>    *_node = root;
+                ft::Node_red_black<Key, T>    *_node = root;
 
                 if (!_node)
                     return nullptr;
@@ -161,23 +161,30 @@ namespace ft
                 return _node;
             }
 
-            void    recolor_red_black_for_delete(ft::Node<Key, T> *_node)
+            void    recolor_red_black_for_delete(ft::Node_red_black<Key, T> *_node)
             {
-                // ! CASE 1 : IT IS JUST A RED NODE SO JUST DELETE THE NODE
+
+                // // ! CASE 1 : IT IS JUST A RED NODE SO JUST DELETE THE NODE
                 if (!_node->color)   
                     return ;
+
                 // ! CASE 2 : REMOVING A DOUBLE BLACK FROM THE ROOT && RETURN
                 if (_node == root)
                 {
                     _node->color = true;
                     return ;
                 }
-                ft::Node<Key, T>    *uncle = (_node == _node->parent->right) ? _node->parent->left : _node->parent->right;
+                // if (_node && _node->color && \
+                //     ((!_node->left && !_node->right) \
+                //     || (((_node->left && _node->left->color) && (_node->right && _node->right->color))) \
+                //     || (_node->left && _node->left->color && !_node->right) \
+                //     || (_node->right && _node->right->color && !_node->left) ) )
+
+                ft::Node_red_black<Key, T>    *uncle = (_node == _node->parent->left) ? _node->parent->right : _node->parent->left;
                 if (uncle && uncle->color)
                 {
                     if ((!uncle->right || uncle->right->color) && (!uncle->left || uncle->left->color))
                     {
-                        // ! CASE 3 : UNCLE CHILDRENS IS BLACK
                         uncle->color = false;
                         if (!_node->parent->color)
                         {
@@ -189,21 +196,18 @@ namespace ft
                     }
                     if (_node == _node->parent->left)
                     {
+                        
                         if ((!uncle->right || uncle->right->color) && uncle->left && !uncle->left->color)
                         {
                             std::swap(uncle->color, uncle->left->color);
-                            // std::cout << "  hello 1 " << std::
-                            // right_rotate(uncle);
-                            right_rotate(uncle->left);
-                            uncle = _node->parent->right;
-                            
+                            right_rotate(uncle);
+                            uncle = _node->parent->right;   
                         }
                         if (uncle->right && !uncle->right->color)
                         {
                             std::swap(_node->parent->color, uncle->color);
                             uncle->right->color = true;
-                            // left_rotate(_node->parent);
-                            left_rotate(_node);
+                            right_rotate(_node);
                         }
                     }
                     else 
@@ -212,39 +216,67 @@ namespace ft
                         {
                             std::swap(uncle->color, uncle->right->color);
                             left_rotate(uncle->right);
-                            // left_rotate(uncle);
                             uncle = _node->parent->left;
                         }
                         if (uncle->left && !uncle->left->color)
                         {
+                            // ! CASE 6
                             std::swap(_node->parent->color, uncle->color);
                             uncle->left->color = true;
                             right_rotate(_node);
-                            // right_rotate(_node->parent);
                         }
                     }
                 }
                 else if (uncle && !uncle->color)
                 {
                     std::swap(uncle->color, _node->parent->color);
-                        // left_rotate(_node->parent);
                     if (_node == _node->parent->left)
-                        left_rotate(_node);
-                    else 
-                        right_rotate(_node);
-                        // right_rotate(_node->parent);
+                        left_rotate(_node->parent->right);
+                    else
+                        right_rotate(_node->parent->left);
                     recolor_red_black_for_delete(_node);
                 }
             }
 
-            void    delete_one_red_black(ft::Node<Key, T> *node)
+            void    black_black(ft::Node_red_black<Key, T> *node)
             {
-                if (!node)
+                if (node == root)
                     return ;
+                if (node->parent && !node->parent->color)   
+                {
+                    ft::Node_red_black<Key, T>    *sibling = (node == node->parent->left) ? node->parent->right : node->parent->left;
+                    if (ckeck_double_black(sibling))
+                    {
+                        // ! CASE 4
+                        sibling->color = false;
+                        node->parent->color = true;
+                    }
+                }
+                else if (node->parent && node->parent->color)
+                {
+                    ft::Node_red_black<Key, T>    *sibling = (node == node->parent->left) ? node->parent->right : node->parent->left;
+                    if (sibling && sibling->color && sibling->left && !sibling->left->color && sibling->right && sibling->right->color)
+                    {
+
+                    }
+                }
+            }
+
+            bool ckeck_double_black(ft::Node_red_black<Key, T> *node)
+            {
+                if (node && node->color && \
+                    ((!node->left && !node->right) \
+                    || (((node->left && node->left->color) && (node->right && node->right->color))) \
+                    || (node->left && node->left->color && !node->right) \
+                    || (node->right && node->right->color && !node->left) ) )
+                    return true;
+                return false;
+            }
+
+            void    delete_one_red_black(ft::Node_red_black<Key, T> *node)
+            {
                 if (!node->left && !node->right)
                 {
-                    recolor_red_black_for_delete(node);
-
                     if (!node->parent)
                         root = nullptr;
                     else
@@ -257,26 +289,26 @@ namespace ft
                     destroy_node(node);
                     _size--;
                 }
-                else if (node->left)
+                else if (node->right) 
                 {
-                    ft::Node<Key, T>    *predecessor = in_order_predecessor(node);
-                    alloc_pair.destroy(node->data);
-                    alloc_pair.construct(node->data, *(predecessor->data));
-                    delete_one_red_black(predecessor);
-                }
-                else
-                {
-                    ft::Node<Key, T>    *successor = in_order_successor(node);
+                    ft::Node_red_black<Key, T>    *successor = in_order_successor(node);
                     alloc_pair.destroy(node->data);
                     alloc_pair.construct(node->data, *(successor->data));
                     delete_one_red_black(successor);
+                }
+                else
+                {
+                    ft::Node_red_black<Key, T>    *predecessor = in_order_predecessor(node);
+                    alloc_pair.destroy(node->data);
+                    alloc_pair.construct(node->data, *(predecessor->data));
+                    delete_one_red_black(predecessor);
                 }
             }
 
             // ! ERASE A NODE START
             bool    erase_red_black(const Key& _val)
             {
-                ft::Node<Key, T>    *node = search_red_black(get_root(), _val);
+                ft::Node_red_black<Key, T>    *node = search_red_black(get_root(), _val);
                 
                 if (node)
                 {
@@ -286,10 +318,9 @@ namespace ft
                 return false;
             }
 
-            ft::Node<Key, T>    * get_root(void) const { return root; }
-
-            // ! DESTROY NODE :: 
-            void    destroy_node(ft::Node<Key, T> *node)
+            ft::Node_red_black<Key, T>    * get_root(void) const { return root; }
+            
+            void    destroy_node(ft::Node_red_black<Key, T> *node)
             {
                 if (!node)
                     return ;
@@ -299,12 +330,12 @@ namespace ft
                 alloc.deallocate(node, 1);
             }
             
-            void    left_rotate(Node<Key, T> *node)
+            void    left_rotate(Node_red_black<Key, T> *node)
             {
                 if (!node)  
                     return ;
-                Node<Key, T>    *node_2 = (node && node->parent) ? node->parent : nullptr;
-                Node<Key, T>    *node_3 = (node->parent && node->parent->parent) ? node->parent->parent : nullptr;
+                Node_red_black<Key, T>    *node_2 = (node && node->parent) ? node->parent : nullptr;
+                Node_red_black<Key, T>    *node_3 = (node->parent && node->parent->parent) ? node->parent->parent : nullptr;
                 
                 if (!node_2 || !node_3)
                     return ;
@@ -325,12 +356,12 @@ namespace ft
                 node_2->left = node_3;
             }
 
-            void    right_rotate(Node<Key, T> *node)
+            void    right_rotate(Node_red_black<Key, T> *node)
             {
                 if (!node)
                     return ;
-                Node<Key, T>    *node_2 = node->parent ? node->parent : nullptr;
-                Node<Key, T>    *node_3 = (node->parent && node->parent->parent) ? node->parent->parent : nullptr; 
+                Node_red_black<Key, T>    *node_2 = node->parent ? node->parent : nullptr;
+                Node_red_black<Key, T>    *node_3 = (node->parent && node->parent->parent) ? node->parent->parent : nullptr; 
 
                 if (!node_2 || !node_3)
                     return ;
@@ -347,15 +378,13 @@ namespace ft
                     node_3->parent = node_2;
                 }
                 
-                
-                
                 node_3->left = node_2->right;
                 node_2->right = node_3;
             }
 
-            void    right_to_left_rotate(Node<Key, T> *node)
+            void    right_to_left_rotate(Node_red_black<Key, T> *node)
             {
-                Node<Key, T>    *node_2 = node->parent;
+                Node_red_black<Key, T>    *node_2 = node->parent;
 
                 node_2->parent->left = node;
                 node->parent = node_2->parent;
@@ -364,9 +393,9 @@ namespace ft
                 node->left = node_2;
             }
 
-            void    left_to_right_rotate(Node<Key, T> *node)
+            void    left_to_right_rotate(Node_red_black<Key, T> *node)
             {
-                Node<Key, T>    *node_2 = node->parent;
+                Node_red_black<Key, T>    *node_2 = node->parent;
 
                 node_2->parent->right = node;
                 node->parent = node_2->parent;
@@ -375,10 +404,10 @@ namespace ft
                 node->right = node_2;
             }
             
-            void    recolor_red_black(Node<Key, T> *_node)
+            void    recolor_red_black(Node_red_black<Key, T> *_node)
             {
                 
-                Node<Key, T>    *tmp = _node;
+                Node_red_black<Key, T>    *tmp = _node;
 
                 if (!_node || !_node->parent || _node->parent->color)
                     return ;
@@ -433,13 +462,11 @@ namespace ft
                     }
                     else if (_node->parent->parent->right != _node->parent)
                     {
-                       
                         _node->parent->color = true;
                         _node->parent->parent->right->color = true;
                         if (_node->parent->parent->parent)
                         {
                             _node->parent->parent->color = false;
-                            
                             recolor_red_black(tmp->parent->parent);
                         }
                     }
@@ -447,7 +474,7 @@ namespace ft
                 }
             }
 
-            void    insert_on_node(Node<Key, T> *node, const value_type& _val)
+            void    insert_on_node(Node_red_black<Key, T> *node, const value_type& _val)
             {
                 if (Comp(node->data->first, _val.first))
                 {
@@ -455,7 +482,7 @@ namespace ft
                         insert_on_node(node->right, _val);
                     else
                     {
-                        Node<Key, T>    *tmp = init_node(false, _val, node);
+                        Node_red_black<Key, T>    *tmp = init_node(false, _val, node);
                         node->right = tmp;
                         recolor_red_black(tmp);
                         _size++;
@@ -467,7 +494,7 @@ namespace ft
                         insert_on_node(node->left, _val);
                     else
                     {
-                        Node<Key, T>    *tmp = init_node(false, _val, node);
+                        Node_red_black<Key, T>    *tmp = init_node(false, _val, node);
                         node->left = tmp;
                         recolor_red_black(tmp);
                         _size++;
@@ -478,12 +505,15 @@ namespace ft
             void insert_red_black(const value_type& _val)
             {
                 if (!root)
+                {
                     root = init_node(true, _val, nullptr);
+                    _size++;
+                }
                 else
                     insert_on_node(root, _val);
             }
 
-            void    show_tree_2D(Node<Key, T> *node, int space)
+            void    show_tree_2D(Node_red_black<Key, T> *node, int space)
             {
                 if (!node)
                     return ;
@@ -503,7 +533,7 @@ namespace ft
                 show_tree_2D(node->left, space);
             }
 
-            void    show_tree(Node<Key, T> *node)
+            void    show_tree(Node_red_black<Key, T> *node)
             {
                 std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
                 show_tree_2D(node, 0);
