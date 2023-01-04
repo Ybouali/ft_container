@@ -1,4 +1,4 @@
-#include "./utils/red_black_tree.hpp"
+#include "./utils/avl_tree.hpp"
 
 namespace ft
 {
@@ -14,11 +14,11 @@ namespace ft
             // ? typedefs
             typedef Key                                                                             key_type;
             typedef T                                                                               mapped_type;
-            typedef ft::pair<const key_type, mapped_type>                                           value_type;
+            typedef typename ft::pair<const key_type, mapped_type>                                  value_type;
             typedef Compare                                                                         key_compare;
             // ! value_compare 
             typedef Alloc                                                                           allocator_type_pair;
-            typedef typename Alloc::template rebind<ft::Node_red_black<Key, T> >::other                       allocator_type;                      
+            typedef typename Alloc::template rebind<ft::Node_avl<Key, T> >::other                   allocator_type;                      
             typedef ptrdiff_t                                                                       difference_type;
             typedef size_t                                                                          size_type;
             typedef typename allocator_type::reference                                              reference;
@@ -51,18 +51,18 @@ namespace ft
             
             void find(const Key& _val)
             {
-                ft::Node_red_black<Key, T>    *result = tree.search_red_black(_val);
+                ft::Node_avl<Key, T>    *result = tree.search_red_black(_val);
                 
                 if (!result)
                     return ;
                 std::cout << "      ------> " << result->data->first << std::endl;
             }
 
-            void    erase(const Key& _val) { tree.erase_red_black(_val); }
+            // void    erase(const Key& _val) { tree.erase_red_black(_val); }
              
             void    insert(const value_type& val)
             {
-                tree.insert_red_black(val);
+                tree.insert(val);
             }
             
         
@@ -72,7 +72,7 @@ namespace ft
             key_compare                                                             _comp_key;
             allocator_type                                                          _alloc;
             allocator_type_pair                                                     _alloc_pair;
-            ft::red_black_tree<Key, T, allocator_type, key_compare, allocator_type_pair>      tree;
+            ft::avl_tree<Key, T, key_compare, allocator_type_pair>            tree;
 
     };
 }

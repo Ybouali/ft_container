@@ -17,7 +17,11 @@ int     main()
     map.insert(ft::make_pair(300, "TEST :)"));
     map.insert(ft::make_pair(225, "TEST :)"));
     map.insert(ft::make_pair(400, "TEST :)"));
-    map.erase(225);
+    map.insert(ft::make_pair(500, "TEST :)"));
+    map.insert(ft::make_pair(600, "TEST :)"));
+    map.insert(ft::make_pair(650, "TEST :)"));
+    map.insert(ft::make_pair(625, "TEST :)"));
+    // map.erase(225);
 
        
 }

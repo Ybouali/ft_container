@@ -1,6 +1,8 @@
 #pragma once
 #include "../../vector/vector.hpp"
 
+#define COUNT 10
+
 namespace ft {
     template <class Key, class T > 
     class Node_avl {
@@ -15,10 +17,205 @@ namespace ft {
 
             Node_avl(const Node_avl& other): height(other.height), left(other.left), right(other.right), parent(other.parent), data(other.data) {}
 
-            Node_avl(bool _height, Node_avl *_left, Node_avl *_right, Node_avl *_parent, ft::pair<const Key, T>  *_data)
+            Node_avl(int _height, Node_avl *_left, Node_avl *_right, Node_avl *_parent, ft::pair<const Key, T>  *_data)
             : height(_height), left(_left), right(_right), parent(_parent), data(_data) {}
 
             ~Node_avl() {}
     };
-    
+    template <
+        class Key,
+        class T,
+        class _comp = std::less<Key>,
+        class Alloc = std::allocator<ft::pair<Key, T> >
+    >
+    class avl_tree
+    {
+        public :
+            typedef Alloc                                                           allocator_type_pair;
+            typedef _comp                                                           Comp;
+            typedef Key                                                             Key_type;
+            typedef T                                                               mapped_type;
+            typedef typename ft::pair<Key_type, mapped_type>                        value_type;
+            typedef Node_avl<Key, T> *                                              pointer;
+            typedef Node_avl<Key, T> &                                              reference;
+            typedef typename Alloc::template rebind<ft::Node_avl<Key, T> >::other   allocator_type;
+            typedef size_t                                                          size_type;
+
+            avl_tree(): root(nullptr), alloc_pair(), comp(), alloc_node(), _size() {}
+            
+            avl_tree(const avl_tree& other): root(other.root), alloc_pair(other.aolloc_pair), comp(other._comp), alloc_node(other.alloc_node), _size(other._size) {} 
+            
+            ~avl_tree() {
+                std::cout << "-------------------------------------------" << std::endl;
+                show_tree(root);
+                std::cout << "-------------------------------------------" << std::endl;
+                destroy_tree(root);
+            } 
+
+            void    show_tree_2D(pointer node, size_type space)
+            {
+                if (!node)
+                    return ;
+                
+                space += COUNT;
+
+                show_tree_2D(node->right, space);
+
+                std::cout << std::endl;
+
+                for (int i = COUNT; i < space; i++)
+                    std::cout << " ";
+
+                std::cout << "| " << node->data->first << " HEIGHT " << node->height << " |" << std::endl;
+                
+                show_tree_2D(node->left, space);
+            }
+
+            // ! SHOW_TREE
+            void    show_tree(pointer node)
+            {
+                std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
+                show_tree_2D(node, 0);
+            }
+
+            // ! DESTROY NODE
+            void    destroy_node(pointer node)
+            {
+                if (!node)
+                    return ;
+                alloc_pair.destroy(node->data);
+                alloc_pair.deallocate(node->data, 1);
+                alloc_node.destroy(node);
+                alloc_node.deallocate(node, 1);
+            }
+
+            // ! DESTROY TREE
+            void    destroy_tree(pointer node)
+            {
+                if (!node)
+                    return ;
+                destroy_tree(node->left);
+                destroy_tree(node->right);
+                destroy_node(node);
+            }
+
+            // ! INIT NODE
+            pointer init_node(const int& _height, const value_type& _val, pointer _parent)
+            {
+                pointer new_node = alloc_node.allocate(1);
+                new_node->data = alloc_pair.allocate(1);
+                alloc_pair.construct(new_node->data, _val);
+                alloc_node.construct(new_node, ft::Node_avl<Key, T>(_height, nullptr, nullptr, _parent, new_node->data));
+                return new_node;
+            }
+
+            // ! GET HIGHT
+            int     height(pointer _node)
+            {
+                if (!_node)
+                    return 0;
+                return _node->height;
+            }
+
+            // ! GET THE MAX OF TOW NUMBER
+            int     max(int a, int b)
+            {
+                return (a > b) ? a : b;
+            }
+
+            // ! RIGHT ROTAION
+            pointer     rightRotation(pointer _node)
+            {
+                pointer     _l_node = _node->left;
+                pointer     _r_node = _l_node->right;
+
+                _l_node->right = _node;
+                _node->left    = _r_node;
+
+                _node->height = max(height(_node->left), height(_node->right)) + 1;
+                _l_node->height = max(height(_l_node->left), height(_l_node->right)) + 1;
+
+                return _l_node;
+            }
+
+            // ! LEFT ROTATION
+            pointer     leftRotation(pointer _node)
+            {
+                pointer     _r_node = _node->right;
+                pointer     _l_node = _r_node->left;
+
+                _r_node->left = _node;
+                _node->right = _l_node;
+
+                _node->height = max(height(_node->left), height(_node->right)) + 1;
+                _r_node->height = max(height(_r_node->left), height(_r_node->right)) + 1;
+
+                return _r_node;
+            }
+
+            // ! GET BALANCE
+            int     get_Balance(pointer _node)
+            {
+                if (!_node)
+                    return 0;
+                return height(_node->left) - height(_node->right);
+            }
+
+            // ! INSERT NODE
+            pointer     insert_avl(pointer _node, const value_type& _val)
+            {
+                if (!_node)
+                {
+                    _size++;
+                    return init_node(0, _val, _node);
+                } 
+
+                if (comp(_val.first, _node->data->first))
+                    _node->left = insert_avl(_node->left, _val);
+                else if (comp(_node->data->first, _val.first))
+                    _node->right = insert_avl(_node->right, _val);
+                else
+                    return _node;
+
+                _node->height = 1 + max(height(_node->left), height(_node->right));
+
+                int balance = get_Balance(_node);
+
+                if (balance > 1 && comp(_val.first, _node->data->first))
+                    return rightRotation(_node);
+                
+                if (balance < -1 && comp(_node->data->first, _val.first))
+                    return leftRotation(_node);
+                
+                if (balance > 1 && comp(_node->left->data->first, _val.first))
+                {
+                    _node->left = leftRotation(_node->left);
+                    return rightRotation(_node);
+                }
+
+                if (balance < -1 && comp(_node->right->data->first, _val.first))
+                {
+                    _node->right = rightRotation(_node->right);
+                    return leftRotation(_node);
+                }
+
+                return _node;
+            }
+            
+            void    insert(const value_type& _val)
+            {
+                root = insert_avl(root, _val);
+            }
+
+        private :
+            pointer                 root;
+            allocator_type_pair     alloc_pair;
+            Comp                    comp;
+            allocator_type          alloc_node;
+            size_type               _size;
+        
+
+
+    };
+
 }
