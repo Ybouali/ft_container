@@ -12,7 +12,7 @@ namespace ft
 
             pair(): first(), second() {}
             
-            pair(const first_type& f_p, const second_type& s_p): first(f_p), second(s_p) {}
+            pair(const first_type& f_p, const second_type& s_p) : first(f_p), second(s_p) { }
 
             template <class T8, class T9>
             pair(const pair<T8, T9>& other): first(other.first), second(other.second) {}

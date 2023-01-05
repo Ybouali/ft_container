@@ -59,6 +59,13 @@
 int		main(void)
 {
 	
+	ft::vector<int>	v1(4);
+
+	ft::vector<int>::iterator	it = v1.begin();
+	ft::vector<int>::const_iterator	it1 = (v1.begin() + 5);
+
+	std::cout << it1 - it << std::endl;
+
 	return (0);
 }
 

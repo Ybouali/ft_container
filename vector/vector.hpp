@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../utils/utils.hpp"
 #include "../iterators/random_access_iterator.hpp"
 #include "../iterators/reverse_iterator.hpp"

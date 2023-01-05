@@ -1,29 +1,15 @@
 #pragma once
+
 #include "../../vector/vector.hpp"
+
+#include "../../iterators/bidirectional_iterator.hpp"
+
+#include "../utils/Node_avl.hpp"
 
 #define COUNT 10
 
 namespace ft {
-    template <class Key, class T > 
-    class Node_avl {
-        public :
-            int                         height;
-            Node_avl                    *left;
-            Node_avl                    *right;
-            Node_avl                    *parent;
-            ft::pair<const Key, T>      *data;
-            
-            Node_avl(): height(0), left(nullptr), right(nullptr), parent(nullptr), data() {}
-
-            Node_avl(const Node_avl& other): height(other.height), left(other.left), right(other.right), parent(other.parent), data(other.data) {}
-
-            Node_avl(int _height, Node_avl *_left, Node_avl *_right, Node_avl *_parent, ft::pair<const Key, T>  *_data)
-            : height(_height), left(_left), right(_right), parent(_parent), data(_data) {}
-
-
-
-            ~Node_avl() {}
-    };
+    
     template <
         class Key,
         class T,
@@ -38,8 +24,8 @@ namespace ft {
             typedef Key                                                             Key_type;
             typedef T                                                               mapped_type;
             typedef typename ft::pair<Key_type, mapped_type>                        value_type;
-            typedef Node_avl<Key, T> *                                              pointer;
-            typedef Node_avl<Key, T> &                                              reference;
+            typedef ft::Node_avl<Key, T> *                                          pointer;
+            typedef ft::Node_avl<Key, T> &                                          reference;
             typedef typename Alloc::template rebind<ft::Node_avl<Key, T> >::other   allocator_type;
             typedef size_t                                                          size_type;
 
@@ -49,7 +35,8 @@ namespace ft {
             
             ~avl_tree() {
                 std::cout << "-------------------------------------------" << std::endl;
-                show_tree(root);
+                std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
+                show_tree_2D(root, 0);
                 std::cout << "-------------------------------------------" << std::endl;
                 destroy_tree(root);
             } 
@@ -73,12 +60,12 @@ namespace ft {
                 show_tree_2D(node->left, space);
             }
 
-            // ! SHOW_TREE
-            void    show_tree(pointer node)
-            {
-                std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
-                show_tree_2D(node, 0);
-            }
+            // // ! SHOW_TREE
+            // void    show_tree(pointer node)
+            // {
+            //     std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
+            //     show_tree_2D(node, 0);
+            // }
 
             // ! DESTROY NODE
             void    destroy_node(pointer node)

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "./utils/avl_tree.hpp"
 
 namespace ft
@@ -25,7 +27,7 @@ namespace ft
             typedef typename allocator_type::const_reference                                        const_reference;
             typedef typename allocator_type::pointer                                                pointer;
             typedef typename allocator_type::const_pointer                                          const_pointer;
-            // typedef typename bidirectional_iterator<value_type>::iterator                        iterator;
+            typedef typename ft::bidirectional_iterator<ft::Node_avl<key_type, mapped_type> >           iterator;
             // typedef typename bidirectional_iterator<value_type>::const_iterator                  const_iterator;
             // typedef typename ft::reverse_iterator<ft::bidirectional_iterator<value_type> >       reverse_iterator;
             // typedef typename ft::reverse_iterator<ft::bidirectional_iterator<const value_type> > const_reverse_iterator;
@@ -49,13 +51,13 @@ namespace ft
                 
             }
             
-            void find(const Key& _val)
+            iterator find(const Key& _val)
             {
                 ft::Node_avl<Key, T>    *result = tree.search(_val);
-                
-                if (!result)
-                    return ;
-                std::cout << "  KEY :: " << result->data->first << "    VALUE :: " << result->data->second << std::endl;
+                return result;
+                // if (!result)
+                //     return ;
+                // std::cout << "  KEY :: " << result->data->first << "    VALUE :: " << result->data->second << std::endl;
             }
 
             void    erase(const Key& _val) { tree.erase(_val); }

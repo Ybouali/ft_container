@@ -24,5 +24,7 @@ int     main()
     // map.find(225);
     map.erase(200);
 
+    ft::map<int, std::string>::iterator it = map.find(200);
+
        
 }
