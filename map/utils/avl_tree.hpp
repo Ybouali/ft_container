@@ -20,6 +20,8 @@ namespace ft {
             Node_avl(int _height, Node_avl *_left, Node_avl *_right, Node_avl *_parent, ft::pair<const Key, T>  *_data)
             : height(_height), left(_left), right(_right), parent(_parent), data(_data) {}
 
+
+
             ~Node_avl() {}
     };
     template <
@@ -202,9 +204,124 @@ namespace ft {
                 return _node;
             }
             
+            // ! INSERT
             void    insert(const value_type& _val)
             {
                 root = insert_avl(root, _val);
+            }
+
+            // ! SEARCH WITH A ROOT
+            pointer    search_avl(pointer node, const Key_type& _val)
+            {
+                if (!node)
+                    return nullptr;
+                
+                if (comp(node->data->first, _val))
+                    return search_avl(node->right, _val);
+                else if (comp(_val, node->data->first))
+                    return search_avl(node->left, _val);
+                else
+                    return node;
+                return nullptr;
+            }
+
+            // ! SEARCH
+            pointer     search(const Key_type& _val)
+            {
+                return search_avl(get_root(), _val);
+            }
+
+            // ! GET ROOT
+            pointer     get_root() { return this->root; }
+
+            pointer     min(void) 
+            {
+                pointer     _node = root;
+
+                while(_node->left)
+                    _node = _node->left;
+                return _node;
+            }
+            
+            pointer     min(pointer _root)
+            {
+                while (_root->left)
+                    _root = _root->left;
+                return _root;
+            }
+
+            // ! ERASE AVL
+            pointer    erase_avl(pointer   _root, const Key_type& _val)
+            {
+                if (!_root)
+                    return _root;
+                if (comp(_val, _root->data->first))
+                    _root->left = erase_avl(_root->left, _val);
+                else if (comp(_root->data->first, _val))
+                    _root->right = erase_avl(_root->right, _val);
+                else
+                {
+                    if (!_root->left || !_root->right)
+                    {
+                        pointer     temp = _root->left ? _root->left : _root->right;
+                        
+                        if (!temp)
+                        {
+                            temp = _root;
+                            _root = nullptr;
+                        }
+                        else
+                        {
+                            alloc_pair.destroy(_root->data);
+                            alloc_pair.construct(_root->data, *(temp->data));
+                            _root->left = temp->left;
+                            _root->right = temp->right;
+                        }
+                            
+                        destroy_node(temp);
+                        _size--;
+                    }
+                    else
+                    {
+                        pointer     temp = min(_root->right);
+
+                        alloc_pair.destroy(_root->data);
+                        alloc_pair.construct(_root->data, *(temp->data));
+
+                        _root->right = erase_avl(_root->right, temp->data->first);
+                    }
+                }
+                if (!_root)
+                    return _root;
+                _root->height = 1 + max(height(_root->left), height(_root->right));
+
+                int balance = get_Balance(_root);
+
+                if (balance > 1 && get_Balance(_root->left) >= 0)
+                    return rightRotation(_root);
+                
+                if (balance > 1 && get_Balance(_root->left) < 0)
+                {
+                    _root->left = leftRotation(_root->left);
+                    return rightRotation(_root);
+                }
+
+                if (balance < -1 && get_Balance(_root->right) <= 0)
+                    return leftRotation(_root);
+                
+                if (balance < -1 && get_Balance(_root->right) > 0)
+                {
+                    _root->right = rightRotation(_root->right);
+                    return leftRotation(_root);
+                }
+
+                return _root;
+            }
+
+            // ! ERASE
+            void    erase(const Key_type& _val)
+            {
+                root = erase_avl(get_root(), _val);
             }
 
         private :
