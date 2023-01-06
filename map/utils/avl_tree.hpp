@@ -24,21 +24,23 @@ namespace ft {
             typedef Key                                                             Key_type;
             typedef T                                                               mapped_type;
             typedef typename ft::pair<Key_type, mapped_type>                        value_type;
+            typedef typename ft::Node_avl<Key_type, mapped_type>                    _Node_type;
             typedef ft::Node_avl<Key, T> *                                          pointer;
+            typedef const ft::Node_avl<Key, T> *                                    const_pointer;
             typedef ft::Node_avl<Key, T> &                                          reference;
             typedef typename Alloc::template rebind<ft::Node_avl<Key, T> >::other   allocator_type;
             typedef size_t                                                          size_type;
 
-            avl_tree(): root(nullptr), alloc_pair(), comp(), alloc_node(), _size() {}
+            avl_tree(): root() , alloc_pair(), comp(), alloc_node(), _size() {}
             
             avl_tree(const avl_tree& other): root(other.root), alloc_pair(other.aolloc_pair), comp(other._comp), alloc_node(other.alloc_node), _size(other._size) {} 
             
             ~avl_tree() {
                 std::cout << "-------------------------------------------" << std::endl;
                 std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
-                show_tree_2D(root, 0);
+                show_tree_2D(root.right, 0);
                 std::cout << "-------------------------------------------" << std::endl;
-                destroy_tree(root);
+                destroy_tree(root.left);
             } 
 
             void    show_tree_2D(pointer node, size_type space)
@@ -60,12 +62,57 @@ namespace ft {
                 show_tree_2D(node->left, space);
             }
 
+            // ! get super root 
+            pointer  get_super_root(void) { return &root; }
+
+            // ! get super root 
+            const_pointer  get_super_root(void) const { return &root; }
+
+
             // // ! SHOW_TREE
             // void    show_tree(pointer node)
             // {
             //     std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
             //     show_tree_2D(node, 0);
             // }
+
+            // ! GET MIN SUBTREE
+            pointer     get_min_subtree(pointer _node)
+            {
+                if (!_node)
+                    return nullptr;
+                while (_node->left)
+                    _node = _node->left;
+                return _node;
+            }
+
+            // ! IN ORDER SUCCESSOR
+            pointer in_order_successor(pointer _node)
+            {
+                if (!_node)
+                    return nullptr;
+                if (_node->right)
+                    return get_min_subtree(_node->right);
+                pointer node = _node;
+                pointer parent = _node->parent;
+
+                while (parent && node == parent->right) {
+                    node = parent;
+                    parent = parent->parent;
+                }
+
+                return parent;
+            }
+
+            // ! GET MAX SUBTREE
+            pointer     get_max_subtree(pointer _node)
+            {
+                if (!_node)
+                    return nullptr;
+                while (_node->right)
+                    _node = _node->right;
+                return _node;
+            }
 
             // ! DESTROY NODE
             void    destroy_node(pointer node)
@@ -194,7 +241,8 @@ namespace ft {
             // ! INSERT
             void    insert(const value_type& _val)
             {
-                root = insert_avl(root, _val);
+                root.left = insert_avl(root.left, _val);
+                root.right = root.left;
             }
 
             // ! SEARCH WITH A ROOT
@@ -212,6 +260,12 @@ namespace ft {
                 return nullptr;
             }
 
+            // ! BEGIN
+            pointer    begin()
+            {
+                return root;
+            }
+
             // ! SEARCH
             pointer     search(const Key_type& _val)
             {
@@ -219,8 +273,9 @@ namespace ft {
             }
 
             // ! GET ROOT
-            pointer     get_root() { return this->root; }
+            pointer     get_root() { return root.left; }
 
+            // ! GET MIN 
             pointer     min(void) 
             {
                 pointer     _node = root;
@@ -308,18 +363,16 @@ namespace ft {
             // ! ERASE
             void    erase(const Key_type& _val)
             {
-                root = erase_avl(get_root(), _val);
+                root.left = erase_avl(get_root(), _val);
+                root.right = root.left;
             }
 
         private :
-            pointer                 root;
-            allocator_type_pair     alloc_pair;
-            Comp                    comp;
-            allocator_type          alloc_node;
-            size_type               _size;
-        
-
-
+            _Node_avl                                       root;
+            allocator_type_pair                             alloc_pair;
+            Comp                                            comp;
+            allocator_type                                  alloc_node;
+            size_type                                       _size;
     };
 
 }

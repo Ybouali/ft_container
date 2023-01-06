@@ -17,9 +17,7 @@ namespace ft
 
             Node_avl(int _height, Node_avl *_left, Node_avl *_right, Node_avl *_parent, ft::pair<const Key, T>  *_data)
             : height(_height), left(_left), right(_right), parent(_parent), data(_data) {}
-
-
-
+            
             ~Node_avl() {}
     };
 }
