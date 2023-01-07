@@ -22,9 +22,12 @@ int     main()
     map.insert(ft::make_pair(650, "TEST :)"));
     map.insert(ft::make_pair(625, "TEST :)"));
     // map.find(225);
-    map.erase(200);
+    // map.erase(150);
 
-    ft::map<int, std::string>::iterator it = map.find(200);
+    ft::map<int, std::string>::iterator it = map.find(400);
 
-       
+    std::cout << "TEST : " << *(it).first << std::endl;
+    // it = map.begin();
+    // it = map.end();
+    // std::cout << it->first << std::endl;
 }

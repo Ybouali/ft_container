@@ -54,7 +54,7 @@ namespace ft {
 
                 std::cout << std::endl;
 
-                for (int i = COUNT; i < space; i++)
+                for (size_type i = COUNT; i < space; i++)
                     std::cout << " ";
 
                 std::cout << "| " << node->data->first << " HEIGHT " << node->height << " |" << std::endl;
@@ -68,14 +68,9 @@ namespace ft {
             // ! get super root 
             const_pointer  get_super_root(void) const { return &root; }
 
-
-            // // ! SHOW_TREE
-            // void    show_tree(pointer node)
-            // {
-            //     std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
-            //     show_tree_2D(node, 0);
-            // }
-
+            // ! GET SIZE
+            size_type   get_size(void) const { return _size; }
+            
             // ! GET MIN SUBTREE
             pointer     get_min_subtree(pointer _node)
             {
@@ -263,7 +258,12 @@ namespace ft {
             // ! BEGIN
             pointer    begin()
             {
-                return root;
+                pointer node = root.left;
+
+                while (node->left)
+                    node = node->left;
+                
+                return node;
             }
 
             // ! SEARCH
@@ -368,7 +368,7 @@ namespace ft {
             }
 
         private :
-            _Node_avl                                       root;
+            _Node_type                                       root;
             allocator_type_pair                             alloc_pair;
             Comp                                            comp;
             allocator_type                                  alloc_node;

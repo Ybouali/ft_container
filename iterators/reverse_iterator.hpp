@@ -9,12 +9,12 @@ namespace ft {
         protected :
             Iterator    curr;
         public :
-            typedef Iterator                                        iterator_type;
-            typedef typename iterator_type::value_type              value_type;
-            typedef typename iterator_type::difference_type         difference_type;
-            typedef typename iterator_type::pointer                 pointer;
-            typedef typename iterator_type::reference               reference;
-            typedef typename iterator_type::iterator_category       iterator_category;
+            typedef Iterator                                                    iterator_type;
+            typedef typename iterator_traits<Iterator>::value_type              value_type;
+            typedef typename iterator_traits<Iterator>::difference_type         difference_type;
+            typedef typename iterator_traits<Iterator>::pointer                 pointer;
+            typedef typename iterator_traits<Iterator>::reference               reference;
+            typedef typename iterator_traits<Iterator>::iterator_category       iterator_category;
 
             reverse_iterator(): curr(NULL) { }
 
