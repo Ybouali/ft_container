@@ -374,5 +374,4 @@ namespace ft {
             allocator_type                                  alloc_node;
             size_type                                       _size;
     };
-
-}
+} 

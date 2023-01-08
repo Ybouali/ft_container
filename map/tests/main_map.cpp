@@ -26,7 +26,15 @@ int     main()
 
     ft::map<int, std::string>::iterator it = map.find(400);
 
-    std::cout << "TEST : " << *(it).first << std::endl;
+    // ft::pair<int, std::string>  pair = *it;
+
+    
+    std::cout << "TEST : " << it->first << std::endl;
+    --it;
+    std::cout << "TEST : " << it->first << std::endl;
+    ++it;
+    std::cout << "TEST : " << it->first << std::endl;
+    // std::cout << "TEST : " << pair.first << std::endl;
     // it = map.begin();
     // it = map.end();
     // std::cout << it->first << std::endl;

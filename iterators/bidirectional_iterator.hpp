@@ -24,8 +24,8 @@ namespace ft {
 
             bidirectional_iterator& operator=(const bidirectional_iterator& other)
             {
-                _node_curr = other._node_curr;
-                ptr = other.ptr;
+                this->_node_curr = other._node_curr;
+                this->ptr = other.ptr;
                 return *this;
             }
 
@@ -37,15 +37,21 @@ namespace ft {
 
             ~bidirectional_iterator() {}
             
-            reference   operator*() { return _node_curr->data; }
+            reference   operator*() { return *(this->_node_curr->data); }
 
-            pointer     operator->() { return ptr; }
+            pointer     operator->() { return this->_node_curr->data; }
 
-            reference operator++(void)
+            bidirectional_iterator& operator++(void)
             {
-                
+                _node_curr = increment(_node_curr);
+                return (*this);
+            }
 
-            }            
+            bidirectional_iterator& operator--(void)
+            {
+                _node_curr = decrement(_node_curr);
+                return (*this);
+            }
 
         private :
             node_type_p     _node_curr;
