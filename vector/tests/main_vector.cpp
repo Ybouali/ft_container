@@ -84,29 +84,39 @@
 #include <vector>       // std::vector
 #include "../vector.hpp"
 
-void myfunction (int i) {  // function:
-  std::cout << ' ' << i;
-}
+// void myfunction (int i) {  // function:
+//   std::cout << ' ' << i;
+// }
 
-struct myclass {           // function object type:
-  void operator() (int i) {std::cout << ' ' << i;}
-} myobject;
+// struct myclass {           // function object type:
+//   void operator() (int i) {std::cout << ' ' << i;}
+// } myobject;
 
-int main () {
-  ft::vector<int> myvector;
-  std::iterator_traits<ft::vector<int>::iterator >::difference_type test;
-  myvector.push_back(10);
-  myvector.push_back(20);
-  myvector.push_back(30);
+// int main () {
+//   ft::vector<int> myvector;
+//   std::iterator_traits<ft::vector<int>::iterator >::difference_type test;
+//   myvector.push_back(10);
+//   myvector.push_back(20);
+//   myvector.push_back(30);
 
-  std::cout << "myvector contains:";
-  std::count (myvector.begin(), myvector.end(), 42);
-  std::cout << '\n';
+//   std::cout << "myvector contains:";
+//   std::count (myvector.begin(), myvector.end(), 42);
+//   std::cout << '\n';
 
-  // or:
-  std::cout << "myvector contains:";
-  std::for_each (myvector.rbegin(), myvector.rend(), myobject);
-  std::cout << '\n';
+//   // or:
+//   std::cout << "myvector contains:";
+//   std::for_each (myvector.rbegin(), myvector.rend(), myobject);
+//   std::cout << '\n';
 
-  return 0;
+//   return 0;
+// }
+
+int main()
+{
+  ft::vector<int> myvector(10, 19);
+  ft::vector<int>::iterator   n_it = myvector.begin(); 
+  ft::vector<int>::const_iterator   c_it = myvector.begin(); 
+
+  if (c_it == n_it)
+    std::cout << "hello : " << std::endl;
 }

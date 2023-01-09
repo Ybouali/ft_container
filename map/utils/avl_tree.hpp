@@ -38,9 +38,9 @@ namespace ft {
             ~avl_tree() {
                 std::cout << "-------------------------------------------" << std::endl;
                 std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
-                show_tree_2D(root.right, 0);
+                show_tree_2D(root, 0);
                 std::cout << "-------------------------------------------" << std::endl;
-                destroy_tree(root.left);
+                destroy_tree(root);
             } 
 
             void    show_tree_2D(pointer node, size_type space)
@@ -57,8 +57,8 @@ namespace ft {
                 for (size_type i = COUNT; i < space; i++)
                     std::cout << " ";
 
-                std::cout << "| " << node->data->first << " HEIGHT " << node->height << " |" << std::endl;
-                
+                std::cout << "| " << node->data->first << " HEIGHT " << node->height << " add :: " << node->parent << " |" << std::endl;
+
                 show_tree_2D(node->left, space);
             }
 
@@ -157,11 +157,16 @@ namespace ft {
             // ! RIGHT ROTAION
             pointer     rightRotation(pointer _node)
             {
+                pointer     _p_node = _node->parent;
                 pointer     _l_node = _node->left;
                 pointer     _r_node = _l_node->right;
-
+                
+                if (_r_node)
+                    _r_node->parent = _node;
                 _l_node->right = _node;
                 _node->left    = _r_node;
+                _l_node->parent = _p_node;
+                _node->parent = _l_node;
 
                 _node->height = max(height(_node->left), height(_node->right)) + 1;
                 _l_node->height = max(height(_l_node->left), height(_l_node->right)) + 1;
@@ -174,9 +179,14 @@ namespace ft {
             {
                 pointer     _r_node = _node->right;
                 pointer     _l_node = _r_node->left;
+                pointer     _p_node = _node->parent;
 
+                if (_l_node)
+                    _l_node->parent = _node;
                 _r_node->left = _node;
                 _node->right = _l_node;
+                _r_node->parent = _node->parent;
+                _node->parent = _r_node;
 
                 _node->height = max(height(_node->left), height(_node->right)) + 1;
                 _r_node->height = max(height(_r_node->left), height(_r_node->right)) + 1;
@@ -198,20 +208,26 @@ namespace ft {
                 if (!_node)
                 {
                     _size++;
-                    return init_node(0, _val, _node);
+                    return init_node(1, _val, nullptr);
                 } 
 
                 if (comp(_val.first, _node->data->first))
+                {
                     _node->left = insert_avl(_node->left, _val);
+                    _node->left->parent = _node;
+                }
                 else if (comp(_node->data->first, _val.first))
+                {
                     _node->right = insert_avl(_node->right, _val);
+                    _node->right->parent = _node;
+                }
                 else
                     return _node;
 
                 _node->height = 1 + max(height(_node->left), height(_node->right));
 
                 int balance = get_Balance(_node);
-
+                
                 if (balance > 1 && comp(_val.first, _node->data->first))
                     return rightRotation(_node);
                 
@@ -236,8 +252,8 @@ namespace ft {
             // ! INSERT
             void    insert(const value_type& _val)
             {
-                root.left = insert_avl(root.left, _val);
-                root.right = root.left;
+                root = insert_avl(root, _val);
+                // root = root;
             }
 
             // ! SEARCH WITH A ROOT
@@ -255,10 +271,21 @@ namespace ft {
                 return nullptr;
             }
 
+            // ! END
+            pointer    end()
+            {
+                pointer node = get_root();
+
+                while (node->right)
+                    node = node->right;
+                
+                return node;
+            }
+
             // ! BEGIN
             pointer    begin()
             {
-                pointer node = root.left;
+                pointer node = get_root();
 
                 while (node->left)
                     node = node->left;
@@ -273,7 +300,7 @@ namespace ft {
             }
 
             // ! GET ROOT
-            pointer     get_root() { return root.left; }
+            pointer     get_root() { return root; }
 
             // ! GET MIN 
             pointer     min(void) 
@@ -338,7 +365,7 @@ namespace ft {
                 _root->height = 1 + max(height(_root->left), height(_root->right));
 
                 int balance = get_Balance(_root);
-
+                
                 if (balance > 1 && get_Balance(_root->left) >= 0)
                     return rightRotation(_root);
                 
@@ -363,12 +390,12 @@ namespace ft {
             // ! ERASE
             void    erase(const Key_type& _val)
             {
-                root.left = erase_avl(get_root(), _val);
-                root.right = root.left;
+                root = erase_avl(get_root(), _val);
+                // root = root;
             }
 
         private :
-            _Node_type                                       root;
+            _Node_type*                                       root;
             allocator_type_pair                             alloc_pair;
             Comp                                            comp;
             allocator_type                                  alloc_node;

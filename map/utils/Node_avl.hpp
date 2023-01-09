@@ -42,7 +42,6 @@ namespace ft
     Node_avl<Key, T>    * decrement(Node_avl<Key, T> *r_node)
     {
         Node_avl<Key, T> *parent;
-        
         if (r_node && r_node->left)
             r_node = get_next_max(r_node->left);
         else if (r_node)
@@ -62,7 +61,7 @@ namespace ft
     Node_avl<Key, T>    *increment(Node_avl<Key, T> *r_node)
     {
         Node_avl<Key, T> *parent;
-        
+
         if (r_node && r_node->right)
             r_node = get_next_min(r_node->right);
         else if (r_node)

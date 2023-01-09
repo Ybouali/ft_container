@@ -74,21 +74,24 @@ namespace ft
             // ! EMPTY
             bool empty() const { return size() ? false : true; }
             
-            // ! end
+            // ! END
+            iterator end() { return iterator(tree.end(), 1); }
+
+            // ! BEGIN
             iterator begin()
             {
-                return iterator(tree.get_root());
+                return tree.begin();
             }
 
-            const_iterator begin() const
-            {
-                return nullptr;
-            }
+            // const_iterator begin() const
+            // {
+            //     return nullptr;
+            // }
 
-            iterator end()
-            {
-                return tree.get_super_root();
-            }
+            // iterator end()
+            // {
+            //     return tree.get_super_root();
+            // }
         private :
             key_type                                                                _key_map;
             mapped_type                                                             _mapped;

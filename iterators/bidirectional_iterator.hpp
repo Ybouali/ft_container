@@ -29,7 +29,7 @@ namespace ft {
                 return *this;
             }
 
-            bidirectional_iterator(node_type_p __root)
+            bidirectional_iterator(node_type_p __root, int i)
             {
                 _node_curr = __root;
                 ptr = _node_curr->data;
@@ -55,6 +55,7 @@ namespace ft {
 
         private :
             node_type_p     _node_curr;
+            // node_type_p     _end;
             pointer         ptr;
         
     };
