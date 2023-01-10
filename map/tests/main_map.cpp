@@ -27,8 +27,9 @@ int     main()
     ft::map<int, std::string>::iterator it_e = map.end();
     // map.erase(250);
 
-    it_e--;
-    // std::cout << it_e->first << std::endl;
+    while (it_b++ != map.end())
+        std::cout << it_e->first << std::endl;
+    
     // if (it_b < it_e)
     //     std::cout << "hello world!" << std::endl;
     // if (*it_b < *it_e)

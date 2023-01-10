@@ -75,12 +75,12 @@ namespace ft
             bool empty() const { return size() ? false : true; }
             
             // ! END
-            iterator end() { return iterator(tree.end(), 1); }
+            iterator end() { return iterator(nullptr, tree.end()) ; }
 
             // ! BEGIN
             iterator begin()
             {
-                return tree.begin();
+                return iterator(tree.begin(), nullptr);
             }
 
             // const_iterator begin() const

@@ -16,7 +16,48 @@ namespace ft
 
             template <class T8, class T9>
             pair(const pair<T8, T9>& other): first(other.first), second(other.second) {}
+
+            pair& operator=(const pair& other) { 
+                second = other.second;
+                return *this;
+            }
+
+            template <class T3, class T4>
+            friend bool operator== (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs);
+
+            template <class T3, class T4>
+            friend bool operator!= (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs);
+
+            template <class T3, class T4>
+            friend bool operator<  (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs);
+
+            template <class T3, class T4>
+            friend bool operator<= (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs);
+
+            template <class T3, class T4>
+            friend bool operator>  (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs);
+
+            template <class T3, class T4>
+            friend bool operator>= (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs);
     };
+
+    template <class T3, class T4>
+    bool operator== (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs) { return lhs.first==rhs.first && lhs.second==rhs.second; }
+
+    template <class T3, class T4>
+    bool operator!= (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs) { return !(lhs==rhs); }
+
+    template <class T3, class T4>
+    bool operator<  (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs) { return lhs.first<rhs.first || (!(rhs.first<lhs.first) && lhs.second<rhs.second); }
+
+    template <class T3, class T4>
+    bool operator<= (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs) { return !(rhs<lhs); }
+
+    template <class T3, class T4>
+    bool operator>  (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs) { return rhs<lhs; }
+
+    template <class T3, class T4>
+    bool operator>= (const pair<T3,T4>& lhs, const pair<T3,T4>& rhs) { return !(lhs<rhs); }
 
     template <class T3, class T4>
     ft::pair<T3, T4> make_pair(T3 X, T4 Y ) { return pair<T3, T4>(X, Y); }

@@ -38,7 +38,7 @@ namespace ft {
             ~avl_tree() {
                 std::cout << "-------------------------------------------" << std::endl;
                 std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
-                show_tree_2D(root, 0);
+                // show_tree_2D(root, 0);
                 std::cout << "-------------------------------------------" << std::endl;
                 destroy_tree(root);
             } 
@@ -148,7 +148,7 @@ namespace ft {
                 return _node->height;
             }
 
-            // ! GET THE MAX OF TOW NUMBER
+            // ! GET THE MAX OF TOW NUMBERS
             int     max(int a, int b)
             {
                 return (a > b) ? a : b;
@@ -278,7 +278,6 @@ namespace ft {
 
                 while (node->right)
                     node = node->right;
-                
                 return node;
             }
 
@@ -391,7 +390,6 @@ namespace ft {
             void    erase(const Key_type& _val)
             {
                 root = erase_avl(get_root(), _val);
-                // root = root;
             }
 
         private :
