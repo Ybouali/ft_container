@@ -31,16 +31,21 @@ namespace ft {
             typedef typename Alloc::template rebind<ft::Node_avl<Key, T> >::other   allocator_type;
             typedef size_t                                                          size_type;
 
-            avl_tree(): root() , alloc_pair(), comp(), alloc_node(), _size() {}
+            avl_tree(): root(nullptr) , alloc_pair(), comp(), alloc_node(), _size(0) { }
             
             avl_tree(const avl_tree& other): root(other.root), alloc_pair(other.aolloc_pair), comp(other._comp), alloc_node(other.alloc_node), _size(other._size) {} 
             
             ~avl_tree() {
-                std::cout << "-------------------------------------------" << std::endl;
-                std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
-                // show_tree_2D(root, 0);
-                std::cout << "-------------------------------------------" << std::endl;
-                destroy_tree(root);
+                if (_size)
+                {
+                    std::cout << "-------------------------------------------" << std::endl;
+                    std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
+                    show_tree_2D(root, 0);
+                    std::cout << "-------------------------------------------" << std::endl;
+                }
+                if (_size)
+                    destroy_tree(root);
+                deallocate_tree(root);
             } 
 
             void    show_tree_2D(pointer node, size_type space)
@@ -57,7 +62,8 @@ namespace ft {
                 for (size_type i = COUNT; i < space; i++)
                     std::cout << " ";
 
-                std::cout << "| " << node->data->first << " HEIGHT " << node->height << " add :: " << node->parent << " |" << std::endl;
+                // " HEIGHT " << node->height << " add :: " << node->parent <<
+                std::cout << "| " << node->data->first << " |" << std::endl;
 
                 show_tree_2D(node->left, space);
             }
@@ -109,6 +115,27 @@ namespace ft {
                 return _node;
             }
 
+            // ! DEALLOCATE NODE
+            void deallocate_node(pointer _node)
+            {
+                if (!_node || !_node->data)
+                    return ;
+                alloc_pair.deallocate(_node->data, 1);
+                _node->data = nullptr;
+                alloc_node.deallocate(_node, 1);
+                _node = nullptr;
+            }
+
+            // ! DEALLOCATE TREE
+            void deallocate_tree(pointer node)
+            {
+                if (!node)
+                    return ;
+                deallocate_tree(node->left);
+                deallocate_tree(node->right);
+                deallocate_node(node);
+            }
+
             // ! DESTROY NODE
             void    destroy_node(pointer node)
             {
@@ -116,8 +143,13 @@ namespace ft {
                     return ;
                 alloc_pair.destroy(node->data);
                 alloc_pair.deallocate(node->data, 1);
+                node->data = nullptr;
                 alloc_node.destroy(node);
                 alloc_node.deallocate(node, 1);
+                if (root == node)
+                    root = nullptr;
+                node = nullptr;
+                _size--;
             }
 
             // ! DESTROY TREE
@@ -128,6 +160,13 @@ namespace ft {
                 destroy_tree(node->left);
                 destroy_tree(node->right);
                 destroy_node(node);
+            }
+
+            // ! DESTROY ALL aka CLEAR THE MAP
+            void destroy_avl(void)
+            {
+                if (_size)
+                    destroy_tree(root);
             }
 
             // ! INIT NODE
@@ -250,10 +289,10 @@ namespace ft {
             }
             
             // ! INSERT
-            void    insert(const value_type& _val)
+            pointer    insert(const value_type& _val)
             {
                 root = insert_avl(root, _val);
-                // root = root;
+                return root;
             }
 
             // ! SEARCH WITH A ROOT
@@ -276,6 +315,8 @@ namespace ft {
             {
                 pointer node = get_root();
 
+                if (!node) return nullptr;
+
                 while (node->right)
                     node = node->right;
                 return node;
@@ -285,6 +326,9 @@ namespace ft {
             pointer    begin()
             {
                 pointer node = get_root();
+
+                if (!node)
+                    return nullptr;
 
                 while (node->left)
                     node = node->left;
