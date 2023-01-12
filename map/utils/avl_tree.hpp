@@ -292,6 +292,7 @@ namespace ft {
             pointer    insert(const value_type& _val)
             {
                 root = insert_avl(root, _val);
+                
                 return root;
             }
 
@@ -391,7 +392,6 @@ namespace ft {
                         }
                             
                         destroy_node(temp);
-                        _size--;
                     }
                     else
                     {
@@ -433,7 +433,7 @@ namespace ft {
             // ! ERASE
             void    erase(const Key_type& _val)
             {
-                root = erase_avl(get_root(), _val);
+                root = erase_avl(root, _val);
             }
 
         private :

@@ -78,37 +78,62 @@ namespace ft
                 _node = tree->search(_key);
                 return _node->data->second;
             }
+
+            // ! ITERATORS -------------------------------------------------------
             
-            iterator find(const Key& _val)
-            {
-                node_pointer result = tree->search(_val);
-                return result;
-            }
+            // ! BEGIN
+            iterator begin() { return iterator(tree->begin(), nullptr); }
+
+            // ! BEGIN CONST
+            const_iterator begin() const { return const_iterator(tree->begin(), nullptr); }
+
+            // ! END
+            iterator end() { return iterator(nullptr, tree->end()) ; }
+
+            // ! END CONST
+            const_iterator end() const { return const_iterator(nullptr, tree->end()) ; }
+
+
+            // ! CAPACITY -------------------------------------------------------
+
+            // ! EMPTY
+            bool empty() const { return (bool)size(); }
+
+            // ! SIZE 
+            size_type size() const { return tree->get_size(); }
+            
+            // ! MAX SIZE
+            size_type max_size() const { return _alloc.max_size(); }
+
+            // ! MODIFIERS -------------------------------------------------------
 
             // ! CLEAR
             void clear() { tree->destroy_avl(); }
 
-            void    erase(const Key& _val) { tree->erase(_val); }
-
             // ! INSERT VALUE TYPE     
-            value_type    insert(const value_type& val)
+            ft::pair<iterator,bool> insert(const value_type& val)
             {
-                // std::cout << "insert inserted" << std::endl;
-                node_pointer inserted = tree->insert(val);
-                return *(inserted->data);
+                node_pointer found = tree->search(val.first);
+
+                if (found)
+                    return ft::make_pair(iterator(found), false);
+                
+                tree->insert(val);
+                
+                return ft::make_pair(iterator(tree->search(val.first)), true);
             }
 
             // ! INSERT POSITION 
             iterator insert(iterator pos, const value_type& _val)
             {
                 (void*)pos;
-                node_pointer inserted = tree->insert(_val);
-                return *(inserted->data);
+                tree->insert(_val);
+                return tree->search(_val.first);
             }
 
             // ! INSERT RANGE OF VALUES
-            template <typename InputIterator>
-            void insert(InputIterator first, InputIterator last)
+            template <typename iterator>
+            void insert(iterator first, iterator last)
             {
                 while (first != last)
                 {
@@ -117,24 +142,80 @@ namespace ft
                 }
             }
 
+            // ! ERASE POSITION OF VALUE
+            void erase (iterator position)
+            {
 
-            // ! SIZE 
-            size_type size() const { return tree->get_size(); }
+                tree->erase((*position).first);
+            }
 
-            // ! EMPTY
-            bool empty() const { return size() ? false : true; }
+            // ! ERASE KEY TYPE
+            size_type erase (const key_type& k)
+            {
+                node_pointer    node = tree->search(k);
+                if (!node)
+                    return 0;
+                tree->erase(k);
+                return 1;
+            }
+
+            // ! ERASE RANGE ITERATOR TYPE
+            void erase (iterator first, iterator last)
+            {
+                while (first != last)
+                {
+                    erase(first);
+                    first++;
+                }
+            }
+
+            // ! SWAP MAP
+            void swap (map& x)
+            {
+                std::swap(x._key_map, _key_map);
+                std::swap(x._mapped, _mapped);
+                std::swap(x._comp_key, _comp_key);
+                std::swap(x._alloc, _alloc);
+                std::swap(x._alloc_pair, _alloc_pair);
+                std::swap(x.tree, tree);
+            }
+
+            // ! COUNT 
+            size_type count (const key_type& k) const
+            {
+                node_pointer node = tree->search(k);
+                return node ? 1 : 0;
+            }
+            // ! FIND WITHI KEY TYPE && RETURN ITERATOR TYPE
+            iterator find(const Key& _val) { return tree->search(_val); }
+
+            // ! FIND WITHI KEY TYPE && RETURN CONST ITERATOR TYPE
+            const_iterator find(const Key& _val) const { return tree->search(_val); }
+
             
-            // ! END
-            iterator end() { return iterator(nullptr, tree->end()) ; }
+            
+            const_iterator lower_bound (const key_type& k) const
+            {
+                node_pointer    found = tree->search(k);
 
-            // ! END CONST
-            const_iterator end() const { return const_iterator(nullptr, tree->end()) ; }
+                if (found) return increment(found);
 
-            // ! BEGIN
-            iterator begin() { return iterator(tree->begin(), nullptr); }
+                return found;
+            }
 
-            // ! BEGIN CONST
-            const_iterator begin() const { return const_iterator(tree->begin(), nullptr); }
+
+            
+
+            
+
+
+            
+
+            
+            
+            
+
+            
             
 
         private :
