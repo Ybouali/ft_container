@@ -40,12 +40,14 @@ namespace ft {
                 {
                     std::cout << "-------------------------------------------" << std::endl;
                     std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
-                    show_tree_2D(root, 0);
+                    // show_tree_2D(root, 0);
                     std::cout << "-------------------------------------------" << std::endl;
                 }
                 if (_size)
+                {
                     destroy_tree(root);
-                deallocate_tree(root);
+                    deallocate_tree(root);
+                }
             } 
 
             void    show_tree_2D(pointer node, size_type space)
@@ -292,7 +294,7 @@ namespace ft {
             pointer    insert(const value_type& _val)
             {
                 root = insert_avl(root, _val);
-                
+
                 return root;
             }
 
@@ -434,6 +436,44 @@ namespace ft {
             void    erase(const Key_type& _val)
             {
                 root = erase_avl(root, _val);
+            }
+
+            // ! _LOWER BOUND
+            pointer upper_bound(const Key_type & _k)
+            {
+                pointer node_h = get_root();
+                pointer node_r;
+                
+                while (node_h)
+                {
+                    if (comp(_k, node_h->data->first))
+                    {
+                        node_r = node_h;
+                        node_h = node_h->left;
+                    }
+                    else
+                        node_h = node_h->right;
+                }
+                return node_r;
+            }
+
+            // ! _LOWER BOUND
+            pointer lower_bound(const Key_type & _k)
+            {
+                pointer node_h = get_root();
+                pointer node_r;
+                
+                while (node_h)
+                {
+                    if (!comp(node_h->data->first, _k))
+                    {
+                        node_r = node_h;
+                        node_h = node_h->left;
+                    }
+                    else
+                        node_h = node_h->right;
+                }
+                return node_r;
             }
 
         private :

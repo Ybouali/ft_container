@@ -88,7 +88,9 @@ namespace ft
             const_iterator begin() const { return const_iterator(tree->begin(), nullptr); }
 
             // ! END
-            iterator end() { return iterator(nullptr, tree->end()) ; }
+            iterator end() {
+                return iterator(nullptr, tree->end());
+            }
 
             // ! END CONST
             const_iterator end() const { return const_iterator(nullptr, tree->end()) ; }
@@ -192,32 +194,24 @@ namespace ft
             // ! FIND WITHI KEY TYPE && RETURN CONST ITERATOR TYPE
             const_iterator find(const Key& _val) const { return tree->search(_val); }
 
-            
-            
-            const_iterator lower_bound (const key_type& k) const
-            {
-                node_pointer    found = tree->search(k);
+            // ! EQUAL RANGE && RETURN ITERATOR
+            ft::pair<iterator, iterator> equal_range (const key_type& k) { return (ft::make_pair(lower_bound(k), upper_bound(k)));  }
 
-                if (found) return increment(found);
-
-                return found;
-            }
-
-
+            // ! EQUAL RANGE && RETURN CONST ITERATOR TYPE
+            ft::pair<const_iterator, const_iterator> equal_range (const key_type& k) const { return (ft::make_pair(lower_bound(k), upper_bound(k)));  }
             
+            // ! LOWER BOUND && RETURN NON CONST ITERATOR TYPE
+            iterator lower_bound (const key_type& k) { return tree->lower_bound(k); }
+            
+            // ! LOWER BOUND && RETURN CONST ITERATOR TYPE
+            const_iterator lower_bound (const key_type& k) const { return tree->lower_bound(k); }
 
-            
+            // ! UPPER BOUND && RETURN NON CONST ITERATOR TYPE
+            iterator upper_bound (const key_type& k) { return (tree->upper_bound(k)); }
 
-
-            
-
-            
-            
-            
-
-            
-            
-
+            // ! UPPER BOUND && RETURN CONST ITERATOR TYPE
+            const_iterator upper_bound (const key_type& k) const { return (tree->upper_bound(k)); }
+        
         private :
             key_type                                                                _key_map;
             mapped_type                                                             _mapped;

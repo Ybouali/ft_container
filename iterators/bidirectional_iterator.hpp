@@ -66,6 +66,7 @@ namespace ft {
                     _node_curr = _end;
                 else
                     _node_curr = decrement(_node_curr);
+             
                 return (*this);
             }
 
