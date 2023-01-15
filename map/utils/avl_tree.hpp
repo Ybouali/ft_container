@@ -33,7 +33,7 @@ namespace ft {
 
             avl_tree(): root(nullptr) , alloc_pair(), comp(), alloc_node(), _size(0) { }
             
-            avl_tree(const avl_tree& other): root(other.root), alloc_pair(other.aolloc_pair), comp(other._comp), alloc_node(other.alloc_node), _size(other._size) {} 
+            avl_tree(const avl_tree& other): root(other.root), alloc_pair(other.alloc_pair), comp(other.comp), alloc_node(other.alloc_node), _size(other._size) {} 
             
             ~avl_tree() {
                 if (_size)
@@ -220,7 +220,6 @@ namespace ft {
             {
                 pointer     _r_node = _node->right;
                 pointer     _l_node = _r_node->left;
-                pointer     _p_node = _node->parent;
 
                 if (_l_node)
                     _l_node->parent = _node;

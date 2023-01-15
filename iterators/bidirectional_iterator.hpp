@@ -57,6 +57,8 @@ namespace ft {
             {
                 node_type_p node = _node_curr;
                 _node_curr = increment(_node_curr);
+                if (!_node_curr)
+                    return bidirectional_iterator(nullptr);
                 return (node);
             }
 
