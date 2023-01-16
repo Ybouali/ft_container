@@ -41,15 +41,26 @@ namespace ft
             : _key_map(), _mapped(), _comp_key(comp), _alloc_pair(alloc), _tree(), _value_comp() { }
 
             template <class InputIterator>
-            map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()): _key_map(), _mapped(), _comp_key(comp), _alloc_pair(alloc), _value_comp()
+            map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr): _key_map(), _mapped(), _comp_key(comp), _alloc_pair(alloc), _value_comp()
             {
                 insert(first, last);
             }
 
-            // map (const map& x)
-            // {
-            //     (void)x;
-            // }
+            map (const map& x)
+            {
+                *this = x;
+            }
+
+            map& operator=(const map& other)
+            {
+                _key_map = other._key_map;
+                _mapped = other._mapped;
+                _comp_key = other._comp_key;
+                _alloc_pair = other._alloc_pair;
+                _tree = other._tree;
+                _value_comp = other._value_comp;
+                return *this;
+            }
 
             ~map() { }
 
@@ -66,7 +77,7 @@ namespace ft
             {
                 iterator it = find(k);
 
-                if (it != end())
+                if (it == end())
                     throw std::out_of_range("OUT OF RANGE");
                 return it->second;
             }
@@ -76,7 +87,7 @@ namespace ft
             {
                 const_iterator it = find(k);
 
-                if (it != end())
+                if (it == end())
                     throw std::out_of_range("OUT OF RANGE");
                 return it->second;
             }
@@ -84,13 +95,9 @@ namespace ft
             // ! OPERATOR []
             mapped_type& operator[] (const key_type& _key)
             {
+                insert(ft::make_pair(_key, mapped_type()));
                 node_pointer _node = _tree.search(_key);
-
-                if (!_node)
-                    insert(ft::make_pair(_key, mapped_type()));
-                _node = _tree.search(_key);
-                const_iterator  it = _node;
-                return it->second;
+                return _node->data->second;
             }
 
             // ! ITERATORS -------------------------------------------------------
@@ -110,14 +117,14 @@ namespace ft
             const_iterator end() const { return const_iterator(nullptr, _tree.end()) ; }
 
             // ! RBEGIN
-            reverse_iterator rbegin() { return iterator(nullptr, _tree.end()); }
+            reverse_iterator rbegin() { return reverse_iterator(iterator(nullptr, _tree.end())); }
 
             // ! RBEGIN CONST
-            const_reverse_iterator rbegin() const { return (nullptr, _tree.end()); }
+            const_reverse_iterator rbegin() const { return reverse_iterator(iterator(nullptr, _tree.end())); }
 
             // ! REND
-            iterator rend() {
-                return (_tree.begin(), nullptr);
+            reverse_iterator rend() {
+                return reverse_iterator(iterator(_tree.begin(), nullptr));
             }
 
             // ! REND CONST
@@ -156,7 +163,7 @@ namespace ft
             // ! INSERT POSITION 
             iterator insert(iterator pos, const value_type& _val)
             {
-                (void*)pos;
+                (void)pos;
                 _tree.insert(_val);
                 return _tree.search(_val.first);
             }

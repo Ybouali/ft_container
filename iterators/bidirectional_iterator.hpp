@@ -20,13 +20,20 @@ namespace ft {
 
             bidirectional_iterator() : _node_curr(), _end() {}
 
-            bidirectional_iterator(const bidirectional_iterator& other) : _node_curr(other._node_curr), _end(other._end) {}
+            bidirectional_iterator(const bidirectional_iterator& other)
+            {
+                *this = other;
+            }
 
             bidirectional_iterator& operator=(const bidirectional_iterator& other)
             {
                 this->_node_curr = other._node_curr;
                 this->_end = other._end;
                 return *this;
+            }
+
+            operator bidirectional_iterator<const P, T>() const {
+                return bidirectional_iterator<const P, T>(_node_curr);
             }
 
             bidirectional_iterator(node_type_p node, node_type_p last)
@@ -68,7 +75,6 @@ namespace ft {
                     _node_curr = _end;
                 else
                     _node_curr = decrement(_node_curr);
-             
                 return (*this);
             }
 
@@ -81,60 +87,21 @@ namespace ft {
                     _node_curr = _end;
                 else 
                     _node_curr = decrement(_node_curr);
-                
+                if (!_node_curr)
+                    return bidirectional_iterator(nullptr);
                 return (r_node);
             }
 
-            bool    operator==(const bidirectional_iterator& other) const { return _node_curr == other._node_curr; }
+            template <class _P, class _T>
+            bool operator==(const bidirectional_iterator<_P, _T>& other) { return _node_curr == other.get_curr(); }
 
-            bool    operator!=(const bidirectional_iterator& other) const { return _node_curr != other._node_curr; }
+            template <class _P, class _T>
+            bool operator!=(const bidirectional_iterator<_P, _T>& other) { return _node_curr != other.get_curr(); };
 
-            bool    operator>(const bidirectional_iterator& other) const { return _node_curr > other._node_curr; }
-
-            bool    operator>=(const bidirectional_iterator& other) const { return _node_curr >= other._node_curr; }
-
-            bool    operator<(const bidirectional_iterator& other) const { return _node_curr < other._node_curr; }
-
-            bool    operator<=(const bidirectional_iterator& other) const { return _node_curr <= other._node_curr; }
-
-            template <class p, class t>
-            friend bool operator==(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h);
-
-            template <class p, class t>
-            friend bool operator!=(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h);
-
-            template <class p, class t>
-            friend bool operator<(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h);
-            
-            template <class p, class t>
-            friend bool operator<=(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h);
-
-            template <class p, class t>
-            friend bool operator>(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h);
-
-            template <class p, class t>
-            friend bool operator>=(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h);
+            node_type_p     get_curr() const { return _node_curr; };
             
         private :
             node_type_p     _node_curr;
             node_type_p     _end;
     };
- 
-    template <class p, class t>
-    bool operator==(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h) { return *r == *h; }
-
-    template <class p, class t>
-    bool operator!=(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h) { return *r != *h; }
-
-    template <class p, class t>
-    bool operator<(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h) { return *r < *h; }
-
-    template <class p, class t>
-    bool operator<=(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h) { return *r <= *h; }
-
-    template <class p, class t>
-    bool operator>(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h) { return *r > *h; }
-
-    template <class p, class t>
-    bool operator>=(const bidirectional_iterator<p, t>& r, const bidirectional_iterator<p, t>& h) { return *r >= *h; }
 }

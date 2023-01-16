@@ -36,17 +36,17 @@ namespace ft {
             avl_tree(const avl_tree& other): root(other.root), alloc_pair(other.alloc_pair), comp(other.comp), alloc_node(other.alloc_node), _size(other._size) {} 
             
             ~avl_tree() {
+                // if (_size)
+                // {
+                //     std::cout << "-------------------------------------------" << std::endl;
+                //     std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
+                //     // show_tree_2D(root, 0);
+                //     std::cout << "-------------------------------------------" << std::endl;
+                // }
                 if (_size)
                 {
-                    std::cout << "-------------------------------------------" << std::endl;
-                    std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
-                    // show_tree_2D(root, 0);
-                    std::cout << "-------------------------------------------" << std::endl;
-                }
-                if (_size)
-                {
-                    destroy_tree(root);
-                    deallocate_tree(root);
+                    destroy_avl();
+                    // deallocate_tree(root);
                 }
             } 
 
@@ -118,15 +118,18 @@ namespace ft {
             }
 
             // ! DEALLOCATE NODE
-            void deallocate_node(pointer _node)
-            {
-                if (!_node || !_node->data)
-                    return ;
-                alloc_pair.deallocate(_node->data, 1);
-                _node->data = nullptr;
-                alloc_node.deallocate(_node, 1);
-                _node = nullptr;
-            }
+            // void deallocate_node(pointer _node)
+            // {
+            //     if (!_node || !_node->data)
+            //         return ;
+            //     alloc_pair.deallocate(_node->data, 1);
+            //     _node->data = nullptr;
+            //     alloc_node.deallocate(_node, 1);
+            //     if (root == nullptr)
+            //         root = nullptr;
+            //     else
+            //         _node = nullptr;
+            // }
 
             // ! DEALLOCATE TREE
             void deallocate_tree(pointer node)
@@ -143,14 +146,17 @@ namespace ft {
             {
                 if (!node)
                     return ;
+                
                 alloc_pair.destroy(node->data);
                 alloc_pair.deallocate(node->data, 1);
                 node->data = nullptr;
                 alloc_node.destroy(node);
                 alloc_node.deallocate(node, 1);
+                
                 if (root == node)
                     root = nullptr;
-                node = nullptr;
+                else
+                    node = nullptr;
                 _size--;
             }
 
@@ -298,7 +304,7 @@ namespace ft {
             }
 
             // ! SEARCH WITH A ROOT
-            pointer    search_avl(pointer node, const Key_type& _val)
+            pointer    search_avl(pointer node, const Key_type& _val) const
             {
                 if (!node)
                     return nullptr;
@@ -313,7 +319,7 @@ namespace ft {
             }
 
             // ! END
-            pointer    end()
+            pointer    end() const
             {
                 pointer node = get_root();
 
@@ -325,7 +331,7 @@ namespace ft {
             }
 
             // ! BEGIN
-            pointer    begin()
+            pointer    begin() const
             {
                 pointer node = get_root();
 
@@ -339,16 +345,16 @@ namespace ft {
             }
 
             // ! SEARCH
-            pointer     search(const Key_type& _val)
+            pointer     search(const Key_type& _val) const
             {
                 return search_avl(get_root(), _val);
             }
 
             // ! GET ROOT
-            pointer     get_root() { return root; }
+            pointer     get_root() const { return root; }
 
             // ! GET MIN 
-            pointer     min(void) 
+            pointer     min(void) const
             {
                 pointer     _node = root;
 
@@ -357,7 +363,7 @@ namespace ft {
                 return _node;
             }
             
-            pointer     min(pointer _root)
+            pointer     min(pointer _root) const
             {
                 while (_root->left)
                     _root = _root->left;
@@ -438,7 +444,7 @@ namespace ft {
             }
 
             // ! _LOWER BOUND
-            pointer upper_bound(const Key_type & _k)
+            pointer upper_bound(const Key_type & _k) const
             {
                 pointer node_h = get_root();
                 pointer node_r;
@@ -457,7 +463,7 @@ namespace ft {
             }
 
             // ! _LOWER BOUND
-            pointer lower_bound(const Key_type & _k)
+            pointer lower_bound(const Key_type & _k) const
             {
                 pointer node_h = get_root();
                 pointer node_r;
