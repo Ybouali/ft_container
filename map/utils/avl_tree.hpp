@@ -70,12 +70,6 @@ namespace ft {
                 show_tree_2D(node->left, space);
             }
 
-            // ! get super root 
-            pointer  get_super_root(void) { return &root; }
-
-            // ! get super root 
-            const_pointer  get_super_root(void) const { return &root; }
-
             // ! GET SIZE
             size_type   get_size(void) const { return _size; }
             
@@ -117,39 +111,19 @@ namespace ft {
                 return _node;
             }
 
-            // ! DEALLOCATE NODE
-            // void deallocate_node(pointer _node)
-            // {
-            //     if (!_node || !_node->data)
-            //         return ;
-            //     alloc_pair.deallocate(_node->data, 1);
-            //     _node->data = nullptr;
-            //     alloc_node.deallocate(_node, 1);
-            //     if (root == nullptr)
-            //         root = nullptr;
-            //     else
-            //         _node = nullptr;
-            // }
-
-            // ! DEALLOCATE TREE
-            void deallocate_tree(pointer node)
-            {
-                if (!node)
-                    return ;
-                deallocate_tree(node->left);
-                deallocate_tree(node->right);
-                deallocate_node(node);
-            }
-
             // ! DESTROY NODE
             void    destroy_node(pointer node)
             {
                 if (!node)
                     return ;
                 
+                if (node->parent && node->parent->left == node)
+                    node->parent->left = nullptr;
+                else if (node->parent && node->parent->right == node)
+                    node->parent->right = nullptr;
+
                 alloc_pair.destroy(node->data);
                 alloc_pair.deallocate(node->data, 1);
-                node->data = nullptr;
                 alloc_node.destroy(node);
                 alloc_node.deallocate(node, 1);
                 
@@ -438,9 +412,12 @@ namespace ft {
             }
 
             // ! ERASE
-            void    erase(const Key_type& _val)
+            size_type    erase(const value_type& _val)
             {
-                root = erase_avl(root, _val);
+                if (!search(_val.first))
+                    return 0;
+                root = erase_avl(root, _val.first);
+                return 1;
             }
 
             // ! _LOWER BOUND
@@ -482,7 +459,7 @@ namespace ft {
             }
 
         private :
-            _Node_type*                                       root;
+            _Node_type*                                     root;
             allocator_type_pair                             alloc_pair;
             Comp                                            comp;
             allocator_type                                  alloc_node;

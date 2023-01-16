@@ -41,7 +41,7 @@ namespace ft
             : _key_map(), _mapped(), _comp_key(comp), _alloc_pair(alloc), _tree(), _value_comp() { }
 
             template <class InputIterator>
-            map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr): _key_map(), _mapped(), _comp_key(comp), _alloc_pair(alloc), _value_comp()
+            map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()): _key_map(), _mapped(), _comp_key(comp), _alloc_pair(alloc), _value_comp()
             {
                 insert(first, last);
             }
@@ -57,7 +57,9 @@ namespace ft
                 _mapped = other._mapped;
                 _comp_key = other._comp_key;
                 _alloc_pair = other._alloc_pair;
-                _tree = other._tree;
+                if (other.size())
+                    this->insert(other.begin(), other.end());
+                
                 _value_comp = other._value_comp;
                 return *this;
             }
@@ -68,7 +70,7 @@ namespace ft
             allocator_type get_allocator() const { return _alloc_pair; }
 
             // ! VALUE COMP
-            value_compare value_comp() const { return (_value_comp); }
+            value_compare key_comp() const { return (_comp_key); }
 
             // ! ELEMENT ACCESS -------------------------------------------------------
 
@@ -95,9 +97,10 @@ namespace ft
             // ! OPERATOR []
             mapped_type& operator[] (const key_type& _key)
             {
-                insert(ft::make_pair(_key, mapped_type()));
-                node_pointer _node = _tree.search(_key);
-                return _node->data->second;
+
+                // insert(ft::make_pair(_key, mapped_type()));
+                // node_pointer _node = _tree.search(_key);
+                return (insert(ft::make_pair(_key, mapped_type())).first)->second;
             }
 
             // ! ITERATORS -------------------------------------------------------
@@ -134,7 +137,7 @@ namespace ft
             // ! CAPACITY -------------------------------------------------------
 
             // ! EMPTY
-            bool empty() const { return (bool)size(); }
+            bool empty() const { return _tree.get_size() ? false : true; }
 
             // ! SIZE 
             size_type size() const { return _tree.get_size(); }
@@ -183,38 +186,42 @@ namespace ft
             void erase (iterator position)
             {
 
-                _tree.erase((*position).first);
+                _tree.erase((*position));
             }
 
             // ! ERASE KEY TYPE
             size_type erase (const key_type& k)
             {
-                node_pointer    node = _tree.search(k);
-                if (!node)
-                    return 0;
-                _tree.erase(k);
-                return 1;
+                return _tree.erase(ft::make_pair(k, mapped_type()));
             }
 
             // ! ERASE RANGE ITERATOR TYPE
             void erase (iterator first, iterator last)
             {
-                while (first != last)
-                {
-                    erase(first);
-                    first++;
-                }
+                ft::vector<key_type> tmp;
+				for (; first != last; first++)
+						tmp.push_back(first->first);
+				for (size_type i = 0; i < tmp.size(); i++)
+					_tree.erase(ft::make_pair(tmp[i], mapped_type()));
             }
 
             // ! SWAP MAP
             void swap (map& x)
             {
+                map tmp;
+
                 std::swap(x._key_map, _key_map);
                 std::swap(x._mapped, _mapped);
                 std::swap(x._comp_key, _comp_key);
-                std::swap(x._alloc, _alloc_pair);
                 std::swap(x._alloc_pair, _alloc_pair);
-                std::swap(x.tree, _tree);
+
+                tmp.insert(begin(), end());
+                clear();
+                insert(x.begin(), x.end());
+                x.clear();
+                x.insert(tmp.begin(), tmp.end());
+
+                std::swap(x._value_comp, _value_comp);
             }
 
             // ! COUNT 
@@ -230,10 +237,18 @@ namespace ft
             const_iterator find(const Key& _val) const { return _tree.search(_val); }
 
             // ! EQUAL RANGE && RETURN ITERATOR
-            ft::pair<iterator, iterator> equal_range (const key_type& k) { return (ft::make_pair(lower_bound(k), upper_bound(k)));  }
+            ft::pair<iterator, iterator> equal_range (const key_type& k) {
+                iterator it1 = lower_bound(k);    
+                iterator it2 = upper_bound(k);    
+                return (ft::make_pair(it1, it2));
+            }
 
             // ! EQUAL RANGE && RETURN CONST ITERATOR TYPE
-            ft::pair<const_iterator, const_iterator> equal_range (const key_type& k) const { return (ft::make_pair(lower_bound(k), upper_bound(k)));  }
+            ft::pair<const_iterator, const_iterator> equal_range (const key_type& k) const {
+                const_iterator it1 = lower_bound(k);
+                const_iterator it2 = upper_bound(k);
+                return (ft::make_pair(it1, it2));
+            }
             
             // ! LOWER BOUND && RETURN NON CONST ITERATOR TYPE
             iterator lower_bound (const key_type& k) { return _tree.lower_bound(k); }
@@ -245,7 +260,7 @@ namespace ft
             iterator upper_bound (const key_type& k) { return (_tree.upper_bound(k)); }
 
             // ! UPPER BOUND && RETURN CONST ITERATOR TYPE
-            const_iterator upper_bound (const key_type& k) const { return (_tree.upper_bound(k)); }
+            const_iterator upper_bound (const key_type& k) const {  return (_tree.upper_bound(k)); }
 
             // OPERATOR LOGICAL ------------------------------------------------
 
@@ -295,7 +310,7 @@ namespace ft
     bool operator<= ( const map<_Key,_T,_Compare,_Alloc>& lhs, const map<_Key,_T,_Compare,_Alloc>& rhs ) { return ((lhs < rhs) || (lhs == rhs)); }
             
     template <class _Key, class _T, class _Compare, class _Alloc>
-    bool operator>  ( const map<_Key,_T,_Compare,_Alloc>& lhs, const map<_Key,_T,_Compare,_Alloc>& rhs ) { return !(lhs < rhs); }
+    bool operator>  ( const map<_Key,_T,_Compare,_Alloc>& lhs, const map<_Key,_T,_Compare,_Alloc>& rhs ) { return ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()); }
     
     template <class _Key, class _T, class _Compare, class _Alloc>
     bool operator>= ( const map<_Key,_T,_Compare,_Alloc>& lhs, const map<_Key,_T,_Compare,_Alloc>& rhs ) { return ((lhs > rhs) || (lhs == rhs)); }
@@ -317,4 +332,12 @@ namespace ft
 				return(_comp(lhs.first, rhs.first));
 			}
 	};
+
+    // ----------------------------------------------------------------
+    
+    template <class _Key, class _T, class _Compare, class _Alloc>
+    void swap (map<_Key,_T,_Compare,_Alloc>& x, map<_Key,_T,_Compare,_Alloc>& y)
+    {
+    	x.swap(y);
+    }
 }
