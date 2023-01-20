@@ -26,7 +26,7 @@ namespace ft {
             typedef typename ft::pair<Key_type, mapped_type>                        value_type;
             typedef typename ft::Node_avl<Key_type, mapped_type>                    _Node_type;
             typedef ft::Node_avl<Key, T> *                                          pointer;
-            typedef const ft::Node_avl<Key, T> *                                    const_pointer;
+            // typedef const ft::Node_avl<Key, T> *                                    const_pointer;
             typedef ft::Node_avl<Key, T> &                                          reference;
             typedef typename Alloc::template rebind<ft::Node_avl<Key, T> >::other   allocator_type;
             typedef size_t                                                          size_type;

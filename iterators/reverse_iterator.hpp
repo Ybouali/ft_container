@@ -27,7 +27,8 @@ namespace ft {
 
             reference operator*() const {
                 Iterator tmp = this->curr;
-                return *--tmp;
+                --tmp;
+                return *tmp;
             }
 
             pointer operator->() const { return &(operator*()); }
@@ -99,9 +100,9 @@ namespace ft {
             template <class U, class Y>
             friend bool operator>=(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2);
             
-            operator reverse_iterator<const iterator_type>() const {
-                return reverse_iterator<const iterator_type>(this->curr);
-            }
+            // operator reverse_iterator<const iterator_type>() const {
+            //     return reverse_iterator<const iterator_type>(this->curr);
+            // }
 
     };
 

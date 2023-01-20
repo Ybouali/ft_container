@@ -64,8 +64,6 @@ namespace ft {
             {
                 node_type_p node = _node_curr;
                 _node_curr = increment(_node_curr);
-                if (!_node_curr)
-                    return bidirectional_iterator(nullptr);
                 return (node);
             }
 
@@ -84,21 +82,22 @@ namespace ft {
                 r_node = _node_curr;
 
                 if (!_node_curr)
+                {
                     _node_curr = _end;
+                    r_node = _end;
+                }
                 else 
                     _node_curr = decrement(_node_curr);
-                if (!_node_curr)
-                    return bidirectional_iterator(nullptr);
                 return (r_node);
             }
 
             template <class _P, class _T>
-            bool operator==(const bidirectional_iterator<_P, _T>& other) { return _node_curr == other.get_curr(); }
+            bool operator==(const bidirectional_iterator<_P, _T>& other) const { return _node_curr == other.base(); }
 
             template <class _P, class _T>
-            bool operator!=(const bidirectional_iterator<_P, _T>& other) { return _node_curr != other.get_curr(); };
+            bool operator!=(const bidirectional_iterator<_P, _T>& other) const { return _node_curr != other.base(); };
 
-            node_type_p     get_curr() const { return _node_curr; };
+            node_type_p     base() const { return _node_curr; };
             
         private :
             node_type_p     _node_curr;

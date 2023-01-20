@@ -3,40 +3,21 @@
 
 int     main()
 {
-    ft::map<int, std::string> map;
-    // ft::map<int, std::string> map1;
 
-    // map.insert(ft::make_pair(10, 1001));
-    // map.insert(ft::make_pair(20, 1001));
-    // map.insert(ft::make_pair(30, 1001));
-    // map.insert(ft::make_pair(40, 1001));
-    // map.insert(ft::make_pair(50, 1001));
-    // map.insert(ft::make_pair(60, 1001));
-    // map.insert(ft::make_pair(70, 1001));
+    int arrint[30] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30  };
+    std::string arrstr[30] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" }; 
 
-    map.insert(ft::make_pair(23, "23n"));
-    map.insert(ft::make_pair(25, "asdasdfsdfsafdsf"));
-    map.insert(ft::make_pair(1, "asdssdfdfdffffff"));
-    map.insert(ft::make_pair(2, "dsfdffffdfdfdsdfdffa"));
-    map.insert(ft::make_pair(3, "sssdfs"));
-    map.insert(ft::make_pair(75, "dfse"));
-    map.insert(ft::make_pair(30, "sefsadfasdfasdfsadfasdfsf"));
-    map.insert(ft::make_pair(-22, "dfhkihgbnfbcx5reterjhd"));
-    map.insert(ft::make_pair(-23, "sdffgdfgrefet34thfgheewt"));
-    map.insert(ft::make_pair(0, "98y4rtuohwidsjusdossefsse"));
-    
-    // if ()
+    std::pair<int, std::string> arr[29];
 
-    std::cout << "OK :: " << map.erase(75) << std::endl;
-
-    ft::map<int, std::string>::iterator it = map.begin();
-    
-    while (it != map.end())
+    for (int i = 0; i < 30; i++)
     {
-
-        std::cout << "map :: " << it->first << " " << it->second << std::endl;
-        // std::cout << "map1 :: " << it1->first << " " << it1->second << std::endl;
-        it++;
-        // it1++;
+        arr[i].first = arrint[i];
+        arr[i].second = arrstr[i];
     }
+
+    std::map<int, std::string> map(arr, arr + 29);
+    std::map<int, std::string> map1;
+
+    map1 = map;
+    
 }

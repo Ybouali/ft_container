@@ -17,13 +17,12 @@ namespace ft
             typedef const ft::Node_avl<Key, T>*                                                          const_node_pointer;
 
         public:
-            // ? typedefs
+            // ! TYPEDEFS
             class value_compare;
             typedef Key                                                                                 key_type;
             typedef T                                                                                   mapped_type;
             typedef typename ft::pair<const key_type, mapped_type>                                      value_type;
             typedef Compare                                                                             key_compare;
-            // ! value_compare 
             typedef Alloc                                                                               allocator_type;                    
             typedef ptrdiff_t                                                                           difference_type;
             typedef size_t                                                                              size_type;
@@ -33,9 +32,9 @@ namespace ft
             typedef typename allocator_type::const_pointer                                              const_pointer;
             typedef typename ft::avl_tree<Key, T, key_compare, allocator_type>                          tree_type;
             typedef typename ft::bidirectional_iterator<value_type, ft::Node_avl<Key, T> >              iterator;
-            typedef typename ft::bidirectional_iterator<const value_type, ft::Node_avl<Key, T> >       const_iterator;
-            typedef typename ft::reverse_iterator<iterator >                                            reverse_iterator;
-            typedef typename ft::reverse_iterator<const_iterator >                                      const_reverse_iterator;
+            typedef typename ft::bidirectional_iterator<const value_type, ft::Node_avl<Key, T> >        const_iterator;
+            typedef typename ft::reverse_iterator<ft::bidirectional_iterator<value_type, ft::Node_avl<Key, T> > >                                            reverse_iterator;
+            typedef typename ft::reverse_iterator<ft::bidirectional_iterator<const value_type, ft::Node_avl<Key, T> > >                                      const_reverse_iterator;
 
             explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
             : _key_map(), _mapped(), _comp_key(comp), _alloc_pair(alloc), _tree(), _value_comp() { }
@@ -69,8 +68,11 @@ namespace ft
             // ! GET ALLOCATOR
             allocator_type get_allocator() const { return _alloc_pair; }
 
+            // ! KEY COMP
+            key_compare key_comp() const { return (_comp_key); }
+
             // ! VALUE COMP
-            value_compare key_comp() const { return (_comp_key); }
+            value_compare  value_comp() const { return (_value_comp); }
 
             // ! ELEMENT ACCESS -------------------------------------------------------
 
@@ -112,26 +114,37 @@ namespace ft
             const_iterator begin() const { return const_iterator(_tree.begin(), nullptr); }
 
             // ! END
-            iterator end() {
-                return iterator(nullptr, _tree.end());
-            }
+            iterator end() { return iterator(nullptr, _tree.end()); }
 
             // ! END CONST
             const_iterator end() const { return const_iterator(nullptr, _tree.end()) ; }
 
             // ! RBEGIN
-            reverse_iterator rbegin() { return reverse_iterator(iterator(nullptr, _tree.end())); }
+            reverse_iterator rbegin() {
+                reverse_iterator rit(this->end());
+                return rit;
+            }
 
             // ! RBEGIN CONST
-            const_reverse_iterator rbegin() const { return reverse_iterator(iterator(nullptr, _tree.end())); }
+            const_reverse_iterator rbegin() const {
+                const_reverse_iterator rit(this->end());
+                return rit;
+            }
 
             // ! REND
             reverse_iterator rend() {
-                return reverse_iterator(iterator(_tree.begin(), nullptr));
+                
+                reverse_iterator    rit(begin());
+                return (rit);
             }
 
             // ! REND CONST
-            const_iterator rend() const { return (_tree.begin(), nullptr) ; }
+            const_iterator rend() const {
+
+                const_reverse_iterator    rit(begin());
+                
+                return (rit);
+            }
 
 
             // ! CAPACITY -------------------------------------------------------
@@ -142,8 +155,8 @@ namespace ft
             // ! SIZE 
             size_type size() const { return _tree.get_size(); }
             
-            // ! MAX SIZE
-            size_type max_size() const { return _alloc_pair.max_size(); }
+            // // ! MAX SIZE
+            // size_type max_size() const { return _alloc_pair.max_size(); }
 
             // ! MODIFIERS -------------------------------------------------------
 
@@ -251,16 +264,38 @@ namespace ft
             }
             
             // ! LOWER BOUND && RETURN NON CONST ITERATOR TYPE
-            iterator lower_bound (const key_type& k) { return _tree.lower_bound(k); }
+            iterator lower_bound (const key_type& k) {
+                if (k > std::numeric_limits<key_type>::max())
+                    return end();
+                node_pointer lower = _tree.lower_bound(k);
+                if (lower)
+                    return lower;
+                return end();
+            }
             
             // ! LOWER BOUND && RETURN CONST ITERATOR TYPE
-            const_iterator lower_bound (const key_type& k) const { return _tree.lower_bound(k); }
+            const_iterator lower_bound (const key_type& k) const {
+                if (k > std::numeric_limits<key_type>::max())
+                    return end();
+                node_pointer lower = _tree.lower_bound(k);
+                if (lower)
+                    return lower;
+                return end();
+            }
 
             // ! UPPER BOUND && RETURN NON CONST ITERATOR TYPE
-            iterator upper_bound (const key_type& k) { return (_tree.upper_bound(k)); }
+            iterator upper_bound (const key_type& k) {
+                if (k >= std::numeric_limits<key_type>::max())
+                    return end();
+                return (_tree.upper_bound(k));
+            }
 
             // ! UPPER BOUND && RETURN CONST ITERATOR TYPE
-            const_iterator upper_bound (const key_type& k) const {  return (_tree.upper_bound(k)); }
+            const_iterator upper_bound (const key_type& k) const {
+                if (k >= std::numeric_limits<key_type>::max())
+                    return end();
+                return (_tree.upper_bound(k));
+            }
 
             // OPERATOR LOGICAL ------------------------------------------------
 
