@@ -52,13 +52,16 @@ namespace ft
 
             map& operator=(const map& other)
             {
+                if (!empty())
+                    clear();
                 _key_map = other._key_map;
                 _mapped = other._mapped;
                 _comp_key = other._comp_key;
                 _alloc_pair = other._alloc_pair;
-                if (other.size())
-                    this->insert(other.begin(), other.end());
                 
+                if (other.size())
+                    insert(other.begin(), other.end());
+
                 _value_comp = other._value_comp;
                 return *this;
             }
@@ -97,21 +100,15 @@ namespace ft
             }
 
             // ! OPERATOR []
-            mapped_type& operator[] (const key_type& _key)
-            {
-
-                // insert(ft::make_pair(_key, mapped_type()));
-                // node_pointer _node = _tree.search(_key);
-                return (insert(ft::make_pair(_key, mapped_type())).first)->second;
-            }
+            mapped_type& operator[] (const key_type& _key) { return (insert(ft::make_pair(_key, mapped_type())).first)->second; }
 
             // ! ITERATORS -------------------------------------------------------
             
             // ! BEGIN
-            iterator begin() { return iterator(_tree.begin(), nullptr); }
+            iterator begin() { return iterator(_tree.begin(), _tree.end()); }
 
             // ! BEGIN CONST
-            const_iterator begin() const { return const_iterator(_tree.begin(), nullptr); }
+            const_iterator begin() const { return const_iterator(_tree.begin(), _tree.end()); }
 
             // ! END
             iterator end() { return iterator(nullptr, _tree.end()); }
@@ -196,16 +193,15 @@ namespace ft
             }
 
             // ! ERASE POSITION OF VALUE
-            void erase (iterator position)
-            {
-
-                _tree.erase((*position));
-            }
+            void erase (iterator position) { _tree.erase(position->first); }
 
             // ! ERASE KEY TYPE
             size_type erase (const key_type& k)
-            {
-                return _tree.erase(ft::make_pair(k, mapped_type()));
+            { 
+                if (find(k) == end())
+                    return 0;
+                _tree.erase(k);
+                return 1;
             }
 
             // ! ERASE RANGE ITERATOR TYPE
@@ -215,7 +211,7 @@ namespace ft
 				for (; first != last; first++)
 						tmp.push_back(first->first);
 				for (size_type i = 0; i < tmp.size(); i++)
-					_tree.erase(ft::make_pair(tmp[i], mapped_type()));
+					_tree.erase(tmp[i]);
             }
 
             // ! SWAP MAP
@@ -265,36 +261,46 @@ namespace ft
             
             // ! LOWER BOUND && RETURN NON CONST ITERATOR TYPE
             iterator lower_bound (const key_type& k) {
-                if (k > std::numeric_limits<key_type>::max())
-                    return end();
-                node_pointer lower = _tree.lower_bound(k);
-                if (lower)
-                    return lower;
+                iterator b = begin();
+                while (b != end()) {
+                    if (!_comp_key(b->first,k))
+                        return b; 
+                    b++;
+                }
                 return end();
             }
             
             // ! LOWER BOUND && RETURN CONST ITERATOR TYPE
             const_iterator lower_bound (const key_type& k) const {
-                if (k > std::numeric_limits<key_type>::max())
-                    return end();
-                node_pointer lower = _tree.lower_bound(k);
-                if (lower)
-                    return lower;
+                const_iterator b = begin();
+                while (b != end()) {
+                    if (_comp_key(b->first,k) == false)
+                        return b; 
+                    b++;
+                }
                 return end();
             }
 
             // ! UPPER BOUND && RETURN NON CONST ITERATOR TYPE
             iterator upper_bound (const key_type& k) {
-                if (k >= std::numeric_limits<key_type>::max())
-                    return end();
-                return (_tree.upper_bound(k));
+                iterator b = begin();
+                while (b != end()) {
+                    if (_comp_key(k, b->first))
+                        return b; 
+                    b++;
+                }
+                return end();
             }
 
             // ! UPPER BOUND && RETURN CONST ITERATOR TYPE
             const_iterator upper_bound (const key_type& k) const {
-                if (k >= std::numeric_limits<key_type>::max())
-                    return end();
-                return (_tree.upper_bound(k));
+                const_iterator b = begin();
+                while (b != end()) {
+                    if (_comp_key(k, b->first))
+                        return b; 
+                    b++;
+                }
+                return end();
             }
 
             // OPERATOR LOGICAL ------------------------------------------------

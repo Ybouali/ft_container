@@ -10,13 +10,70 @@ namespace ft {
     {
         private :
             typedef T*                                   node_type_p;
+
+            node_type_p get_next_min(node_type_p _node)
+            {
+                if (!_node)
+                    return nullptr;
+                while (_node && _node->left)
+                    _node = _node->left;
+                return _node;
+            }
+
+            node_type_p get_next_max(node_type_p _node)
+            {
+                while (_node && _node->right)
+                    _node = _node->right;
+                return _node;
+            }
+
+            node_type_p  decrement(node_type_p r_node)
+            {
+                node_type_p parent;
+                if (r_node && r_node->left)
+                    r_node = get_next_max(r_node->left);
+                else if (r_node)
+                {
+                    parent = r_node->parent;
+                    while (parent && r_node == parent->left)
+                    {
+                        r_node = parent;
+                        parent = parent->parent;
+                    }
+                    r_node = parent;
+                }
+                return r_node;
+            }
+
+            node_type_p increment(node_type_p r_node)
+            {
+                if (r_node == _end)
+                    return nullptr;
+                node_type_p parent;
+
+                if (r_node && r_node->right)
+                    r_node = get_next_min(r_node->right);
+                else if (r_node)
+                {
+                    parent = r_node->parent;
+                    while (parent && r_node == parent->right)
+                    {
+                        r_node = parent;
+                        parent = parent->parent;
+                    }
+                    r_node = parent;
+                }
+                return r_node;
+            }
         public:
             typedef std::bidirectional_iterator_tag     iterator_category;
             typedef P                                   value_type;
             typedef ptrdiff_t                           difference_type;
             typedef size_t                              size_type;
             typedef P*                                  pointer;
+            typedef const P*                                  const_pointer;
             typedef P&                                  reference;
+            typedef const P&                            const_reference;
 
             bidirectional_iterator() : _node_curr(), _end() {}
 
@@ -50,19 +107,35 @@ namespace ft {
 
             ~bidirectional_iterator() {}
             
-            reference   operator*() { return *(this->_node_curr->data); }
+            reference   operator*() {  return *(_node_curr->data); }
 
-            pointer     operator->() { return this->_node_curr->data; }
+            const_reference   operator*() const {  return *(_node_curr->data); }
+
+            pointer     operator->() { return &(operator*()); }
+
+            const_pointer     operator->() const { return &(operator*()); }
 
             bidirectional_iterator& operator++(void)
             {
                 _node_curr = increment(_node_curr);
+                
+                if (_node_curr == nullptr)
+                {
+                    _node_curr = nullptr;
+                    return *this;
+                }
                 return (*this);
             }
 
             bidirectional_iterator operator++(int)
             {
                 node_type_p node = _node_curr;
+                // if (_node_curr == _end)
+                // {
+                //     _node_curr = nullptr;
+                //     return node;
+                // }
+
                 _node_curr = increment(_node_curr);
                 return (node);
             }
@@ -92,10 +165,13 @@ namespace ft {
             }
 
             template <class _P, class _T>
-            bool operator==(const bidirectional_iterator<_P, _T>& other) const { return _node_curr == other.base(); }
+            bool operator==(const bidirectional_iterator<_P, _T>& other) const {
+            //     std::cout << this->_node_curr->data->first << "hi" << std::endl;
+            // std::cout << (_node_curr == _node_curr) << std::endl;
+            return base() == other.base(); }
 
             template <class _P, class _T>
-            bool operator!=(const bidirectional_iterator<_P, _T>& other) const { return _node_curr != other.base(); };
+            bool operator!=(const bidirectional_iterator<_P, _T>& other) const { return base() != other.base(); };
 
             node_type_p     base() const { return _node_curr; };
             

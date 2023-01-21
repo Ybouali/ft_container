@@ -14,7 +14,7 @@ namespace ft {
         class Key,
         class T,
         class _comp = std::less<Key>,
-        class Alloc = std::allocator<ft::pair<Key, T> >
+        class Alloc = std::allocator<ft::pair<const Key, T> >
     >
     class avl_tree
     {
@@ -412,51 +412,47 @@ namespace ft {
             }
 
             // ! ERASE
-            size_type    erase(const value_type& _val)
-            {
-                if (!search(_val.first))
-                    return 0;
-                root = erase_avl(root, _val.first);
-                return 1;
-            }
+            void    erase(const Key& _val) { root = erase_avl(root, _val); }
 
-            // ! _LOWER BOUND
-            pointer upper_bound(const Key_type & _k) const
-            {
-                pointer node_h = get_root();
-                pointer node_r;
+            // // ! _LOWER BOUND
+            // pointer upper_bound(const Key_type & _k) const
+            // {
+            //     pointer node_h = get_root();
+            //     pointer node_r;
                 
-                while (node_h)
-                {
-                    if (comp(_k, node_h->data->first))
-                    {
-                        node_r = node_h;
-                        node_h = node_h->left;
-                    }
-                    else
-                        node_h = node_h->right;
-                }
-                return node_r;
-            }
+            //     while (node_h)
+            //     {
+            //         if (comp(_k, node_h->data->first))
+            //         {
+            //             node_r = node_h;
+            //             node_h = node_h->left;
+            //         }
+            //         else
+            //             node_h = node_h->right;
+            //     }
+            //     return node_r;
+            // }
 
-            // ! _LOWER BOUND
-            pointer lower_bound(const Key_type & _k) const
-            {
-                pointer node_h = get_root();
-                pointer node_r;
+            // // ! _LOWER BOUND
+            // pointer lower_bound(const Key_type & _k) const
+            // {
+            //     pointer node_h = get_root();
+            //     pointer node_r;
                 
-                while (node_h)
-                {
-                    if (!comp(node_h->data->first, _k))
-                    {
-                        node_r = node_h;
-                        node_h = node_h->left;
-                    }
-                    else
-                        node_h = node_h->right;
-                }
-                return node_r;
-            }
+            //     while (node_h)
+            //     {
+            //         if (!comp(node_h->data->first, _k))
+            //         {
+            //             node_r = node_h;
+            //             node_h = node_h->left;
+            //         }
+            //         else
+            //             node_h = node_h->right;
+            //     }
+            //     if (!node_h)
+            //         return nullptr;
+            //     return node_r;
+            // }
 
         private :
             _Node_type*                                     root;
