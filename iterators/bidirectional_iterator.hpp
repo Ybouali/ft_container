@@ -71,26 +71,24 @@ namespace ft {
             typedef ptrdiff_t                           difference_type;
             typedef size_t                              size_type;
             typedef P*                                  pointer;
-            typedef const P*                                  const_pointer;
             typedef P&                                  reference;
-            typedef const P&                            const_reference;
 
             bidirectional_iterator() : _node_curr(), _end() {}
 
-            bidirectional_iterator(const bidirectional_iterator& other)
-            {
-                *this = other;
+
+            template <class _P, class _T>
+            bidirectional_iterator<_P, _T>(const bidirectional_iterator<_P, _T>& other) {
+                this->_node_curr = other.base();
+                this->_end = other.base_e();
             }
 
-            bidirectional_iterator& operator=(const bidirectional_iterator& other)
+
+
+            bidirectional_iterator& operator=(const bidirectional_iterator& other) 
             {
                 this->_node_curr = other._node_curr;
                 this->_end = other._end;
                 return *this;
-            }
-
-            operator bidirectional_iterator<const P, T>() const {
-                return bidirectional_iterator<const P, T>(_node_curr);
             }
 
             bidirectional_iterator(node_type_p node, node_type_p last)
@@ -107,13 +105,9 @@ namespace ft {
 
             ~bidirectional_iterator() {}
             
-            reference   operator*() {  return *(_node_curr->data); }
+            reference   operator*() const {  return *(_node_curr->data); }
 
-            const_reference   operator*() const {  return *(_node_curr->data); }
-
-            pointer     operator->() { return &(operator*()); }
-
-            const_pointer     operator->() const { return &(operator*()); }
+            pointer     operator->() const { return &(operator*()); }
 
             bidirectional_iterator& operator++(void)
             {
@@ -130,11 +124,6 @@ namespace ft {
             bidirectional_iterator operator++(int)
             {
                 node_type_p node = _node_curr;
-                // if (_node_curr == _end)
-                // {
-                //     _node_curr = nullptr;
-                //     return node;
-                // }
 
                 _node_curr = increment(_node_curr);
                 return (node);
@@ -165,15 +154,14 @@ namespace ft {
             }
 
             template <class _P, class _T>
-            bool operator==(const bidirectional_iterator<_P, _T>& other) const {
-            //     std::cout << this->_node_curr->data->first << "hi" << std::endl;
-            // std::cout << (_node_curr == _node_curr) << std::endl;
-            return base() == other.base(); }
+            bool operator==(const bidirectional_iterator<_P, _T>& other) const { return base() == other.base(); }
 
             template <class _P, class _T>
             bool operator!=(const bidirectional_iterator<_P, _T>& other) const { return base() != other.base(); };
 
             node_type_p     base() const { return _node_curr; };
+
+            node_type_p     base_e() const { return _end; };
             
         private :
             node_type_p     _node_curr;

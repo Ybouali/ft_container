@@ -70,10 +70,11 @@ namespace ft
             vector& operator= (const vector& other)
             {
                 clear();
-                if (arr)
+                if (arr && capacity_v != other.capacity_v)
                     alloc.deallocate(arr, capacity_v);
                 alloc =  other.alloc;
-                this->arr = this->alloc.allocate(other.capacity_v);
+                if (capacity_v != other.capacity_v)
+                    this->arr = this->alloc.allocate(other.capacity_v);
                 this->capacity_v = other.capacity_v;
                 this->size_v = other.size_v;
                 for (size_type i = 0; i < other.size_v; i++)

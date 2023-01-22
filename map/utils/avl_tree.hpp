@@ -134,6 +134,15 @@ namespace ft {
                 _size--;
             }
 
+            // ! SWAP
+            void swap(avl_tree& x) {
+                std::swap(x.root, root); 
+                std::swap(x.alloc_pair, alloc_pair); 
+                std::swap(x.comp, comp);
+                std::swap(x.alloc_node, alloc_node);
+                std::swap(x._size, _size);
+            }
+            
             // ! DESTROY TREE
             void    destroy_tree(pointer node)
             {

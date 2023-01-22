@@ -12,10 +12,9 @@ namespace ft
     >
     class map
     {
+
         private :
             typedef typename ft::Node_avl<Key, T>*                                                       node_pointer;
-            typedef const ft::Node_avl<Key, T>*                                                          const_node_pointer;
-
         public:
             // ! TYPEDEFS
             class value_compare;
@@ -33,8 +32,9 @@ namespace ft
             typedef typename ft::avl_tree<Key, T, key_compare, allocator_type>                          tree_type;
             typedef typename ft::bidirectional_iterator<value_type, ft::Node_avl<Key, T> >              iterator;
             typedef typename ft::bidirectional_iterator<const value_type, ft::Node_avl<Key, T> >        const_iterator;
-            typedef typename ft::reverse_iterator<ft::bidirectional_iterator<value_type, ft::Node_avl<Key, T> > >                                            reverse_iterator;
-            typedef typename ft::reverse_iterator<ft::bidirectional_iterator<const value_type, ft::Node_avl<Key, T> > >                                      const_reverse_iterator;
+            typedef typename ft::reverse_iterator<iterator >                                            reverse_iterator;
+            typedef typename ft::reverse_iterator<const_iterator>                                       const_reverse_iterator;
+        
 
             explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
             : _key_map(), _mapped(), _comp_key(comp), _alloc_pair(alloc), _tree(), _value_comp() { }
@@ -118,13 +118,13 @@ namespace ft
 
             // ! RBEGIN
             reverse_iterator rbegin() {
-                reverse_iterator rit(this->end());
+                reverse_iterator rit(end());
                 return rit;
             }
 
             // ! RBEGIN CONST
             const_reverse_iterator rbegin() const {
-                const_reverse_iterator rit(this->end());
+                const_reverse_iterator rit(end());
                 return rit;
             }
 
@@ -136,10 +136,8 @@ namespace ft
             }
 
             // ! REND CONST
-            const_iterator rend() const {
-
+            const_reverse_iterator rend() const {
                 const_reverse_iterator    rit(begin());
-                
                 return (rit);
             }
 
@@ -152,8 +150,8 @@ namespace ft
             // ! SIZE 
             size_type size() const { return _tree.get_size(); }
             
-            // // ! MAX SIZE
-            // size_type max_size() const { return _alloc_pair.max_size(); }
+            // ! MAX SIZE
+            size_type max_size() const { return _alloc_pair.max_size(); }
 
             // ! MODIFIERS -------------------------------------------------------
 
@@ -223,13 +221,7 @@ namespace ft
                 std::swap(x._mapped, _mapped);
                 std::swap(x._comp_key, _comp_key);
                 std::swap(x._alloc_pair, _alloc_pair);
-
-                tmp.insert(begin(), end());
-                clear();
-                insert(x.begin(), x.end());
-                x.clear();
-                x.insert(tmp.begin(), tmp.end());
-
+                x._tree.swap(_tree);
                 std::swap(x._value_comp, _value_comp);
             }
 
@@ -247,60 +239,60 @@ namespace ft
 
             // ! EQUAL RANGE && RETURN ITERATOR
             ft::pair<iterator, iterator> equal_range (const key_type& k) {
-                iterator it1 = lower_bound(k);    
-                iterator it2 = upper_bound(k);    
-                return (ft::make_pair(it1, it2));
+                return (ft::make_pair(lower_bound(k), upper_bound(k)));
             }
 
             // ! EQUAL RANGE && RETURN CONST ITERATOR TYPE
             ft::pair<const_iterator, const_iterator> equal_range (const key_type& k) const {
-                const_iterator it1 = lower_bound(k);
-                const_iterator it2 = upper_bound(k);
-                return (ft::make_pair(it1, it2));
+                return (ft::make_pair(lower_bound(k), upper_bound(k)));
             }
             
             // ! LOWER BOUND && RETURN NON CONST ITERATOR TYPE
             iterator lower_bound (const key_type& k) {
                 iterator b = begin();
-                while (b != end()) {
+                iterator e = end();
+                while (b != e) {
                     if (!_comp_key(b->first,k))
                         return b; 
                     b++;
                 }
-                return end();
+                return e;
             }
             
             // ! LOWER BOUND && RETURN CONST ITERATOR TYPE
             const_iterator lower_bound (const key_type& k) const {
                 const_iterator b = begin();
-                while (b != end()) {
-                    if (_comp_key(b->first,k) == false)
+                const_iterator e = end();
+                while (b != e) {
+                    if (!_comp_key(b->first,k))
                         return b; 
                     b++;
                 }
-                return end();
+                return e;
             }
 
             // ! UPPER BOUND && RETURN NON CONST ITERATOR TYPE
             iterator upper_bound (const key_type& k) {
                 iterator b = begin();
-                while (b != end()) {
+                iterator e = end();
+                while (b != e) {
                     if (_comp_key(k, b->first))
                         return b; 
                     b++;
                 }
-                return end();
+                return e;
             }
 
             // ! UPPER BOUND && RETURN CONST ITERATOR TYPE
             const_iterator upper_bound (const key_type& k) const {
                 const_iterator b = begin();
-                while (b != end()) {
+                const_iterator e = end();
+                while (b != e) {
                     if (_comp_key(k, b->first))
                         return b; 
                     b++;
                 }
-                return end();
+                return e;
             }
 
             // OPERATOR LOGICAL ------------------------------------------------

@@ -21,19 +21,19 @@ namespace ft {
             explicit reverse_iterator(Iterator x) { curr = x; }
 
             template <class U>
-            reverse_iterator(const reverse_iterator<U> & u) { this->curr =  u.base(); }
+            reverse_iterator(const reverse_iterator<U> & u) { this->curr = u.base(); }
 
             Iterator base() const { return curr; }
 
-            reference operator*() const {
+            reference operator*() {
                 Iterator tmp = this->curr;
                 --tmp;
                 return *tmp;
             }
+            
+            pointer operator->() { return &(operator*()); }
 
-            pointer operator->() const { return &(operator*()); }
-
-            reverse_iterator& operator++() {
+            reverse_iterator& operator++() { 
                 --this->curr;    
                 return *this;
             }
@@ -100,9 +100,9 @@ namespace ft {
             template <class U, class Y>
             friend bool operator>=(const reverse_iterator<U>& o1, const reverse_iterator<Y>& o2);
             
-            // operator reverse_iterator<const iterator_type>() const {
-            //     return reverse_iterator<const iterator_type>(this->curr);
-            // }
+            operator reverse_iterator<const iterator_type>() const {
+                return reverse_iterator<const iterator_type>(this->curr);
+            }
 
     };
 
