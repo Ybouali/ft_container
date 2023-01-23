@@ -9,7 +9,7 @@ namespace ft {
     class bidirectional_iterator 
     {
         private :
-            typedef T*                                   node_type_p;
+            typedef T*                             node_type_p;
 
             node_type_p get_next_min(node_type_p _node)
             {
@@ -77,15 +77,14 @@ namespace ft {
 
 
             template <class _P, class _T>
-            bidirectional_iterator<_P, _T>(const bidirectional_iterator<_P, _T>& other) {
+            bidirectional_iterator(const bidirectional_iterator<_P, _T> & other) { 
                 this->_node_curr = other.base();
                 this->_end = other.base_e();
             }
 
-
-
             bidirectional_iterator& operator=(const bidirectional_iterator& other) 
             {
+                 
                 this->_node_curr = other._node_curr;
                 this->_end = other._end;
                 return *this;
@@ -162,7 +161,6 @@ namespace ft {
             node_type_p     base() const { return _node_curr; };
 
             node_type_p     base_e() const { return _end; };
-            
         private :
             node_type_p     _node_curr;
             node_type_p     _end;

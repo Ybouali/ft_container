@@ -31,7 +31,7 @@ namespace ft
             typedef typename allocator_type::const_pointer                                              const_pointer;
             typedef typename ft::avl_tree<Key, T, key_compare, allocator_type>                          tree_type;
             typedef typename ft::bidirectional_iterator<value_type, ft::Node_avl<Key, T> >              iterator;
-            typedef typename ft::bidirectional_iterator<const value_type, ft::Node_avl<Key, T> >        const_iterator;
+            typedef typename ft::bidirectional_iterator<const value_type, const ft::Node_avl<Key, T> >        const_iterator;
             typedef typename ft::reverse_iterator<iterator >                                            reverse_iterator;
             typedef typename ft::reverse_iterator<const_iterator>                                       const_reverse_iterator;
         

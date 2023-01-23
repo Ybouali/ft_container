@@ -1,11 +1,15 @@
 #include "../map.hpp"
 
+
 int main()
 {
-    ft::map<int, int>   map;
+    
+    // ft::map<int, int> const   map;
 
-    map.insert(ft::make_pair(10, 10));
+    // ft::map<int, int>::iterator it = map.begin();
 
-    std::cout << "Loading map..." << std::endl;
+    // map.insert(ft::make_pair(10, 10));
+
+    // std::cout << "Loading map..." << std::endl;
 }
 

@@ -38,24 +38,7 @@ namespace ft
             }
             
             template <class InputIterator>
-            vector (InputIterator first, InputIterator last, const allocator_type& _alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
-            {
-                
-                while (first != last)
-                    push_back(*first), first++;
-                if (this->size_v == 0)
-                    return ;
-                size_type _size = this->size_v;
-                pointer _ptr = alloc.allocate(_size);
-                for (size_type i = 0; i < _size; i++)
-                    alloc.construct(_ptr + i, *(arr + i));
-                clear();
-                if (arr)
-                    alloc.deallocate(arr, capacity_v);
-                size_v = _size;
-                capacity_v = _size;
-                arr = _ptr;
-            }
+            vector (InputIterator first, InputIterator last, const allocator_type& _alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc) { assign(first, last); }
             
             vector (const vector& other): arr(NULL),  size_v(other.size()), capacity_v(other.capacity()), alloc(other.alloc)
             { 
@@ -84,11 +67,13 @@ namespace ft
             
             ~vector (void) {
                 clear();
-                if (arr)
+                if (capacity_v)
+                {
                     this->alloc.deallocate(arr, capacity_v);
-                this->capacity_v = 0;
-                size_v = 0;
-                this->arr = NULL;
+                    this->capacity_v = 0;
+                    size_v = 0;
+                    this->arr = NULL;
+                }
             }
 
             // * Capacity DONE
@@ -264,27 +249,26 @@ namespace ft
             }
 
             template <class InputIterator>
-            void         assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
+            void    assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
             {
-                vector<T> tmp;
-
-                clear();
-                while (first != last)
-                    tmp.push_back(*first), first++;
-                if (tmp.size())
+                if (!std::is_same< typename iterator_traits<InputIterator>::iterator_category, std::input_iterator_tag>::value)
                 {
-                    if (tmp.size() >= capacity_v)
+                    size_type dist = std::distance(first, last);
+                    if (dist > capacity_v)
                     {
-                        if (arr)
-                            alloc.deallocate(arr, capacity_v);
-                        arr = alloc.allocate(tmp.size());
+                        clear();
+                        arr = alloc.allocate(dist);
+                        capacity_v = dist;
                     }
-                    for (size_type i = 0; i < tmp.size(); i++)
-                        alloc.construct(arr + i, tmp[i]);
-                    capacity_v = tmp.size() > capacity_v ? tmp.size() : capacity_v;
-                    size_v = tmp.size();
+                    while(size_v < dist)
+                        alloc.construct(arr + size_v++, *(first++));
+                }
+                else {
+                    while(first != last)
+                        push_back(*(first++));
                 }
             }
+
 
             void         assign(size_type n, const value_type& val)
             {
@@ -294,11 +278,11 @@ namespace ft
                     if (capacity_v)
                         alloc.deallocate(arr, capacity_v);
                     arr = alloc.allocate(n);
+                    capacity_v = n;
                 }
                 for (size_type i = 0; i < n; i++)
-                        alloc.construct(arr + i, val);
+                    alloc.construct(arr + i, val);
                 size_v = n ? n : size_v;
-                capacity_v = n > capacity_v ? n : capacity_v;
             }
 
             void         push_back(const value_type& val)
