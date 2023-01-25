@@ -15,12 +15,13 @@ namespace ft
 
         private :
             typedef typename ft::Node_avl<Key, T>*                                                       node_pointer;
+            // typedef typename const ft::Node_avl<Key, T>*                                                 const_node_pointer;
         public:
             // ! TYPEDEFS
             class value_compare;
             typedef Key                                                                                 key_type;
             typedef T                                                                                   mapped_type;
-            typedef typename ft::pair<const key_type, mapped_type>                                      value_type;
+            typedef typename ft::pair<const Key, T>                                                     value_type;
             typedef Compare                                                                             key_compare;
             typedef Alloc                                                                               allocator_type;                    
             typedef ptrdiff_t                                                                           difference_type;
@@ -31,7 +32,7 @@ namespace ft
             typedef typename allocator_type::const_pointer                                              const_pointer;
             typedef typename ft::avl_tree<Key, T, key_compare, allocator_type>                          tree_type;
             typedef typename ft::bidirectional_iterator<value_type, ft::Node_avl<Key, T> >              iterator;
-            typedef typename ft::bidirectional_iterator<const value_type, const ft::Node_avl<Key, T> >        const_iterator;
+            typedef typename ft::bidirectional_iterator<const value_type, const ft::Node_avl<Key, T> >  const_iterator;
             typedef typename ft::reverse_iterator<iterator >                                            reverse_iterator;
             typedef typename ft::reverse_iterator<const_iterator>                                       const_reverse_iterator;
         
@@ -249,50 +250,58 @@ namespace ft
             
             // ! LOWER BOUND && RETURN NON CONST ITERATOR TYPE
             iterator lower_bound (const key_type& k) {
-                iterator b = begin();
-                iterator e = end();
-                while (b != e) {
-                    if (!_comp_key(b->first,k))
-                        return b; 
-                    b++;
-                }
-                return e;
+                // iterator f = find(k);
+                // iterator e = end();
+                // iterator b = begin();
+                // if (f != e)
+                //     return f;
+                // while (b != e) {
+                //     if (!_comp_key(b->first,k))
+                //         return b; 
+                //     b++;
+                // }
+                // return e;
+                node_pointer l = _tree.lower_bound(k);
+
+                if (l)
+                    return l;
+                return end();
             }
             
             // ! LOWER BOUND && RETURN CONST ITERATOR TYPE
             const_iterator lower_bound (const key_type& k) const {
-                const_iterator b = begin();
-                const_iterator e = end();
-                while (b != e) {
-                    if (!_comp_key(b->first,k))
-                        return b; 
-                    b++;
-                }
-                return e;
+                node_pointer l = _tree.lower_bound(k);
+
+                if (l)
+                    return l;
+                return end(); 
+                // const_iterator f = find(k);
+                // const_iterator b = begin();
+                // const_iterator e = end();
+                // if (f != e)
+                //     return f;
+                // while (b != e) {
+                //     if (!_comp_key(b->first,k))
+                //         return b; 
+                //     b++;
+                // }
+                // return e;
             }
 
             // ! UPPER BOUND && RETURN NON CONST ITERATOR TYPE
             iterator upper_bound (const key_type& k) {
-                iterator b = begin();
-                iterator e = end();
-                while (b != e) {
-                    if (_comp_key(k, b->first))
-                        return b; 
-                    b++;
-                }
-                return e;
+                node_pointer u = _tree.upper_bound(k);
+                if (u)
+                    return u;
+                return end();
             }
 
             // ! UPPER BOUND && RETURN CONST ITERATOR TYPE
             const_iterator upper_bound (const key_type& k) const {
-                const_iterator b = begin();
-                const_iterator e = end();
-                while (b != e) {
-                    if (_comp_key(k, b->first))
-                        return b; 
-                    b++;
-                }
-                return e;
+                node_pointer u = _tree.upper_bound(k);
+                if (u)
+                    return u;
+                return end();
             }
 
             // OPERATOR LOGICAL ------------------------------------------------

@@ -99,7 +99,7 @@ namespace ft {
             bidirectional_iterator(node_type_p node)
             {
                 _node_curr = node;
-                _end = nullptr;
+                _end = get_next_max(node);
             }
 
             ~bidirectional_iterator() {}
