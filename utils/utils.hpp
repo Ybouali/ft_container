@@ -39,6 +39,12 @@ namespace ft {
         return (first2!=last2);
     }
 
+    template <class U>
+    struct is_same{ static const bool value = false; };
+
+    template<>
+    struct is_same<std::input_iterator_tag> { static const bool value = true; };
+
     template<bool Cond, class T = void>
     struct enable_if {};
 

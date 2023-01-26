@@ -251,12 +251,14 @@ namespace ft
             template <class InputIterator>
             void    assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
             {
-                if (!std::is_same< typename iterator_traits<InputIterator>::iterator_category, std::input_iterator_tag>::value)
+                clear();
+                if (!ft::is_same<typename iterator_traits<InputIterator>::iterator_category>::value)
                 {
                     size_type dist = std::distance(first, last);
                     if (dist > capacity_v)
                     {
-                        clear();
+                        if (capacity_v)
+                            alloc.deallocate(arr, capacity_v);
                         arr = alloc.allocate(dist);
                         capacity_v = dist;
                     }

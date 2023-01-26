@@ -41,7 +41,7 @@ void    TEST_ASSIGN_RANGE(void)
 {
     std::cout << "ASSIGN_RANGE ..." << std::endl;
 
-        std::string str[30] = { "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test" };
+    std::string str[30] = { "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test" };
         
         {
             ft::vector<std::string> v_ft;
@@ -68,6 +68,7 @@ void    TEST_ASSIGN_RANGE(void)
             v_s.assign(str, str);
 
             CHECK_FT_STD_VECTOR(v_ft, v_s);
+            // system("leaks vector.out");
         }
         {
             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 4" << std::endl << std::endl;
@@ -96,6 +97,7 @@ void    TEST_ASSIGN_RANGE(void)
             v_s.assign(v_s.begin(), v_s.end());
 
             CHECK_FT_STD_VECTOR(v_ft, v_s);
+            // system("leaks vector.out");
         }
         {
             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 9" << std::endl << std::endl;
@@ -122,6 +124,7 @@ void    TEST_ASSIGN_RANGE(void)
             v_ft.assign(it_f, end_f);
 
             CHECK_FT_STD_VECTOR(v_ft, v_s);
+            system("leaks vector.out");
         }
         system("leaks vector.out");
 }
@@ -220,15 +223,110 @@ void    TEST_ASSIGNMENT(void) {
         }
 }
 
+void    TEST_AT(void)
+{
+        std::cout << "AT ..." << std::endl;
+
+        std::string str[30] = {"test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test"};
+            
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 1" << std::endl << std::endl;
+            try
+            {
+                
+            ft::vector<std::string> vector(str, str + 30);
+
+            // ! ERROR TEST
+            ft::vector<std::string>::reference t = vector.at(-10);
+            (void)t;
+            }
+            catch (const std::exception &e)
+            {
+            std::cerr << e.what() << '\n';
+            }
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 2" << std::endl << std::endl;
+            try
+            {
+            ft::vector<std::string> vector(str, str + 30);
+
+            // ! ERROR TEST
+            ft::vector<std::string>::reference t = vector.at(30);
+            (void)t;
+            }
+            catch (const std::exception &e)
+            {
+            std::cerr << e.what() << '\n';
+            }
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 3" << std::endl << std::endl;
+            try
+            {
+            ft::vector<std::string> vector(str, str + 30);
+
+            // ! VALID TEST REFERENCE
+            ft::vector<std::string>::reference t = vector.at(20);
+            std::cout << "AT 20 = " << t << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 4" << std::endl << std::endl;
+
+            try
+            {
+            ft::vector<std::string> vector(str, str + 30);
+
+                // ! VALID TEST const REFERENCE
+                ft::vector<std::string>::const_reference t = vector.at(20);
+                std::cout << "AT 20 = " << t << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+}
+
+void    TEST_BACK(void)
+{
+     std::cout << "BACK ..." << std::endl;
+
+    ft::vector<long> vector(10, 1010);
+            
+    ft::vector<long>::reference t = vector.back();
+
+    std::cout << "BACK = " << t << std::endl;
+
+    ft::vector<long>::const_reference c = vector.back();
+    
+    std::cout << "CONST BACK = " << c << std::endl;
+}
+
 int main()
 {
     std::cout << "Loading vector ..." << std::endl;
-    // TEST_ASSIGN_RANGE();
+    TEST_ASSIGN_RANGE();
     // TEST_ASSIGN();
     // TEST_ASSIGNMENT();
-    {
-        std::cout << "ASSIGNMENT ..." << std::endl;
-        
-    }
+    // TEST_AT();
+    // TEST_BACK();
+    // TEST_CLEAR();
+    // {
+    //     std::cout << "CLEAR ..." << std::endl;
+
+    //     std::string str[30] = {"test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test"};
+
+    //     ft::vector<std::string>     v_ft(str, str + 30);
+    //     std::vector<std::string>     v_s(str, str + 30);
+
+    //     CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+    //     v_ft.clear();
+    //     v_s.clear();
+
+    //     CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+
+    // }
 
 }
