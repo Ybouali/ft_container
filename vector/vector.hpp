@@ -29,6 +29,8 @@ namespace ft
             {
                 if (n)
                 {
+                    if (n == max_size())
+                        throw std::length_error("std::bad_alloc");
                     arr = alloc.allocate(n);
                     for (size_type i = 0; i < n; i++)
                         alloc.construct(arr + i, val);

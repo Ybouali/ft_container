@@ -2,6 +2,8 @@
 
 #include "./pair.hpp"
 
+#include <iostream>
+
 namespace ft {
 
     template <class InputIterator1, class InputIterator2>
