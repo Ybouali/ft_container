@@ -4,8 +4,13 @@
 
 #include <list>
 
-template <class _T>
-void CHECK_FT_STD_VECTOR(const ft::vector<_T>& v_ft, const std::vector<_T>& v_s)
+struct abc {
+    int data[1024];
+    long num;
+};
+
+template <class _T, class _U>
+void CHECK_FT_STD_VECTOR(const _T& v_ft, const _U& v_s)
 {
     std::cout << "| CHECK FT && STD VECTOR. CAPACITY && SIZE && CONTENT |" << std::endl << std::endl;
     
@@ -1151,49 +1156,19 @@ void    TEST_INSERT_RANGE(void)
         }
     }
 
-void vector_tests(void)
+void    TEST_ITERATOR(void)
 {
-    std::cout << "Loading vector ..." << std::endl;
-    // TEST_ASSIGN_RANGE();
-    // TEST_ASSIGN();
-    // TEST_ASSIGNMENT();
-    // TEST_AT();
-    // TEST_BACK();
-    // TEST_CLEAR();
-    // TEST_EQ();
-    // TEST_GE();
-    // TEST_GT();
-    // TEST_LE();
-    // TEST_LT();
-    // TEST_NE();
-    // TEST_CTOR_COPY();
-    // TEST_CTOR_RANGE();
-    // TEST_CTOR_SIZE();
-    // TEST_EMPTY();
-    // TEST_ERASE_RANGE();
-    // TEST_ERASE();
-    // TEST_FRONT();
-    // TEST_INDEX_OPERATOR();
-    // TEST_GET_ALLOCATOR();
-    // TEST_INSERT();
-    // TEST_INSERT_SIZE();
-    // TEST_INSERT_RANGE();
-    // TEST__ITERATOR();
-    {
         std::cout << "TEST ITERATOR " << std::endl;
-        std::string str[30] = { "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test" };
+        std::string str[30] = { "test 1", "test 2", "test 2", "test 4", "test 5", "test 6", "test 7", "test 8", "test 9", "test 10", "test 11", "test 12", "test 13", "test 14", "test 15", "test 16", "test 17", "test 18", "test 19", "test 20", "test 21", "test 22", "test 23", "test 24", "test 25", "test 26", "test 27", "test 28", "test 29", "test 30" };
         {
             ft::vector<int> v1;
             const ft::vector<int> v2;
-
-            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 1" << std::endl << std::endl;
 
             if (v1.begin() != v1.end())
                 std::cerr << "ITERATOR ERROR :) " << std::endl;
             else
                 std::cout << "NON CONST VECTOR v1.begin() != v1.end() " << std::endl;
 
-            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 2" << std::endl << std::endl;
             if (v2.begin() != v2.end())
                 std::cerr << "ITERATOR ERROR :) " << std::endl;
             else
@@ -1232,7 +1207,9 @@ void vector_tests(void)
             std::cout << "it = " << *it << std::endl;
             std::cout << "cit = " << *cit << std::endl;
 
+            std::cout << "CLEAR THE BEGIN OF ITERATOR" << std::endl;
             it->clear();
+            std::cout << " *it = " << *it << std::endl;
             std::cout << "cit->c_str() = " << cit->c_str() << std::endl;
 
             for (ft::vector<std::string>::iterator i = v.begin(); i != v.end(); i++)
@@ -1245,8 +1222,604 @@ void vector_tests(void)
             it++;
             ++cit;
             cit++;
-            
+
+            std::cout << " it = " << *it << std::endl;
+            std::cout << " it++ = " << *it++ << std::endl;
+            std::cout << " it = " << *it << std::endl;
+
+            std::cout << " cit = " << *cit << std::endl;
+            std::cout << " cit++ = " << *cit++ << std::endl;
+            std::cout << " cit = " << *cit << std::endl;
+
+
+            i = 0;
+            while (i < 7)
+                --it, i++;
+            it--;
+            --cit;
+            cit--;
+
+            std::cout << " it = " << *it << std::endl;
+            std::cout << " it-- = " << *it-- << std::endl;
+            std::cout << " it = " << *it << std::endl;
+
+            std::cout << " cit = " << *cit << std::endl;
+            std::cout << " cit-- = " << *cit-- << std::endl;
+            std::cout << " cit = " << *cit << std::endl;
+        }
+        {
+            ft::vector<std::string> v(str, str + 30);
+
+            std::cout << "v.begin() + 4 = " << *(v.begin() + 4) << std::endl;
+            std::cout << "v.begin() - 4 = " << *(v.end() - 4) << std::endl;
+
+            std::cout << "v.end() - v.begin() :: " << v.end() - v.begin() << std::endl;
         }
     }
+
+void    TEST_ITERATOR_COMPARISONS(void)
+{
+        std::string str[30] = { "test 1", "test 2", "test 2", "test 4", "test 5", "test 6", "test 7", "test 8", "test 9", "test 10", "test 11", "test 12", "test 13", "test 14", "test 15", "test 16", "test 17", "test 18", "test 19", "test 20", "test 21", "test 22", "test 23", "test 24", "test 25", "test 26", "test 27", "test 28", "test 29", "test 30" };
+        ft::vector<std::string> v(str, str + 30);
+
+        ft::vector<std::string>::iterator it = v.begin();
+        ft::vector<std::string>::iterator it2 = v.begin();
+
+        ft::vector<std::string>::const_iterator cit = v.begin();
+        ft::vector<std::string>::const_iterator cit2 = v.begin();
+
+        if (it == v.begin())
+            std::cout << "Equal iterators" << std::endl;
+
+        if (cit == v.begin())
+            std::cout << "Equal const iterators" << std::endl;
+        
+        if (cit == it)
+            std::cout << "Equal const iterators." << std::endl;
+
+        ++it;
+        cit += 6;
+
+        if (it != v.end())
+            std::cout << "Not Equal iterators" << std::endl;
+        
+        if (cit != v.end())
+            std::cout << "Not Equal const iterators" << std::endl;
+        
+        if (cit != it)
+        std::cout << "Not Equal const iterators." << std::endl;
+
+        if (it < it + 1)
+            std::cout << "Less than" << std::endl;
+            
+        if (it + 1 < it)
+            std::cout << "Less than." << std::endl;
+        
+        if (it < it)
+            std::cout << "Less than.." << std::endl;
+        
+        if (cit < cit + 1) 
+            std::cout << "Less than..." << std::endl;
+        
+        if (cit + 1 < cit)
+            std::cout << "Less than...." << std::endl;
+        
+        if (cit < cit)
+            std::cout << "Less than...." << std::endl;
+        
+        if (it2 < cit2 + 1)
+            std::cout << "Less than....." << std::endl;
+        
+        if (it2 < cit2)
+            std::cout << "Less than......" << std::endl;
+
+        if (it <= it + 1)
+            std::cout << "Less than or equal" << std::endl;
+        
+        if (it + 1 <= it)
+            std::cout << "Less than or equal." << std::endl;
+
+        if (it <= it)
+            std::cout << "Less than or equal.." << std::endl;
+        if (cit <= cit + 1)
+            std::cout << "Less than or equal..." << std::endl;
+        
+        if (cit + 1 <= cit)
+            std::cout << "Less than or equal...." << std::endl;
+        
+        if (cit <= cit)
+            std::cout << "Less than or equal....." << std::endl;
+        
+        if (it2 <= cit2 + 1)
+            std::cout << "Less than or equal......" << std::endl;
+        
+        if (it2 <= cit2)
+            std::cout << "Less than or equal......." << std::endl;
+        
+        if (it > it + 1)
+            std::cout << "Greater than" << std::endl;
+        
+        if (it + 1 > it)
+            std::cout << "Greater than." << std::endl;
+        
+        if (it > it)
+            std::cout << "Greater than.." << std::endl;
+        
+        if (cit > cit + 1)
+            std::cout << "Greater than..." << std::endl;
+        
+        if (cit + 1 > cit)
+            std::cout << "Greater than...." << std::endl;
+        
+        if (cit > cit)
+            std::cout << "Greater than...." << std::endl;
+        
+        if (it2 + 1 > cit2)
+            std::cout << "Greater than....." << std::endl;
+        
+        if (it2 > cit2)
+            std::cout << "Greater than......" << std::endl;
+        
+
+        if (it >= it + 1)
+            std::cout << "Greater than or equal" << std::endl;
+        
+        if (it + 1 >= it)
+            std::cout << "Greater than or equal." << std::endl;
+        
+        if (it >= it)
+            std::cout << "Greater than or equal.." << std::endl;
+        
+        if (cit >= cit + 1)
+            std::cout << "Greater than or equal..." << std::endl;
+        
+        if (cit + 1 >= cit)
+            std::cout << "Greater than or equal...." << std::endl;
+        
+        if (cit >= cit)
+            std::cout << "Greater than or equal....." << std::endl;
+        
+        if (it2 >= cit2 + 1)
+            std::cout << "Greater than or equal......" << std::endl;
+        
+        if (it2 + 1 >= cit2)
+            std::cout << "Greater than or equal......." << std::endl;
+        
+        if (it2 >= cit2)
+            std::cout << "Greater than or equal........" << std::endl;
+    }
+
+void    TEST_MAX_SIZE(void)
+{
+        
+        std::cout << " FT  " << "Unsigned Char max size:" << ft::vector<unsigned char>().max_size() << std::endl;
+        std::cout << " STD " << "Unsigned Char max size:" << std::vector<unsigned char>().max_size() << std::endl;
+        std::cout << " FT  " << "Char max size:" << ft::vector<char>().max_size() << std::endl;
+        std::cout << " STD " << "Char max size:" << std::vector<char>().max_size() << std::endl;
+        std::cout << " FT  " << "Int max size:" << ft::vector<int>().max_size() << std::endl;
+        std::cout << " STD " << "Int max size:" << std::vector<int>().max_size() << std::endl;
+        std::cout << " FT  " << "Long max size:" << ft::vector<long>().max_size() << std::endl;
+        std::cout << " STD " << "Long max size:" << std::vector<long>().max_size() << std::endl;
+        std::cout << " FT  " << "Short max size:" << ft::vector<short>().max_size() << std::endl;
+        std::cout << " STD " << "Short max size:" << std::vector<short>().max_size() << std::endl;
+        std::cout << " FT  " << "abc struct max size:" << ft::vector<abc>().max_size() << std::endl;
+        std::cout << " STD " << "abc struct max size:" << ft::vector<abc>().max_size() << std::endl;
+        std::cout << " FT  " << "Float max size:" << ft::vector<float>().max_size() << std::endl;
+        std::cout << " STD " << "Float max size:" << std::vector<float>().max_size() << std::endl;
+    }
+
+void    TEST_POP_BACK(void)
+{
+        std::cout << "TEST POP BACK" << std::endl;
+        std::string str[30] = { "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test" };
+
+        ft::vector<std::string> v_ft(str, str + 30);
+        std::vector<std::string> v_s(str, str + 30);
+
+        v_ft.pop_back();
+        v_s.pop_back();
+
+        CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+        for (size_t i = 0; i < 20; i++)
+            v_ft.pop_back(), v_s.pop_back();
+        
+        CHECK_FT_STD_VECTOR(v_ft, v_s);
+    }
+
+void    TEST_PUSH_BACK(void)
+{
+    ft::vector<double> v_ft;
+    std::vector<double> v_s;
+
+    for (size_t i = 0; i < 20; i++)
+    {
+        v_ft.push_back(1.0);
+        v_s.push_back(1.0);
+
+        CHECK_FT_STD_VECTOR(v_ft, v_s);
+    }
+
+    v_ft.push_back(6.0);
+    v_s.push_back(6.0);
+
+    CHECK_FT_STD_VECTOR(v_ft, v_s);
     
+}
+
+void    TEST_RESERVE(void)
+{
+    ft::vector<int> v_ft;
+    std::vector<int> v_s;
+
+    int n = 0;
+
+    srand(time(NULL));
+    for (size_t i = 0; i < 10; i++)
+    {
+        n = rand() % 2;
+        v_ft.reserve(n);
+        v_s.reserve(n);
+
+        CHECK_FT_STD_VECTOR(v_ft, v_s);
+    }
+}
+
+void    TEST_RESIZE(void)
+{
+    ft::vector<int> v_ft;
+    std::vector<int> v_s;
+
+    int n = 0;
+
+    srand(time(NULL));
+    for (size_t i = 0; i < 10; i++)
+    {
+        n = rand() % 2;
+        v_ft.resize(n, 1010);
+        v_s.resize(n, 1010);
+
+        CHECK_FT_STD_VECTOR(v_ft, v_s);
+    }
+    
+}
+
+void    TEST_RITERATOR(void)
+{
+    std::string str[30] = { "test 1", "test 2", "test 2", "test 4", "test 5", "test 6", "test 7", "test 8", "test 9", "test 10", "test 11", "test 12", "test 13", "test 14", "test 15", "test 16", "test 17", "test 18", "test 19", "test 20", "test 21", "test 22", "test 23", "test 24", "test 25", "test 26", "test 27", "test 28", "test 29", "test 30" };
+
+    {
+        ft::vector<int> v1;
+        const ft::vector<int> v2;
+
+        if (v1.rbegin() != v1.rend())
+            std::cout << "Iterator error" << std::endl;
+
+        ft::vector<int>::const_reverse_iterator it = v2.rbegin();
+        if (it != v2.rend())
+            std::cout << "Iterator error" << std::endl;
+    }
+
+    {
+        ft::vector<std::string> v(str, str + 30);
+
+        ft::vector<std::string>::reverse_iterator it1 = v.rbegin();
+        ft::vector<std::string>::reverse_iterator it2 = it1;
+
+        std::cout << "It1:" <<  *it1 << std::endl;
+        std::cout << "It2:" <<  *it2 << std::endl;
+
+        it1 = v.rbegin() + 9;
+
+        std::cout << "It1:" <<  *it1 << std::endl;
+
+        it1 = v.rend() - 1;
+
+        std::cout << "It1:" <<  *it1 << std::endl;
+
+        it2 = it1;
+
+        std::cout << "It2:" <<  *it2 << std::endl;
+
+        *it1 = -1;
+
+    }
+
+    {
+        ft::vector<std::string> v(str, str + 30);
+
+        ft::vector<std::string>::reverse_iterator it = v.rbegin();
+        ft::vector<std::string>::const_reverse_iterator cit = v.rbegin() + 34;
+
+        std::cout << "It:" << *it << std::endl;
+        std::cout << "Cit:" <<  *cit << std::endl;
+
+        it->clear();
+        std::cout << "Cstr:  " << cit->c_str() << std::endl;
+
+
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        ++it;
+        it++;
+        ++cit;
+        cit++;
+
+        std::cout << "It: " << *it << std::endl;
+        std::cout << "It: " << *it++ << std::endl;
+        std::cout << "It: " << *it << std::endl;
+
+        std::cout << "Cit:" <<  *cit << std::endl;
+        std::cout << "Cit:" <<  *cit++ << std::endl;
+        std::cout << "Cit:" <<  *cit << std::endl;
+
+        --it;
+        it--;
+        it--;
+        --cit;
+        --cit;
+        cit--;
+
+        std::cout << "It: " << *it << std::endl;
+        std::cout << "It: " << *it-- << std::endl;
+        std::cout << "It: " << *it << std::endl;
+
+        std::cout << "Cit:" <<  *cit << std::endl;
+        std::cout << "Cit:" <<  *cit-- << std::endl;
+        std::cout << "Cit:" <<  *cit << std::endl;
+
+        std::cout << "It: " << *(it + 6) << std::endl;
+        std::cout << "It: " << *(42 + it) << std::endl;
+        std::cout << "It: " << *(42 + it - 3) << std::endl;
+        std::cout << "It: " << *(v.rend() - 6) << std::endl;
+        std::cout << "Cit:" <<  *(cit - 6) << std::endl;
+        std::cout << "Cit:" <<  *(cit + 7) << std::endl;
+        std::cout << "Size: " << v.rend() - v.rbegin() << std::endl;
+
+        it = v.rbegin() + 25;
+        cit = v.rbegin() + 25;
+
+        std::cout << "It: " << *it << std::endl;
+        std::cout << "Cit:" <<  *cit << std::endl;
+
+        it += 12;
+        cit += 12;
+
+        std::cout << "It: " << *it << std::endl;
+        std::cout << "Cit:" <<  *cit << std::endl;
+
+        it += 0;
+        cit += 0;
+
+        std::cout << "It: " << *it << std::endl;
+        std::cout << "Cit:" <<  *cit << std::endl;
+
+        it += 4;
+        cit += 4;
+
+        std::cout << "It: " << *it << std::endl;
+        std::cout << "Cit:" <<  *cit << std::endl;
+
+        it -= 0;
+        cit -= 0;
+
+        std::cout << "It: " << *it << std::endl;
+        std::cout << "Cit:" <<  *cit << std::endl;
+
+        it -= 22;
+        cit -= 22;
+
+        std::cout << "It: " << *it << std::endl;
+        std::cout << "Cit:" <<  *cit << std::endl;
+        std::cout << "It +  << 0:" << it[10] << std::endl;
+        std::cout << "Cit + << 10:" << cit[10] << std::endl;
+    }
+}
+
+void    TEST_RITERATOR_COMPARISONS(void)
+{
+    std::string str[30] = { "test 1", "test 2", "test 2", "test 4", "test 5", "test 6", "test 7", "test 8", "test 9", "test 10", "test 11", "test 12", "test 13", "test 14", "test 15", "test 16", "test 17", "test 18", "test 19", "test 20", "test 21", "test 22", "test 23", "test 24", "test 25", "test 26", "test 27", "test 28", "test 29", "test 30" };
+
+        ft::vector<std::string> v(str, str + 30);
+
+        ft::vector<std::string>::reverse_iterator it = v.rbegin();
+        ft::vector<std::string>::reverse_iterator it2 = v.rbegin();
+        ft::vector<std::string>::const_reverse_iterator cit = v.rbegin();
+        ft::vector<std::string>::const_reverse_iterator cit2 = v.rbegin();
+
+        if (it == v.rbegin())
+            std::cout << "Equal iterators" << std::endl;
+        
+        if (cit == v.rbegin())
+            std::cout << "Equal const iterators" << std::endl;
+        
+        if (cit == it)
+            std::cout << "Equal const iterators." << std::endl;
+        
+
+        ++it;
+        cit += 6;
+
+        if (it != v.rend())
+            std::cout << "Not Equal iterators" << std::endl;
+        
+        if (cit != v.rend())
+            std::cout << "Not Equal const iterators" << std::endl;
+        
+        if (cit != it)
+            std::cout << "Not Equal const iterators." << std::endl;
+        
+
+        if (it < it + 1)
+            std::cout << "Less than" << std::endl;
+        
+        if (it + 1 < it)
+            std::cout << "Less than." << std::endl;
+        
+        if (it < it)
+            std::cout << "Less than.." << std::endl;
+        
+        if (cit < cit + 1)
+            std::cout << "Less than..." << std::endl;
+        
+        if (cit + 1 < cit)
+            std::cout << "Less than...." << std::endl;
+        
+        if (cit < cit)
+            std::cout << "Less than...." << std::endl;
+        
+        if (it2 < cit2 + 1)
+            std::cout << "Less than....." << std::endl;
+        
+        if (it2 < cit2)
+            std::cout << "Less than......" << std::endl;
+        
+
+        if (it <= it + 1)
+            std::cout << "Less than or equal" << std::endl;
+        
+        if (it + 1 <= it)
+            std::cout << "Less than or equal." << std::endl;
+        
+        if (it <= it)
+            std::cout << "Less than or equal.." << std::endl;
+        
+        if (cit <= cit + 1)
+            std::cout << "Less than or equal..." << std::endl;
+        
+        if (cit + 1 <= cit)
+            std::cout << "Less than or equal...." << std::endl;
+        
+        if (cit <= cit)
+            std::cout << "Less than or equal....." << std::endl;
+        
+        if (it2 <= cit2 + 1)
+            std::cout << "Less than or equal......" << std::endl;
+        
+        if (it2 <= cit2)
+            std::cout << "Less than or equal......." << std::endl;
+        
+
+        if (it > it + 1)
+            std::cout << "Greater than" << std::endl;
+        
+        if (it + 1 > it)
+            std::cout << "Greater than." << std::endl;
+        
+        if (it > it)
+            std::cout << "Greater than.." << std::endl;
+        
+        if (cit > cit + 1)
+            std::cout << "Greater than..." << std::endl;
+        
+        if (cit + 1 > cit)
+            std::cout << "Greater than...." << std::endl;
+        
+        if (cit > cit)
+            std::cout << "Greater than...." << std::endl;
+        
+        if (it2 + 1 > cit2)
+            std::cout << "Greater than....." << std::endl;
+        
+        if (it2 > cit2)
+            std::cout << "Greater than......" << std::endl;
+        
+
+        if (it >= it + 1)
+            std::cout << "Greater than or equal" << std::endl;
+        
+        if (it + 1 >= it)
+            std::cout << "Greater than or equal." << std::endl;
+        
+        if (it >= it)
+            std::cout << "Greater than or equal.." << std::endl;
+        
+        if (cit >= cit + 1)
+            std::cout << "Greater than or equal..." << std::endl;
+        
+        if (cit + 1 >= cit)
+            std::cout << "Greater than or equal...." << std::endl;
+        
+        if (cit >= cit)
+            std::cout << "Greater than or equal....." << std::endl;
+        
+        if (it2 >= cit2 + 1)
+            std::cout << "Greater than or equal......" << std::endl;
+        
+        if (it2 + 1 >= cit2)
+            std::cout << "Greater than or equal......." << std::endl;
+        
+        if (it2 >= cit2)
+            std::cout << "Greater than or equal........" << std::endl;
+        
+}
+
+void    TEST_SWAP(void)
+{
+    std::string str[30] = { "test 1", "test 2", "test 2", "test 4", "test 5", "test 6", "test 7", "test 8", "test 9", "test 10", "test 11", "test 12", "test 13", "test 14", "test 15", "test 16", "test 17", "test 18", "test 19", "test 20", "test 21", "test 22", "test 23", "test 24", "test 25", "test 26", "test 27", "test 28", "test 29", "test 30" };
+
+    ft::vector<std::string> v_ft(str, str + 15);
+    ft::vector<std::string> v_ft1(str + 15, str + 30);
+
+    std::vector<std::string> v_s(str, str + 15);
+    std::vector<std::string> v_s1(str + 15, str + 30);
+
+    v_ft.swap(v_ft1);
+    v_s.swap(v_s1);
+
+    CHECK_FT_STD_VECTOR(v_ft, v_s);
+    CHECK_FT_STD_VECTOR(v_ft1, v_s1);
+
+    ft::swap(v_ft, v_ft1);
+    std::swap(v_s, v_s1);
+
+    CHECK_FT_STD_VECTOR(v_ft, v_s);
+    CHECK_FT_STD_VECTOR(v_ft1, v_s1);
+}
+
+void vector_tests(void)
+{
+    std::cout << "Loading vector ..." << std::endl;
+    // TEST_ASSIGN_RANGE();
+    // TEST_ASSIGN();
+    // TEST_ASSIGNMENT();
+    // TEST_AT();
+    // TEST_BACK();
+    // TEST_CLEAR();
+    // TEST_EQ();
+    // TEST_GE();
+    // TEST_GT();
+    // TEST_LE();
+    // TEST_LT();
+    // TEST_NE();
+    // TEST_CTOR_COPY();
+    // TEST_CTOR_RANGE();
+    // TEST_CTOR_SIZE();
+    // TEST_EMPTY();
+    // TEST_ERASE_RANGE();
+    // TEST_ERASE();
+    // TEST_FRONT();
+    // TEST_INDEX_OPERATOR();
+    // TEST_GET_ALLOCATOR();
+    // TEST_INSERT();
+    // TEST_INSERT_SIZE();
+    // TEST_INSERT_RANGE();
+    // TEST_ITERATOR();
+    // TEST_ITERATOR_COMPARISONS();
+    // TEST_MAX_SIZE();
+    // TEST_POP_BACK();
+    // TEST_PUSH_BACK();
+    // TEST_RESERVE();
+    // TEST_RESIZE();
+    // TEST_RITERATOR();
+    // TEST_RITERATOR_COMPARISONS();
+    // TEST_SWAP();
 }
