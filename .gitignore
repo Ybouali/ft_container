@@ -4,4 +4,5 @@ containers_test
 ft_containers-unit-test
 .vscode
 containers
-*.o
+main.o
+tests_vector.o
