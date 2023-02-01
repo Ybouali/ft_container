@@ -1,14 +1,27 @@
-COMPILER = clang++
+NAME = containers
+
+CC = clang++
 
 FLAGS = --std=c++98 -Wall -Wextra -Werror
 
+SRCS = ./vector/tests/tests_vector.cpp main.cpp 
 
+OBJS = $(SRCS:.cpp=.o)
 
-	# @$(COMPILER) $(FLAGS) ./map/tests/map.cpp -o map.out
-	# @$(COMPILER) $(FLAGS) ./stack/tests/stack.cpp -o stack.out
+all: $(NAME)
 
-all:
-	@$(COMPILER) $(FLAGS) ./vector/tests/vector.cpp -o vector.out
+$(NAME): $(OBJS)
+	@$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+
+.cpp.o: ${SRCS}
+	@$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	@rm -f vector.out map.out stack.out
+	@rm -f $(OBJS)
+
+fclean: clean
+	@rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re

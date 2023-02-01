@@ -1,6 +1,8 @@
+#include "../vector.hpp"
+
 #include <sstream>
 
-#include "../vector.hpp"
+#include <list>
 
 template <class _T>
 void CHECK_FT_STD_VECTOR(const ft::vector<_T>& v_ft, const std::vector<_T>& v_s)
@@ -26,8 +28,8 @@ void CHECK_FT_STD_VECTOR(const ft::vector<_T>& v_ft, const std::vector<_T>& v_s)
 
     for (int i = 0; i < (int)v_s.size(); i++)
     {
-        std::cout << "v_ft[" << i << "] = " << v_ft[i] << std::endl;
-        std::cout << " v_s[" << i << "] = " << v_s[i] << std::endl << std::endl;
+        // std::cout << "v_ft[" << i << "] = " << v_ft[i] << std::endl;
+        // std::cout << " v_s[" << i << "] = " << v_s[i] << std::endl << std::endl;
         if (v_s[i] != v_ft[i])
         {
             std::cout << "THE CONTENT OF THE VECTOR AT " << i << " IS NOT EQUALS ! " << std::endl;
@@ -953,7 +955,203 @@ void    TEST_INDEX_OPERATOR(void)
         }
     }
 
-int main()
+void    TEST_GET_ALLOCATOR(void)
+{
+        std::cout << " TEST_GET_ALLOCATOR" << std::endl;
+        
+        ft::vector<int> v;
+
+        std::allocator<int> alloc = v.get_allocator();
+
+        int *buff = alloc.allocate(2000 * 4);
+        alloc.deallocate(buff, 2000 * 4);
+}
+
+void TEST_INSERT(void)
+{
+        std::cout << " TEST INSERT POSITION " << std::endl;   
+        {
+            {
+                ft::vector<std::string> v_ft;
+                std::vector<std::string> v_s;
+                
+                ft::vector<std::string>::iterator it_ft;
+                std::vector<std::string>::iterator it_s;
+
+                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 1" << std::endl << std::endl;
+
+
+                it_ft = v_ft.insert(v_ft.end(), "hello world 1");
+                it_s = v_s.insert(v_s.end(), "hello world 1");
+
+                std::cout << "it_ft :: " << *it_ft << std::endl;
+                std::cout << "it_s  :: " << *it_s << std::endl;
+
+                CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 2" << std::endl << std::endl;
+
+                it_ft = v_ft.insert(v_ft.end(), "hello world 2");
+                it_s = v_s.insert(v_s.end(), "hello world 2");
+
+                std::cout << "it_ft :: " << *it_ft << std::endl;
+                std::cout << "it_s  :: " << *it_s << std::endl;
+
+                CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 3" << std::endl << std::endl;
+
+                it_ft = v_ft.insert(v_ft.begin() + 1, "hello world 3");
+                it_s = v_s.insert(v_s.begin() + 1, "hello world 3");
+
+                std::cout << "it_ft :: " << *it_ft << std::endl;
+                std::cout << "it_s  :: " << *it_s << std::endl;
+
+                CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 4" << std::endl << std::endl;
+
+                it_ft = v_ft.insert(v_ft.begin() + 2, "hello world 4");
+                it_s = v_s.insert(v_s.begin() + 2, "hello world 4");
+
+                std::cout << "it_ft :: " << *it_ft << std::endl;
+                std::cout << "it_s  :: " << *it_s << std::endl;
+
+                CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+            }
+            {
+                ft::vector<int> v_ft;
+                std::vector<int> v_s;
+
+                ft::vector<int>::iterator it_ft;
+                std::vector<int>::iterator it_s;
+
+                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 5" << std::endl << std::endl;
+
+                it_ft = v_ft.insert(v_ft.begin(), 1000);
+                it_s = v_s.insert(v_s.begin(), 1000);
+
+                std::cout << "it_ft :: " << *it_ft << std::endl;
+                std::cout << "it_s  :: " << *it_s << std::endl;
+
+                CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 6" << std::endl << std::endl;
+
+                it_ft = v_ft.insert(v_ft.end(), 20);
+                it_s = v_s.insert(v_s.end(), 20);
+
+                std::cout << "it_ft :: " << *it_ft << std::endl;
+                std::cout << "it_s  :: " << *it_s << std::endl;
+
+                CHECK_FT_STD_VECTOR(v_ft, v_s);
+            }
+
+
+        }
+
+    }
+
+void TEST_INSERT_SIZE(void)
+{
+        std::cout << "TEST INSERT SIZE" << std::endl;
+        {
+            ft::vector<int> v_ft;
+            std::vector<int> v_s;
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 1" << std::endl << std::endl;
+
+            v_ft.insert(v_ft.begin(), 0, 100);
+            v_s.insert(v_s.begin(), 0, 100);
+
+            CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 2" << std::endl << std::endl;
+
+            v_ft.insert(v_ft.begin(), 12, 1010);
+            v_s.insert(v_s.begin(), 12, 1010);
+
+            CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 3" << std::endl << std::endl;
+
+            v_ft.insert(v_ft.begin(), 12, -1010);
+            v_s.insert(v_s.begin(), 12, -1010);
+
+            CHECK_FT_STD_VECTOR(v_ft, v_s);
+        }
+    }
+
+void    TEST_INSERT_RANGE(void)
+{
+        std::cout << "INSERT RANGE " << std::endl;
+        std::string str[30] = { "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test" };
+        {
+            ft::vector<std::string> v_ft;
+            std::vector<std::string> v_s;
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 1" << std::endl << std::endl;
+            
+            v_ft.insert(v_ft.begin(), v_ft.begin(), v_ft.begin());
+            v_s.insert(v_s.begin(), v_s.begin(), v_s.begin());
+
+            CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 2" << std::endl << std::endl;
+
+            v_ft.insert (v_ft.begin(), v_ft.begin(), v_ft.end());
+            v_s.insert(v_s.begin(), v_s.begin(), v_s.end());
+
+            CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 3" << std::endl << std::endl;
+
+            v_ft.insert (v_ft.begin(), str, str + 30);
+            v_s.insert(v_s.begin(), str, str + 30);
+
+            CHECK_FT_STD_VECTOR(v_ft, v_s);
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 4" << std::endl << std::endl;
+
+            v_ft.insert (v_ft.begin(), str + 5, str + 10);
+            v_s.insert(v_s.begin(), str + 5, str + 10);
+
+            CHECK_FT_STD_VECTOR(v_ft, v_s);
+        }
+        {
+            std::list<int>  list_s(10, 1010);
+
+            ft::vector<int> v_ft(5, 10);
+            std::vector<int> v_s(5, 10);
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 5" << std::endl << std::endl;
+
+            v_ft.insert (v_ft.begin() + 2, list_s.begin(), list_s.end());
+            v_s.insert (v_s.begin() + 2, list_s.begin(), list_s.end());
+
+            CHECK_FT_STD_VECTOR(v_ft, v_s);
+        }
+        {
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 6" << std::endl << std::endl;
+            std::istringstream s_f("1_2_3_4");
+            std::istreambuf_iterator<char> it_f(s_f);
+
+            std::istringstream s_s("1_2_3_4");
+            std::istreambuf_iterator<char> it_s(s_s), end;
+
+            ft::vector<char>    v_ft(2, 'L');
+            std::vector<char>    v_s(2, 'L');
+
+            v_ft.insert(v_ft.begin(), it_f, end);
+
+            v_s.insert(v_s.begin(), it_s, end);
+
+            CHECK_FT_STD_VECTOR(v_ft, v_s);
+        }
+    }
+
+void vector_tests(void)
 {
     std::cout << "Loading vector ..." << std::endl;
     // TEST_ASSIGN_RANGE();
@@ -976,5 +1174,79 @@ int main()
     // TEST_ERASE();
     // TEST_FRONT();
     // TEST_INDEX_OPERATOR();
+    // TEST_GET_ALLOCATOR();
+    // TEST_INSERT();
+    // TEST_INSERT_SIZE();
+    // TEST_INSERT_RANGE();
+    // TEST__ITERATOR();
+    {
+        std::cout << "TEST ITERATOR " << std::endl;
+        std::string str[30] = { "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test" };
+        {
+            ft::vector<int> v1;
+            const ft::vector<int> v2;
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 1" << std::endl << std::endl;
+
+            if (v1.begin() != v1.end())
+                std::cerr << "ITERATOR ERROR :) " << std::endl;
+            else
+                std::cout << "NON CONST VECTOR v1.begin() != v1.end() " << std::endl;
+
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 2" << std::endl << std::endl;
+            if (v2.begin() != v2.end())
+                std::cerr << "ITERATOR ERROR :) " << std::endl;
+            else
+                std::cout << "CONST VECTOR v2.begin() != v2.end() " << std::endl;
+        }
+        {
+            ft::vector<std::string>     v(str, str + 30);
+
+            ft::vector<std::string>::iterator it1 = v.begin();
+            ft::vector<std::string>::iterator it2 = it1;
+
+            std::cout << " :it1: = " << *it1 << std::endl;
+            std::cout << " :it2: = " << *it2 << std::endl;
+
+            it1 = v.begin() + 9;
+            std::cout << " it1 = v.begin() + 9 " << std::endl;
+            std::cout << " :it1: = " << *it1 << std::endl;
+
+            it1 = v.end() - 1;
+            std::cout << " it1 = v.end() - 1 " << std::endl;
+            std::cout << " :it1: = " << *it1 << std::endl;
+
+            it2 = it1;
+            std::cout << " it2 = it1 " << std::endl;
+            std::cout << " :it2: = " << *it2 << std::endl;
+
+            *it1 = -1;
+        }
+        {
+            ft::vector<std::string>     v(str, str + 30);
+
+            ft::vector<std::string>::iterator it = v.begin();
+
+            ft::vector<std::string>::const_iterator cit = v.begin() + 2;
+
+            std::cout << "it = " << *it << std::endl;
+            std::cout << "cit = " << *cit << std::endl;
+
+            it->clear();
+            std::cout << "cit->c_str() = " << cit->c_str() << std::endl;
+
+            for (ft::vector<std::string>::iterator i = v.begin(); i != v.end(); i++)
+                std::cout << " i :: " << *i << " || ";
+            std::cout << std::endl;
+            
+            int i = 0;
+            while (i < 7)
+                ++it, i++;
+            it++;
+            ++cit;
+            cit++;
+            
+        }
+    }
     
 }
