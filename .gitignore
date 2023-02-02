@@ -5,4 +5,5 @@ ft_containers-unit-test
 .vscode
 containers
 main.o
-tests_vector.o
+vector.o
+stack.o

@@ -75,7 +75,7 @@ void    TEST_ASSIGN_RANGE(void)
             v_s.assign(str, str);
 
             CHECK_FT_STD_VECTOR(v_ft, v_s);
-            // system("leaks vector.out");
+            // system("leaks containers");
         }
         {
             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 4" << std::endl << std::endl;
@@ -104,7 +104,7 @@ void    TEST_ASSIGN_RANGE(void)
             v_s.assign(v_s.begin(), v_s.end());
 
             CHECK_FT_STD_VECTOR(v_ft, v_s);
-            // system("leaks vector.out");
+            // system("leaks containers");
         }
         {
             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 9" << std::endl << std::endl;
@@ -131,9 +131,9 @@ void    TEST_ASSIGN_RANGE(void)
             v_ft.assign(it_f, end_f);
 
             CHECK_FT_STD_VECTOR(v_ft, v_s);
-            system("leaks vector.out");
+            system("leaks containers");
         }
-        system("leaks vector.out");
+        system("leaks containers");
 }
 
 void    TEST_ASSIGN(void)
@@ -194,7 +194,7 @@ void    TEST_ASSIGN(void)
 
             CHECK_FT_STD_VECTOR(v_ft, v_s);
         }
-        system("leaks vector.out");
+        system("leaks containers");
 }
 
 void    TEST_ASSIGNMENT(void)
@@ -228,7 +228,7 @@ void    TEST_ASSIGNMENT(void)
             v_ft = v_ft_0;
 
             CHECK_FT_STD_VECTOR(v_ft, v_s);
-            system("leaks vector.out");
+            system("leaks containers");
         }
 }
 
@@ -336,7 +336,7 @@ void    TEST_CLEAR(void)
 
         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 3" << std::endl << std::endl;
         CHECK_FT_STD_VECTOR(v_ft, v_s);
-        system("leaks vector.out");
+        system("leaks containers");
 
 }
 
@@ -691,7 +691,7 @@ void    TEST_CTOR_COPY(void)
             if (&v_ft_0[0] == &v_ft[0])
                 std::cout << "CTOR COPY DOSE NOT PROVIDE A DEEP COPY" << std::endl;
 
-            system("leaks vector.out");
+            system("leaks containers");
         }
     }
 
@@ -743,7 +743,7 @@ void    TEST_CTOR_RANGE(void)
 
             CHECK_FT_STD_VECTOR(v_ft, v_s);
         }
-        system("leaks vector.out");
+        system("leaks containers");
     }
 
 void    TEST_CTOR_SIZE(void)
@@ -776,7 +776,7 @@ void    TEST_CTOR_SIZE(void)
             }
             
         }
-        system("leaks vector.out");
+        system("leaks containers");
     }
 
 void    TEST_EMPTY(void)
@@ -824,7 +824,7 @@ void    TEST_ERASE_RANGE(void)
 
             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 1" << std::endl << std::endl;
             CHECK_FT_STD_VECTOR(v_ft, v_s);
-            system("leaks vector.out");
+            system("leaks containers");
         }
         {
             ft::vector<int>     v_ft(20, 1010);
@@ -841,7 +841,7 @@ void    TEST_ERASE_RANGE(void)
 
             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEST 3" << std::endl << std::endl;
             CHECK_FT_STD_VECTOR(v_ft, v_s);
-            system("leaks vector.out");
+            system("leaks containers");
         }
     }
 
@@ -1788,38 +1788,38 @@ void    TEST_SWAP(void)
 void vector_tests(void)
 {
     std::cout << "Loading vector ..." << std::endl;
-    // TEST_ASSIGN_RANGE();
-    // TEST_ASSIGN();
-    // TEST_ASSIGNMENT();
-    // TEST_AT();
-    // TEST_BACK();
-    // TEST_CLEAR();
-    // TEST_EQ();
-    // TEST_GE();
-    // TEST_GT();
-    // TEST_LE();
-    // TEST_LT();
-    // TEST_NE();
-    // TEST_CTOR_COPY();
-    // TEST_CTOR_RANGE();
-    // TEST_CTOR_SIZE();
-    // TEST_EMPTY();
-    // TEST_ERASE_RANGE();
-    // TEST_ERASE();
-    // TEST_FRONT();
-    // TEST_INDEX_OPERATOR();
-    // TEST_GET_ALLOCATOR();
-    // TEST_INSERT();
-    // TEST_INSERT_SIZE();
-    // TEST_INSERT_RANGE();
-    // TEST_ITERATOR();
-    // TEST_ITERATOR_COMPARISONS();
-    // TEST_MAX_SIZE();
-    // TEST_POP_BACK();
-    // TEST_PUSH_BACK();
-    // TEST_RESERVE();
-    // TEST_RESIZE();
-    // TEST_RITERATOR();
-    // TEST_RITERATOR_COMPARISONS();
-    // TEST_SWAP();
+    TEST_ASSIGN_RANGE();
+    TEST_ASSIGN();
+    TEST_ASSIGNMENT();
+    TEST_AT();
+    TEST_BACK();
+    TEST_CLEAR();
+    TEST_EQ();
+    TEST_GE();
+    TEST_GT();
+    TEST_LE();
+    TEST_LT();
+    TEST_NE();
+    TEST_CTOR_COPY();
+    TEST_CTOR_RANGE();
+    TEST_CTOR_SIZE();
+    TEST_EMPTY();
+    TEST_ERASE_RANGE();
+    TEST_ERASE();
+    TEST_FRONT();
+    TEST_INDEX_OPERATOR();
+    TEST_GET_ALLOCATOR();
+    TEST_INSERT();
+    TEST_INSERT_SIZE();
+    TEST_INSERT_RANGE();
+    TEST_ITERATOR();
+    TEST_ITERATOR_COMPARISONS();
+    TEST_MAX_SIZE();
+    TEST_POP_BACK();
+    TEST_PUSH_BACK();
+    TEST_RESERVE();
+    TEST_RESIZE();
+    TEST_RITERATOR();
+    TEST_RITERATOR_COMPARISONS();
+    TEST_SWAP();
 }

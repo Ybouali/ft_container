@@ -1,8 +1,9 @@
 #include "../map.hpp"
 #include <map>
 
-int main()
+void    map_tests(void)
 {
     std::cout << "LOADING MAP..." << std::endl;
+    
 }
 

@@ -11,8 +11,8 @@ int main(int ac, char **av)
     }
     if ((std::string)av[1] == "vector")
         vector_tests();
-    // else if ((std::string)av[1] == "stack")
-        // stack_tests();
-    // else if ((std::string)av[1] == "map")
-        // map_tests();
+    else if ((std::string)av[1] == "stack")
+        stack_tests();
+    else if ((std::string)av[1] == "map")
+        map_tests();
 }
