@@ -16,6 +16,16 @@ $(NAME): $(OBJS)
 .cpp.o: ${SRCS}
 	@$(CC) $(FLAGS) -c $< -o $@
 
+
+map:
+	@make && ./containers map && make fclean
+
+vector:
+	@make && ./containers vector && make fclean
+
+stack:
+	@make && ./containers stack && make fclean
+
 clean:
 	@rm -f $(OBJS)
 
@@ -24,4 +34,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re map vector stack
