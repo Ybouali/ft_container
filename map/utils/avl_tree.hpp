@@ -71,42 +71,42 @@ namespace ft {
             size_type   get_size(void) const { return _size; }
             
             // ! GET MIN SUBTREE
-            pointer     get_min_subtree(pointer _node)
-            {
-                if (!_node)
-                    return nullptr;
-                while (_node->left)
-                    _node = _node->left;
-                return _node;
-            }
+            // pointer     get_min_subtree(pointer _node)
+            // {
+            //     if (!_node)
+            //         return nullptr;
+            //     while (_node->left)
+            //         _node = _node->left;
+            //     return _node;
+            // }
 
             // ! IN ORDER SUCCESSOR
-            pointer in_order_successor(pointer _node)
-            {
-                if (!_node)
-                    return nullptr;
-                if (_node->right)
-                    return get_min_subtree(_node->right);
-                pointer node = _node;
-                pointer parent = _node->parent;
+            // pointer in_order_successor(pointer _node)
+            // {
+            //     if (!_node)
+            //         return nullptr;
+            //     if (_node->right)
+            //         return get_min_subtree(_node->right);
+            //     pointer node = _node;
+            //     pointer parent = _node->parent;
 
-                while (parent && node == parent->right) {
-                    node = parent;
-                    parent = parent->parent;
-                }
+            //     while (parent && node == parent->right) {
+            //         node = parent;
+            //         parent = parent->parent;
+            //     }
 
-                return parent;
-            }
+            //     return parent;
+            // }
 
             // ! GET MAX SUBTREE
-            pointer     get_max_subtree(pointer _node)
-            {
-                if (!_node)
-                    return nullptr;
-                while (_node->right)
-                    _node = _node->right;
-                return _node;
-            }
+            // pointer     get_max_subtree(pointer _node)
+            // {
+            //     if (!_node)
+            //         return nullptr;
+            //     while (_node->right)
+            //         _node = _node->right;
+            //     return _node;
+            // }
 
             // ! DESTROY NODE
             void    destroy_node(pointer node)
@@ -204,6 +204,7 @@ namespace ft {
             // ! LEFT ROTATION
             pointer     leftRotation(pointer _node)
             {
+                pointer     _p_node = _node->parent;
                 pointer     _r_node = _node->right;
                 pointer     _l_node = _r_node->left;
 
@@ -211,7 +212,7 @@ namespace ft {
                     _l_node->parent = _node;
                 _r_node->left = _node;
                 _node->right = _l_node;
-                _r_node->parent = _node->parent;
+                _r_node->parent = _p_node;
                 _node->parent = _r_node;
 
                 _node->height = max(height(_node->left), height(_node->right)) + 1;
@@ -254,19 +255,19 @@ namespace ft {
 
                 int balance = get_Balance(_node);
                 
-                if (balance > 1 && comp(_val.first, _node->data->first))
+                if (balance > 1 && comp(_val.first, _node->left->data->first))
                     return rightRotation(_node);
-                
-                if (balance < -1 && comp(_node->data->first, _val.first))
-                    return leftRotation(_node);
-                
+
                 if (balance > 1 && comp(_node->left->data->first, _val.first))
                 {
                     _node->left = leftRotation(_node->left);
                     return rightRotation(_node);
                 }
-
+                
                 if (balance < -1 && comp(_node->right->data->first, _val.first))
+                    return leftRotation(_node);
+                
+                if (balance < -1 && comp(_val.first, _node->right->data->first))
                 {
                     _node->right = rightRotation(_node->right);
                     return leftRotation(_node);
