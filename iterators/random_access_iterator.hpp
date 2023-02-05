@@ -9,6 +9,7 @@ namespace ft{
     class random_access_iterator 
     {
         public :
+            typedef T*                                                 iterator_type;
             typedef typename iterator_traits<T*>::value_type           value_type;
             typedef typename iterator_traits<T*>::difference_type      difference_type;
             typedef typename iterator_traits<T*>::pointer              pointer;
