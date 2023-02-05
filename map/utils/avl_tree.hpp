@@ -69,44 +69,6 @@ namespace ft {
 
             // ! GET SIZE
             size_type   get_size(void) const { return _size; }
-            
-            // ! GET MIN SUBTREE
-            // pointer     get_min_subtree(pointer _node)
-            // {
-            //     if (!_node)
-            //         return nullptr;
-            //     while (_node->left)
-            //         _node = _node->left;
-            //     return _node;
-            // }
-
-            // ! IN ORDER SUCCESSOR
-            // pointer in_order_successor(pointer _node)
-            // {
-            //     if (!_node)
-            //         return nullptr;
-            //     if (_node->right)
-            //         return get_min_subtree(_node->right);
-            //     pointer node = _node;
-            //     pointer parent = _node->parent;
-
-            //     while (parent && node == parent->right) {
-            //         node = parent;
-            //         parent = parent->parent;
-            //     }
-
-            //     return parent;
-            // }
-
-            // ! GET MAX SUBTREE
-            // pointer     get_max_subtree(pointer _node)
-            // {
-            //     if (!_node)
-            //         return nullptr;
-            //     while (_node->right)
-            //         _node = _node->right;
-            //     return _node;
-            // }
 
             // ! DESTROY NODE
             void    destroy_node(pointer node)
@@ -190,8 +152,10 @@ namespace ft {
                 
                 if (_r_node)
                     _r_node->parent = _node;
+                
                 _l_node->right = _node;
                 _node->left    = _r_node;
+
                 _l_node->parent = _p_node;
                 _node->parent = _l_node;
 
