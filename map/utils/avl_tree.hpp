@@ -21,12 +21,8 @@ namespace ft {
         public :
             typedef Alloc                                                           allocator_type_pair;
             typedef _comp                                                           Comp;
-            typedef Key                                                             Key_type;
-            typedef T                                                               mapped_type;
-            typedef typename ft::pair<Key_type, mapped_type>                        value_type;
-            typedef typename ft::Node_avl<Key_type, mapped_type>                    _Node_type;
+            typedef typename ft::pair<Key, T>                                       value_type;
             typedef ft::Node_avl<Key, T> *                                          pointer;
-            typedef ft::Node_avl<Key, T> &                                          reference;
             typedef typename Alloc::template rebind<ft::Node_avl<Key, T> >::other   allocator_type;
             typedef size_t                                                          size_type;
 
@@ -248,7 +244,7 @@ namespace ft {
             }
 
             // ! SEARCH WITH A ROOT
-            pointer    search_avl(pointer node, const Key_type& _val) const
+            pointer    search_avl(pointer node, const Key& _val) const
             {
                 if (!node)
                     return NULL;
@@ -289,24 +285,15 @@ namespace ft {
             }
 
             // ! SEARCH
-            pointer     search(const Key_type& _val) const
+            pointer     search(const Key& _val) const
             {
                 return search_avl(get_root(), _val);
             }
 
             // ! GET ROOT
             pointer     get_root() const { return root; }
-
-            // ! GET MIN 
-            pointer     min(void) const
-            {
-                pointer     _node = root;
-
-                while(_node->left)
-                    _node = _node->left;
-                return _node;
-            }
             
+            // ! GET MIN OF SUBTREE
             pointer     min(pointer _root) const
             {
                 while (_root->left)
@@ -315,7 +302,7 @@ namespace ft {
             }
 
             // ! ERASE AVL
-            pointer    erase_avl(pointer   _root, const Key_type& _val)
+            pointer    erase_avl(pointer   _root, const Key& _val)
             {
                 if (!_root)
                     return _root;
@@ -421,7 +408,7 @@ namespace ft {
 
 
         private :
-            _Node_type*                                     root;
+            pointer                                         root;
             allocator_type_pair                             alloc_pair;
             Comp                                            comp;
             allocator_type                                  alloc_node;

@@ -15,6 +15,7 @@ namespace ft
 
         private :
             typedef typename ft::Node_avl<Key, T>*                                                       node_pointer;
+            typedef typename ft::avl_tree<Key, T, Compare, Alloc>                                        tree_type;
         public:
             // ! TYPEDEFS
             class value_compare;
@@ -29,7 +30,6 @@ namespace ft
             typedef typename allocator_type::const_reference                                            const_reference;
             typedef typename allocator_type::pointer                                                    pointer;
             typedef typename allocator_type::const_pointer                                              const_pointer;
-            typedef typename ft::avl_tree<Key, T, key_compare, allocator_type>                          tree_type;
             typedef typename ft::bidirectional_iterator<value_type, ft::Node_avl<Key, T> >              iterator;
             typedef typename ft::bidirectional_iterator<const value_type, const ft::Node_avl<Key, T> >  const_iterator;
             typedef typename ft::reverse_iterator<iterator >                                            reverse_iterator;
@@ -79,25 +79,25 @@ namespace ft
 
             // ! ELEMENT ACCESS -------------------------------------------------------
 
-            // ! AT
-            mapped_type& at (const key_type& k)
-            {
-                iterator it = find(k);
+            // // ! AT
+            // mapped_type& at (const key_type& k)
+            // {
+            //     iterator it = find(k);
 
-                if (it == end())
-                    throw std::out_of_range("OUT OF RANGE");
-                return it->second;
-            }
+            //     if (it == end())
+            //         throw std::out_of_range("OUT OF RANGE");
+            //     return it->second;
+            // }
             
-            // ! AT CONST
-            const mapped_type& at (const key_type& k) const
-            {
-                const_iterator it = find(k);
+            // // ! AT CONST
+            // const mapped_type& at (const key_type& k) const
+            // {
+            //     const_iterator it = find(k);
 
-                if (it == end())
-                    throw std::out_of_range("OUT OF RANGE");
-                return it->second;
-            }
+            //     if (it == end())
+            //         throw std::out_of_range("OUT OF RANGE");
+            //     return it->second;
+            // }
 
             // ! OPERATOR []
             mapped_type& operator[] (const key_type& _key) { return (insert(ft::make_pair(_key, mapped_type())).first)->second; }
@@ -140,7 +140,6 @@ namespace ft
                 const_reverse_iterator    rit(begin());
                 return (rit);
             }
-
 
             // ! CAPACITY -------------------------------------------------------
 
@@ -231,10 +230,10 @@ namespace ft
                 node_pointer node = _tree.search(k);
                 return node ? 1 : 0;
             }
-            // ! FIND WITHI KEY TYPE && RETURN ITERATOR TYPE
+            // ! FIND WITH KEY TYPE && RETURN ITERATOR TYPE
             iterator find(const Key& _val) { return _tree.search(_val); }
 
-            // ! FIND WITHI KEY TYPE && RETURN CONST ITERATOR TYPE
+            // ! FIND WITH KEY TYPE && RETURN CONST ITERATOR TYPE
             const_iterator find(const Key& _val) const { return _tree.search(_val); }
 
             // ! EQUAL RANGE && RETURN ITERATOR

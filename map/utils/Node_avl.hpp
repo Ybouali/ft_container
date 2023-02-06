@@ -13,8 +13,6 @@ namespace ft
             
             Node_avl(): height(0), left(NULL), right(NULL), parent(NULL), data() {}
 
-            Node_avl(const Node_avl& other): height(other.height), left(other.left), right(other.right), parent(other.parent), data(other.data) {}
-
             Node_avl(int _height, Node_avl *_left, Node_avl *_right, Node_avl *_parent, ft::pair<const Key, T>  *_data)
             : height(_height), left(_left), right(_right), parent(_parent), data(_data) {}
 
