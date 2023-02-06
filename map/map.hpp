@@ -15,7 +15,6 @@ namespace ft
 
         private :
             typedef typename ft::Node_avl<Key, T>*                                                       node_pointer;
-            // typedef typename const ft::Node_avl<Key, T>*                                                 const_node_pointer;
         public:
             // ! TYPEDEFS
             class value_compare;
@@ -250,17 +249,6 @@ namespace ft
             
             // ! LOWER BOUND && RETURN NON CONST ITERATOR TYPE
             iterator lower_bound (const key_type& k) {
-                // iterator f = find(k);
-                // iterator e = end();
-                // iterator b = begin();
-                // if (f != e)
-                //     return f;
-                // while (b != e) {
-                //     if (!_comp_key(b->first,k))
-                //         return b; 
-                //     b++;
-                // }
-                // return e;
                 node_pointer l = _tree.lower_bound(k);
 
                 if (l)
@@ -274,18 +262,7 @@ namespace ft
 
                 if (l)
                     return l;
-                return end(); 
-                // const_iterator f = find(k);
-                // const_iterator b = begin();
-                // const_iterator e = end();
-                // if (f != e)
-                //     return f;
-                // while (b != e) {
-                //     if (!_comp_key(b->first,k))
-                //         return b; 
-                //     b++;
-                // }
-                // return e;
+                return end();
             }
 
             // ! UPPER BOUND && RETURN NON CONST ITERATOR TYPE

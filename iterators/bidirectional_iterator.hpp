@@ -14,7 +14,7 @@ namespace ft {
             node_type_p get_next_min(node_type_p _node)
             {
                 if (!_node)
-                    return nullptr;
+                    return NULL;
                 while (_node && _node->left)
                     _node = _node->left;
                 return _node;
@@ -48,7 +48,7 @@ namespace ft {
             node_type_p increment(node_type_p r_node)
             {
                 if (r_node == _end)
-                    return nullptr;
+                    return NULL;
                 node_type_p parent;
 
                 if (r_node && r_node->right)
@@ -112,9 +112,9 @@ namespace ft {
             {
                 _node_curr = increment(_node_curr);
                 
-                if (_node_curr == nullptr)
+                if (_node_curr == NULL)
                 {
-                    _node_curr = nullptr;
+                    _node_curr = NULL;
                     return *this;
                 }
                 return (*this);

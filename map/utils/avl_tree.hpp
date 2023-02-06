@@ -13,8 +13,8 @@ namespace ft {
     template <
         class Key,
         class T,
-        class _comp = std::less<Key>,
-        class Alloc = std::allocator<ft::pair<const Key, T> >
+        class _comp,
+        class Alloc
     >
     class avl_tree
     {
@@ -26,12 +26,11 @@ namespace ft {
             typedef typename ft::pair<Key_type, mapped_type>                        value_type;
             typedef typename ft::Node_avl<Key_type, mapped_type>                    _Node_type;
             typedef ft::Node_avl<Key, T> *                                          pointer;
-            // typedef const ft::Node_avl<Key, T> *                                    const_pointer;
             typedef ft::Node_avl<Key, T> &                                          reference;
             typedef typename Alloc::template rebind<ft::Node_avl<Key, T> >::other   allocator_type;
             typedef size_t                                                          size_type;
 
-            avl_tree(): root(nullptr) , alloc_pair(), comp(), alloc_node(), _size(0) { }
+            avl_tree(): root(NULL) , alloc_pair(), comp(), alloc_node(), _size(0) { }
             
             avl_tree(const avl_tree& other): root(other.root), alloc_pair(other.alloc_pair), comp(other.comp), alloc_node(other.alloc_node), _size(other._size) {} 
             
@@ -61,7 +60,7 @@ namespace ft {
                 for (size_type i = COUNT; i < space; i++)
                     std::cout << " ";
 
-                // " HEIGHT " << node->height << " add :: " << node->parent <<
+                // " HEIGHT " << node->height
                 std::cout << "| " << node->data->first << " |" << std::endl;
 
                 show_tree_2D(node->left, space);
@@ -77,9 +76,9 @@ namespace ft {
                     return ;
                 
                 if (node->parent && node->parent->left == node)
-                    node->parent->left = nullptr;
+                    node->parent->left = NULL;
                 else if (node->parent && node->parent->right == node)
-                    node->parent->right = nullptr;
+                    node->parent->right = NULL;
 
                 alloc_pair.destroy(node->data);
                 alloc_pair.deallocate(node->data, 1);
@@ -87,9 +86,9 @@ namespace ft {
                 alloc_node.deallocate(node, 1);
                 
                 if (root == node)
-                    root = nullptr;
+                    root = NULL;
                 else
-                    node = nullptr;
+                    node = NULL;
                 _size--;
             }
 
@@ -125,7 +124,7 @@ namespace ft {
                 pointer new_node = alloc_node.allocate(1);
                 new_node->data = alloc_pair.allocate(1);
                 alloc_pair.construct(new_node->data, _val);
-                alloc_node.construct(new_node, ft::Node_avl<Key, T>(_height, nullptr, nullptr, _parent, new_node->data));
+                alloc_node.construct(new_node, ft::Node_avl<Key, T>(_height, NULL, NULL, _parent, new_node->data));
                 return new_node;
             }
 
@@ -199,7 +198,7 @@ namespace ft {
                 if (!_node)
                 {
                     _size++;
-                    return init_node(1, _val, nullptr);
+                    return init_node(1, _val, NULL);
                 } 
 
                 if (comp(_val.first, _node->data->first))
@@ -252,7 +251,7 @@ namespace ft {
             pointer    search_avl(pointer node, const Key_type& _val) const
             {
                 if (!node)
-                    return nullptr;
+                    return NULL;
                 
                 if (comp(node->data->first, _val))
                     return search_avl(node->right, _val);
@@ -260,7 +259,7 @@ namespace ft {
                     return search_avl(node->left, _val);
                 else
                     return node;
-                return nullptr;
+                return NULL;
             }
 
             // ! END
@@ -268,7 +267,7 @@ namespace ft {
             {
                 pointer node = get_root();
 
-                if (!node) return nullptr;
+                if (!node) return NULL;
 
                 while (node->right)
                     node = node->right;
@@ -281,7 +280,7 @@ namespace ft {
                 pointer node = get_root();
 
                 if (!node)
-                    return nullptr;
+                    return NULL;
 
                 while (node->left)
                     node = node->left;
@@ -333,7 +332,7 @@ namespace ft {
                         if (!temp)
                         {
                             temp = _root;
-                            _root = nullptr;
+                            _root = NULL;
                         }
                         else
                         {
@@ -386,7 +385,7 @@ namespace ft {
             void    erase(const Key& _val) { root = erase_avl(root, _val); }
 
             pointer upper_bound(const Key& _val) const  {  
-                pointer r = nullptr;
+                pointer r = NULL;
                 pointer node = get_root();
                 while (node)
                 {
@@ -403,7 +402,7 @@ namespace ft {
             }
 
             pointer lower_bound(const Key& _val) const {
-                pointer r = nullptr;
+                pointer r = NULL;
 
                 pointer node = get_root();
 

@@ -2,7 +2,7 @@ NAME = containers
 
 CC = clang++
 
-FLAGS = --std=c++98 -Wall -Wextra -Werror -fsanitize=address -g3
+FLAGS = --std=c++98 -Wall -Wextra -Werror
 
 SRCS = ./vector/tests/vector.cpp ./stack/tests/stack.cpp ./map/tests/map.cpp main.cpp 
 

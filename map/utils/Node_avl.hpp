@@ -11,7 +11,7 @@ namespace ft
             Node_avl                    *parent;
             ft::pair<const Key, T>      *data;
             
-            Node_avl(): height(0), left(nullptr), right(nullptr), parent(nullptr), data() {}
+            Node_avl(): height(0), left(NULL), right(NULL), parent(NULL), data() {}
 
             Node_avl(const Node_avl& other): height(other.height), left(other.left), right(other.right), parent(other.parent), data(other.data) {}
 

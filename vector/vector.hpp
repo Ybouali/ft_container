@@ -40,7 +40,7 @@ namespace ft
             }
             
             template <class InputIterator>
-            vector (InputIterator first, InputIterator last, const allocator_type& _alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc) { assign(first, last); }
+            vector (InputIterator first, InputIterator last, const allocator_type& _alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc) { assign(first, last); }
             
             vector (const vector& other): arr(NULL),  size_v(other.size()), capacity_v(other.capacity()), alloc(other.alloc)
             { 
@@ -177,7 +177,7 @@ namespace ft
             }
 
             template <class InputIterator>
-            void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
+            void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
             {
                 difference_type pos = size_v ? position - begin() : 0;
 
@@ -251,7 +251,7 @@ namespace ft
             }
 
             template <class InputIterator>
-            void    assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr)
+            void    assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
             {
                 clear();
                 if (!ft::is_same<typename iterator_traits<InputIterator>::iterator_category>::value)
