@@ -153,6 +153,8 @@ namespace ft
 
             iterator erase (iterator first, iterator last)
             {
+                if (first == last)
+                    return first;
                 size_type _pos_f = first - begin();
                 size_type _pos_e = last - begin();
                 size_type dist = last - first;
