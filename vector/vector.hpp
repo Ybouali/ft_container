@@ -428,9 +428,9 @@ namespace ft
             
             const_reference     front() const { return *this->arr; }
             
-            reference           back() { return at(size_v - 1); }
+            reference           back() { return *(arr + (size_v - 1)); }
             
-            const_reference     back() const { return at(size_v - 1); }
+            const_reference     back() const { return *(arr + (size_v - 1)); }
 
             // GET ALLOCATOR
             allocator_type get_allocator() const { return alloc; }

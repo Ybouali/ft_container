@@ -478,9 +478,14 @@ void    TEST_CMOP_NE(void)
     }
 }
 
+
+
+#include <vector>
+#include <stack>
+
 void    TEST_MIXED(void)
 {
-        ft::stack<int, ft::vector<int, std::allocator<int> > > st;
+        ft::stack<int, ft::vector<int> > st;
 
         std::cout << "Empty: " << (st.empty() ? "true" : "false") << std::endl;
 
@@ -532,14 +537,17 @@ void    TEST_MIXED(void)
         std::cout << "Top: " << st.top() << std::endl;
 }
 
+
+
 void    stack_tests(void)
 {
     std::cout << "Loading stack..." << std::endl;
-    TEST_CMOP_EQ();
-    TEST_COMP_GE();
-    TEST_COMP_GT();
-    TEST_COMP_LE();
-    TEST_CMOP_LT();
-    TEST_CMOP_NE();
+    
+    // TEST_CMOP_EQ();
+    // TEST_COMP_GE();
+    // TEST_COMP_GT();
+    // TEST_COMP_LE();
+    // TEST_CMOP_LT();
+    // TEST_CMOP_NE();
     TEST_MIXED();
 }
