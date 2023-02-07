@@ -89,15 +89,31 @@ namespace ft
             
             void         resize(size_type n, value_type val = value_type())
             {
-                if (this->size_v > n)   
+                size_type n_capa = capacity_v * 2 > n ? 2 * capacity_v : n;
+
+                if (this->size_v > n)
                 {
                     for (size_type o = n; o < this->size_v; o++)
                         this->alloc.destroy(this->arr + o);
                 }
-                if (this->size_v < n)
+                else if (this->size_v < n)
                 {
-                    reserve(n);
-                    for (size_type i = size_v; i < n; i++)
+                    size_type o_s = this->size_v;
+                    if (n > capacity_v)
+                    {
+                        pointer p = this->alloc.allocate(n_capa);
+
+                        for (size_type i = 0; i < size_v ; i++)
+                            alloc.construct(p + i, *(arr + i));
+                        
+                        clear();
+                        if (capacity_v)
+                            alloc.deallocate(arr, capacity_v);
+
+                        arr = p;
+                        capacity_v = n_capa;
+                    }
+                    for (size_type i = o_s; i < n ; i++)
                         alloc.construct(arr + i, val);
                 }
                 size_v = n;
@@ -115,7 +131,7 @@ namespace ft
                     clear();
                     if (arr)
                         alloc.deallocate(arr, capacity_v);
-                    
+
                     this->capacity_v = n;
                     this->size_v = _old_size;
                     this->arr = tmp;
@@ -188,7 +204,12 @@ namespace ft
                 difference_type len = tmp.size();
             
                 if (size_v + len > capacity_v)
-                    (size_v + len) <= (capacity_v * 2) ? reserve(capacity_v * 2) : reserve(size_v + len);
+                {
+                    if ((size_v + len) < (capacity_v * 2))
+                        reserve(capacity_v * 2);
+                    else
+                        reserve(size_v + len);
+                }
                 
                 if (len)
                 {

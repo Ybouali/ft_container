@@ -35,7 +35,7 @@ namespace ft {
                 // {
                 //     std::cout << "-------------------------------------------" << std::endl;
                 //     std::cout << "SHOW TREE THE SIZE OF THIS TREE IS :: " << _size << std::endl;
-                //     // show_tree_2D(root, 0);
+                //     show_tree_2D(root, 0);
                 //     std::cout << "-------------------------------------------" << std::endl;
                 // }
                 if (_size)
@@ -56,7 +56,7 @@ namespace ft {
                 for (size_type i = COUNT; i < space; i++)
                     std::cout << " ";
 
-                // " HEIGHT " << node->height
+                // " HEIGHT " << node->height <<
                 std::cout << "| " << node->data->first << " |" << std::endl;
 
                 show_tree_2D(node->left, space);

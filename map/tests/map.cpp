@@ -1640,31 +1640,31 @@ void    TEST_RITERATOR_M(void)
 void    map_tests(void)
 {
     std::cout << "LOADING MAP..." << std::endl;
-    // TEST_ASSIGNMENT_M();
-    // TEST_CLEAR_M();
-    // TEST_COMPARE();
-    // TEST_COMP_EQ();
-    // TEST_COMP_GE_M();
-    // TEST_COMP_GT_M();
-    // TEST_COMP_LT_M();
-    // TEST_COMP_LE_M();
-    // TEST_COMP_NE();
-    // TEST_COUNT();
-    // TEST_CTOR();
-    // TEST_CTOR_RANGE_M();
-    // TEST_CTOR_COPY_M();
-    // TEST_EMPTY_M();
-    // TEST_UPPER_BOUND();
-    // TEST_LOWER_BOUND();
-    // TEST_EQ_RANGE();
-    // TEST_ERASE_M();
-    // TEST_ERASE_KEY();
-    // TEST_ERASE_RANGE_M();
-    // TEST_FIND();
-    // TEST_OPERATOR_INDEX();
-    // TEST_INSERT_M();
-    // TEST_INSERT_RANGE_M();
-    // TEST_ITERATOR_M();
+    TEST_ASSIGNMENT_M();
+    TEST_CLEAR_M();
+    TEST_COMPARE();
+    TEST_COMP_EQ();
+    TEST_COMP_GE_M();
+    TEST_COMP_GT_M();
+    TEST_COMP_LT_M();
+    TEST_COMP_LE_M();
+    TEST_COMP_NE();
+    TEST_COUNT();
+    TEST_CTOR();
+    TEST_CTOR_RANGE_M();
+    TEST_CTOR_COPY_M();
+    TEST_EMPTY_M();
+    TEST_UPPER_BOUND();
+    TEST_LOWER_BOUND();
+    TEST_EQ_RANGE();
+    TEST_ERASE_M();
+    TEST_ERASE_KEY();
+    TEST_ERASE_RANGE_M();
+    TEST_FIND();
+    TEST_OPERATOR_INDEX();
+    TEST_INSERT_M();
+    TEST_INSERT_RANGE_M();
+    TEST_ITERATOR_M();
     TEST_RITERATOR_M();
 }
 
