@@ -15,4 +15,6 @@ int main(int ac, char **av)
         stack_tests();
     else if ((std::string)av[1] == "map")
         map_tests();
+    else if ((std::string)av[1] == "utils")
+        utils_tests();
 }

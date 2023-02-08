@@ -543,11 +543,11 @@ void    stack_tests(void)
 {
     std::cout << "Loading stack..." << std::endl;
     
-    // TEST_CMOP_EQ();
-    // TEST_COMP_GE();
-    // TEST_COMP_GT();
-    // TEST_COMP_LE();
-    // TEST_CMOP_LT();
-    // TEST_CMOP_NE();
+    TEST_CMOP_EQ();
+    TEST_COMP_GE();
+    TEST_COMP_GT();
+    TEST_COMP_LE();
+    TEST_CMOP_LT();
+    TEST_CMOP_NE();
     TEST_MIXED();
 }

@@ -4,7 +4,7 @@ CC = clang++
 
 FLAGS = --std=c++98 -Wall -Wextra -Werror
 
-SRCS = ./vector/tests/vector.cpp ./stack/tests/stack.cpp ./map/tests/map.cpp main.cpp 
+SRCS = ./vector/tests/vector.cpp ./stack/tests/stack.cpp ./map/tests/map.cpp ./utils/tests/utils.cpp main.cpp 
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -26,6 +26,9 @@ vector:
 stack:
 	@make && ./containers stack && make fclean
 
+utils:
+	@make && ./containers utils && make fclean
+
 clean:
 	@rm -f $(OBJS)
 
@@ -34,4 +37,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re map vector stack
+.PHONY: all clean fclean re map vector stack utils
