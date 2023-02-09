@@ -23,9 +23,11 @@ namespace ft
             typedef ptrdiff_t                                                       difference_type;
             typedef size_t                                                          size_type;
             
-            explicit vector (const Alloc& _alloc = Alloc()): arr(NULL),  size_v(0), capacity_v(0), alloc(_alloc) { }
+            explicit vector (const Alloc& _alloc = Alloc())
+                : arr(NULL),  size_v(0), capacity_v(0), alloc(_alloc) { }
 
-            explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& _alloc = allocator_type()) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
+            explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& _alloc = allocator_type())
+                : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
             {
                 if (n)
                 {
@@ -40,7 +42,9 @@ namespace ft
             }
             
             template <class InputIterator>
-            vector (InputIterator first, InputIterator last, const allocator_type& _alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : arr(0),  size_v(0), capacity_v(0), alloc(_alloc) { assign(first, last); }
+            vector (InputIterator first, InputIterator last, const allocator_type& _alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
+                : arr(0),  size_v(0), capacity_v(0), alloc(_alloc)
+            { assign(first, last); }
             
             vector (const vector& other): arr(NULL),  size_v(other.size()), capacity_v(other.capacity()), alloc(other.alloc)
             { 

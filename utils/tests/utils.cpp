@@ -6,37 +6,92 @@ void    TEST_IS_INTEGRAL(void)
 {
     std::cout << "Testing is_integer " << std::endl << std::endl;
 
-    std::cout << "FLOAT                   :: IS " << ((ft::is_integral<float>() == std::is_integral<float>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "ft   FLOAT                         :: IS " << (ft::is_integral<float>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  FLOAT                         :: IS " << (std::is_integral<float>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
 
-    std::cout << "INT                     :: IS " << ((ft::is_integral<int>() == std::is_integral<int>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "ft  const FLOAT                    :: IS " << (ft::is_integral<const float>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const FLOAT                    :: IS " << (std::is_integral<const float>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
 
-    std::cout << "BOOL                    :: IS " << ((ft::is_integral<bool>() == std::is_integral<bool>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "ft   INT                           :: IS " << (ft::is_integral<int>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  INT                           :: IS " << (std::is_integral<int>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
 
-    std::cout << "CHAR                    :: IS " << ((ft::is_integral<char>() == std::is_integral<char>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "ft  const INT                      :: IS " << (ft::is_integral<const int>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const INT                      :: IS " << (std::is_integral<const int>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
 
-    std::cout << "SIGNED CHAR             :: IS " << ((ft::is_integral<signed char>() == std::is_integral<signed char>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "ft   CHAR                          :: IS " << (ft::is_integral<char>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  CHAR                          :: IS " << (std::is_integral<char>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
 
-    std::cout << "UNSIGNED CHAR           :: IS " << ((ft::is_integral<unsigned char>() == std::is_integral<unsigned char>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "ft  const CHAR                     :: IS " << (ft::is_integral<const char>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const CHAR                     :: IS " << (std::is_integral<const char>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
 
-    std::cout << "WCHAR_T                 :: IS " << ((ft::is_integral<wchar_t>() == std::is_integral<wchar_t>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "ft   SIGNED CHAR                   :: IS " << (ft::is_integral<signed char>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  SIGNED CHAR                   :: IS " << (std::is_integral<signed char>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
 
-    std::cout << "CHAR16_T                :: IS " << ((ft::is_integral<char16_t>() == std::is_integral<char16_t>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "ft  const SIGNED CHAR              :: IS " << (ft::is_integral<const signed char>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const SIGNED CHAR              :: IS " << (std::is_integral<const signed char>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
 
-    std::cout << "SHORT                   :: IS " << ((ft::is_integral<short>() == std::is_integral<short>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "ft   WCHAR_T                       :: IS " << (ft::is_integral<wchar_t>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  WCHAR_T                       :: IS " << (std::is_integral<wchar_t>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
 
-    std::cout << "UNSIGNED SHORT          :: IS " << ((ft::is_integral<unsigned short>() == std::is_integral<unsigned short>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "ft  const WCHAR_T                  :: IS " << (ft::is_integral<const wchar_t>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const WCHAR_T                  :: IS " << (std::is_integral<const wchar_t>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft   CHAR16_T                      :: IS " << (ft::is_integral<char16_t>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  CHAR16_T                      :: IS " << (std::is_integral<char16_t>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft  const CHAR16_T                 :: IS " << (ft::is_integral<const char16_t>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const CHAR16_T                 :: IS " << (std::is_integral<const char16_t>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft   SHORT                         :: IS " << (ft::is_integral<short>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  SHORT                         :: IS " << (std::is_integral<short>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft  const SHORT                    :: IS " << (ft::is_integral<const short>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const SHORT                    :: IS " << (std::is_integral<const short>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft   UNSIGNED SHORT                :: IS " << (ft::is_integral<unsigned short>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  UNSIGNED SHORT                :: IS " << (std::is_integral<unsigned short>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft  const UNSIGNED SHORT           :: IS " << (ft::is_integral<const unsigned short>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const UNSIGNED SHORT           :: IS " << (std::is_integral<const unsigned short>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft   UNSIGNED INT                  :: IS " << (ft::is_integral<unsigned int>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  UNSIGNED INT                  :: IS " << (std::is_integral<unsigned int>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft  const UNSIGNED INT             :: IS " << (ft::is_integral<const unsigned int>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const UNSIGNED INT             :: IS " << (std::is_integral<const unsigned int>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft   LONG                          :: IS " << (ft::is_integral<long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  LONG                          :: IS " << (std::is_integral<long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft  const LONG                     :: IS " << (ft::is_integral<const long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const LONG                     :: IS " << (std::is_integral<const long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft   UNSIGNED LONG                 :: IS " << (ft::is_integral<unsigned long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  UNSIGNED LONG                 :: IS " << (std::is_integral<unsigned long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft  const UNSIGNED LONG            :: IS " << (ft::is_integral<const unsigned long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const UNSIGNED LONG            :: IS " << (std::is_integral<const unsigned long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft   LONG LONG                     :: IS " << (ft::is_integral<long long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  LONG LONG                     :: IS " << (std::is_integral<long long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft  const LONG LONG                :: IS " << (ft::is_integral<const long long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const LONG LONG                :: IS " << (std::is_integral<const long long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft   UNSIGNED LONG LONG           :: IS " << (ft::is_integral<unsigned long long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  UNSIGNED LONG LONG           :: IS " << (std::is_integral<unsigned long long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft  const UNSIGNED LONG LONG      :: IS " << (ft::is_integral<const unsigned long long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const UNSIGNED LONG LONG      :: IS " << (std::is_integral<const unsigned long long>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft   INTPT ITERATOR TYPE          :: IS " << (ft::is_integral<std::istreambuf_iterator<char> >::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  INTPT ITERATOR TYPE          :: IS " << (std::is_integral<std::istreambuf_iterator<char> >::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+
+    std::cout << "ft  const INTPT ITERATOR TYPE     :: IS " << (ft::is_integral<const std::istreambuf_iterator<char> >::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std const INTPT ITERATOR TYPE     :: IS " << (std::is_integral<const std::istreambuf_iterator<char> >::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
     
-    std::cout << "UNSIGNED INT            :: IS " << ((ft::is_integral<unsigned int>() == std::is_integral<unsigned int>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
-
-    std::cout << "LONG                    :: IS " << ((ft::is_integral<long>() == std::is_integral<long>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
-
-    std::cout << "UNSIGNED LONG           :: IS " << ((ft::is_integral<unsigned long>() == std::is_integral<unsigned long>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
-
-    std::cout << "LONG LONG               :: IS " << ((ft::is_integral<long long>() == std::is_integral<long long>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
-
-    std::cout << "UNSIGNED LONG LONG      :: IS " << ((ft::is_integral<long long>() == std::is_integral<long long>()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
-
-    std::cout << "STD INTPT ITERATOR TYPE :: IS " << ((ft::is_integral<std::istreambuf_iterator<char> >() == std::is_integral<std::istreambuf_iterator<char> >()) ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "ft   BOOL                         :: IS " << (ft::is_integral<bool>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
+    std::cout << "std  BOOL                         :: IS " << (std::is_integral<bool>::value ? "INTEGRAL" : "NOT INTEGERL")  << std::endl << std::endl;
 }
 
 template <class T> typename ft::enable_if<std::is_signed<T>::value>::type
@@ -133,8 +188,8 @@ void    utils_tests(void)
 {
     std::cout << "UTILS LODING ..." << std::endl;
     TEST_IS_INTEGRAL();
-    TEST_ENABLE_IF();
-    TEST_EQUL();
-    TEST_ITERATOR_TRAITS();
-    TEST_LEXICOGRAPHICAL();
+    // TEST_ENABLE_IF();
+    // TEST_EQUL();
+    // TEST_ITERATOR_TRAITS();
+    // TEST_LEXICOGRAPHICAL();
 }

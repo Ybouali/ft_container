@@ -5,7 +5,7 @@ namespace ft
     template <class Key, class T > 
     class Node_avl {
         public :
-            int                         height;
+            size_t                      height;
             Node_avl                    *left;
             Node_avl                    *right;
             Node_avl                    *parent;

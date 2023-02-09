@@ -28,7 +28,8 @@ namespace ft {
 
             avl_tree(): root(NULL) , alloc_pair(), comp(), alloc_node(), _size(0) { }
             
-            avl_tree(const avl_tree& other): root(other.root), alloc_pair(other.alloc_pair), comp(other.comp), alloc_node(other.alloc_node), _size(other._size) {} 
+            avl_tree(const avl_tree& other)
+                : root(other.root), alloc_pair(other.alloc_pair), comp(other.comp), alloc_node(other.alloc_node), _size(other._size) {} 
             
             ~avl_tree() {
                 // if (_size)
@@ -83,8 +84,6 @@ namespace ft {
                 
                 if (root == node)
                     root = NULL;
-                else
-                    node = NULL;
                 _size--;
             }
 
@@ -115,7 +114,7 @@ namespace ft {
             }
 
             // ! INIT NODE
-            pointer init_node(const int& _height, const value_type& _val, pointer _parent)
+            pointer init_node(const size_t& _height, const value_type& _val, pointer _parent)
             {
                 pointer new_node = alloc_node.allocate(1);
                 new_node->data = alloc_pair.allocate(1);
@@ -125,7 +124,7 @@ namespace ft {
             }
 
             // ! GET HIGHT
-            int     height(pointer _node)
+            size_type     height(pointer _node)
             {
                 if (!_node)
                     return 0;
@@ -133,7 +132,7 @@ namespace ft {
             }
 
             // ! GET THE MAX OF TOW NUMBERS
-            int     max(int a, int b)
+            size_type     max(size_type a, size_type b)
             {
                 return (a > b) ? a : b;
             }
