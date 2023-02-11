@@ -188,8 +188,8 @@ void    utils_tests(void)
 {
     std::cout << "UTILS LODING ..." << std::endl;
     TEST_IS_INTEGRAL();
-    // TEST_ENABLE_IF();
-    // TEST_EQUL();
-    // TEST_ITERATOR_TRAITS();
-    // TEST_LEXICOGRAPHICAL();
+    TEST_ENABLE_IF();
+    TEST_EQUL();
+    TEST_ITERATOR_TRAITS();
+    TEST_LEXICOGRAPHICAL();
 }
