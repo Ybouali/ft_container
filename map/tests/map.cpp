@@ -1636,48 +1636,73 @@ void    TEST_RITERATOR_M(void)
     std::cout << (*cit).first << std::endl;
     std::cout << (*cit2).first << std::endl;
 }
+void     TEST_FOR_ROTATIONS()
+{
+    std::cout << "TEST FOR ROTATIONS" << std::endl;
+    ft::map<char, int>   map;
+
+    // goto next;
+    {
+        std::cout << std::endl << "TEST 1 [X, Y, Z] == ";
+        map.insert(ft::make_pair('x', 10));
+        map.insert(ft::make_pair('y', 10));
+        map.insert(ft::make_pair('z', 10));
+        map.clear();
+    }
+    // next: ;
+    {
+        std::cout << std::endl << "TEST 2 [Z, Y, X] == ";
+        map.insert(ft::make_pair('z', 10));
+        map.insert(ft::make_pair('y', 10));
+        map.insert(ft::make_pair('x', 10));
+        map.clear();
+    }
+    // next: ;
+    {
+        std::cout << std::endl << "TEST 3 [Z, X, Y] == ";
+        map.insert(ft::make_pair('z', 10));
+        map.insert(ft::make_pair('x', 10));
+        map.insert(ft::make_pair('y', 10));
+        map.clear();
+    }
+    // next: ;
+    {
+        std::cout << std::endl << "TEST 4 [X, Z, Y] == ";
+        map.insert(ft::make_pair('x', 10));
+        map.insert(ft::make_pair('z', 10));
+        map.insert(ft::make_pair('y', 10));
+    }
+}
 
 void    map_tests(void)
 {
     std::cout << "LOADING MAP..." << std::endl;
-    // TEST_ASSIGNMENT_M();
-    // TEST_CLEAR_M();
-    // TEST_COMPARE();
-    // TEST_COMP_EQ();
-    // TEST_COMP_GE_M();
-    // TEST_COMP_GT_M();
-    // TEST_COMP_LT_M();
-    // TEST_COMP_LE_M();
-    // TEST_COMP_NE();
-    // TEST_COUNT();
-    // TEST_CTOR();
-    // TEST_CTOR_RANGE_M();
-    // TEST_CTOR_COPY_M();
-    // TEST_EMPTY_M();
-    // TEST_UPPER_BOUND();
-    // TEST_LOWER_BOUND();
-    // TEST_EQ_RANGE();
-    // TEST_ERASE_M();
-    // TEST_ERASE_KEY();
-    // TEST_ERASE_RANGE_M();
-    // TEST_FIND();
-    // TEST_OPERATOR_INDEX();
-    // TEST_INSERT_M();
-    // TEST_INSERT_RANGE_M();
-    // TEST_ITERATOR_M();
-    // TEST_RITERATOR_M();
-    ft::map<int, int>   map;
-    std::map<int, int>   map1;
-
-    for (int i = 0; i < 20; i++)
-    {
-        map.insert(ft::make_pair(i, i));
-        map1.insert(std::make_pair(i, i));
-    }
-
-    std::cout << map.lower_bound(10)->first << std::endl;
-    std::cout << map1.lower_bound(10)->first << std::endl;
-
-
+    TEST_ASSIGNMENT_M();
+    TEST_CLEAR_M();
+    TEST_COMPARE();
+    TEST_COMP_EQ();
+    TEST_COMP_GE_M();
+    TEST_COMP_GT_M();
+    TEST_COMP_LT_M();
+    TEST_COMP_LE_M();
+    TEST_COMP_NE();
+    TEST_COUNT();
+    TEST_CTOR();
+    TEST_CTOR_RANGE_M();
+    TEST_CTOR_COPY_M();
+    TEST_EMPTY_M();
+    TEST_UPPER_BOUND();
+    TEST_LOWER_BOUND();
+    TEST_EQ_RANGE();
+    TEST_ERASE_M();
+    TEST_ERASE_KEY();
+    TEST_ERASE_RANGE_M();
+    TEST_FIND();
+    TEST_OPERATOR_INDEX();
+    TEST_INSERT_M();
+    TEST_INSERT_RANGE_M();
+    TEST_ITERATOR_M();
+    TEST_RITERATOR_M();
+    TEST_FOR_ROTATIONS();
 }
 

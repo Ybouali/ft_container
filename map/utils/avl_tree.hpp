@@ -57,8 +57,7 @@ namespace ft {
                 for (size_type i = COUNT; i < space; i++)
                     std::cout << " ";
 
-                // " HEIGHT " << node->height <<
-                std::cout << "| " << node->data->first << " |" << std::endl;
+                std::cout << "| " << node->data->first << " HEIGHT " << node->height << " |" << std::endl;
 
                 show_tree_2D(node->left, space);
             }
@@ -214,19 +213,27 @@ namespace ft {
                 int balance = get_Balance(_node);
                 
                 if (balance > 1 && comp(_val.first, _node->left->data->first))
+                {
+                    // std::cout << "FROM TEST 2 LL"  << std::endl;
                     return rightRotation(_node);
+                }
 
                 if (balance > 1 && comp(_node->left->data->first, _val.first))
                 {
+                    // std::cout << "FROM TEST 3 LR"  << std::endl;
                     _node->left = leftRotation(_node->left);
                     return rightRotation(_node);
                 }
                 
                 if (balance < -1 && comp(_node->right->data->first, _val.first))
+                {
+                    // std::cout << "FROM TEST 1 RR"  << std::endl;
                     return leftRotation(_node);
+                }
                 
                 if (balance < -1 && comp(_val.first, _node->right->data->first))
                 {
+                    // std::cout << "FROM TEST 4 RL"  << std::endl;
                     _node->right = rightRotation(_node->right);
                     return leftRotation(_node);
                 }
